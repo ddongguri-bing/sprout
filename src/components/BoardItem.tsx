@@ -17,7 +17,7 @@ export default function BoardItem({
           e.preventDefault();
           navigate("/user/1");
         }}
-        className="flex gap-[10px] items-center"
+        className="flex gap-[10px] items-center cursor-pointer"
       >
         <div className="w-[75px] h-[75px] min-w-[75px] min-h-[75px] rounded-[8px] bg-whiteDark"></div>
         <div>
