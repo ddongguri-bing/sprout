@@ -12,7 +12,7 @@ export default function AfterUserBox() {
         <div className="w-[50px] h-[50px] min-w-[50px] min-h-[50px] rounded-[8px] bg-whiteDark"></div>
         <div>
           <h3 className="text-sm font-bold line-clamp-1">사용자 이름</h3>
-          <p className="text-xs">test@naver.com</p>
+          <p className="text-xs text-gray">test@naver.com</p>
         </div>
       </Link>
     </div>
