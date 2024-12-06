@@ -7,10 +7,20 @@
     @apply flex items-center justify-center min-h-screen;
   }
 }
-* {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  font-family: "Noto Sans KR", sans-serif;
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* 스크롤바 막대 꾸미기 */
+*::-webkit-scrollbar-thumb {
+  background: #91c788;
+  border-radius: 4px;
+}
+
+/* 스크롤바 트랙 꾸미기 */
+*::-webkit-scrollbar-track {
+  background-color: #dbdbdb;
+  border-radius: 4px;
 }
 
 .font-angkor {
