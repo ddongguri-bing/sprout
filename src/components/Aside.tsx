@@ -17,7 +17,7 @@ export default function Aside({ toggleOpen }: Props) {
           <AfterUserBox />
           <div>
             <h2 className="font-bold mb-5">알림</h2>
-            <div className="flex-1 max-h-[20vh] overflow-y-auto ">
+            <div className="flex-1 max-h-[20vh] scroll overflow-y-auto ">
               <ul className="flex flex-col gap-[15px] text-xs">
                 <NotiItem active={true} />
                 <NotiItem active={true} />
@@ -40,7 +40,7 @@ export default function Aside({ toggleOpen }: Props) {
       {/* 사용자 리스트 및 고정된 링크 */}
       <div className="flex flex-col flex-[3] h-[20%] border-t border-whiteDark overflow-hidden mt-5 scroll">
         <h2 className="font-bold mb-5 pt-5">사용자</h2>
-        <div className="flex-1 overflow-y-auto mb-[10px]">
+        <div className="flex-1 scroll overflow-y-auto mb-[10px]">
           <ul className="flex flex-col gap-5 ">
             <UserItem />
             <UserItem />

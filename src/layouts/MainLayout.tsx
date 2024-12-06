@@ -10,7 +10,9 @@ export default function MainLayout() {
   return (
     <div className="w-full flex min-h-screen text-black">
       <Header />
-      <Outlet />
+      <div className="flex-1">
+        <Outlet />
+      </div>
       <Aside toggleOpen={toggleUserSearch} />
       {searchOpen && <UserSearch toggleOpen={toggleUserSearch} />}
     </div>

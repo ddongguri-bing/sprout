@@ -21,7 +21,7 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
             placeholder="사용자를 검색해 보세요"
           />
         </form>
-        <div className="flex-1 max-h-[450px] overflow-y-auto">
+        <div className="flex-1 max-h-[450px] scroll overflow-y-auto">
           <ul className="flex flex-col gap-5">
             <UserItem />
             <UserItem />
