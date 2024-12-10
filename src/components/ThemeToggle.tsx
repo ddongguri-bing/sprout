@@ -11,8 +11,8 @@ export default function ThemeToggle() {
     setIsDarkMode(checked);
     document.documentElement.classList.toggle("dark");
 
-    if (checked) localStorage.theme = "dark";
-    else localStorage.theme = "light";
+    if (checked) localStorage.setItem("theme", "dark");
+    else localStorage.setItem("theme", "light");
   };
 
   return (
