@@ -28,7 +28,7 @@ export default function SignUp() {
         name="password-confirm"
         placeholder="비밀번호를 확인해주세요."
       />
-      <Button type="submit" text="회원가입" />
+      <Button text="회원가입" size="lg" type="submit" />
     </form>
   );
 }

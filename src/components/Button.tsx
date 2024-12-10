@@ -1,36 +1,53 @@
 import { Link } from "react-router";
 import { twMerge } from "tailwind-merge";
 
+type ButtonPtops = {
+  text: string;
+  size: "sm" | "md" | "lg";
+  type?: "submit" | "button";
+  theme?: "main" | "sub";
+  to?: string;
+} & React.ComponentPropsWithoutRef<"button">;
+
 export default function Button({
   text,
-  type,
-  bgColor = true,
+  size,
+  type = "button",
+  theme = "main",
   to,
-}: {
-  text: string;
-  type: "submit" | "button" | "link";
-  bgColor?: boolean;
-  to?: string;
-}) {
-  if (type == "link" && to)
+  className,
+  ...rest
+}: ButtonPtops) {
+  const BASE_STYLE = "rounded-[8px] flex items-center justify-center";
+
+  const SIZE_STYLE = {
+    lg: "h-[76px] text-[20px] font-bold",
+    md: "w-full h-[42px] text-sm font-medium",
+    sm: "w-[100px] h-[42px] px-4 text-sm",
+  }[size];
+
+  const THEME_STYLE = {
+    main: "bg-main text-black hover:bg-hoverMain",
+    sub: "border border-main bg-white dark:bg-black hover:bg-whiteDark/30",
+  }[theme];
+
+  //  type:main
+  //  type:sub
+
+  if (to)
     return (
       <Link
         to={to}
-        className={twMerge(
-          "h-[76px] rounded-[8px] text-[20px] font-bold flex items-center justify-center",
-          bgColor ? "bg-main" : "border bg-white border-main"
-        )}
+        className={twMerge(BASE_STYLE, SIZE_STYLE, THEME_STYLE, className)}
       >
         {text}
       </Link>
     );
   return (
     <button
-      type={type as "submit" | "button"}
-      className={twMerge(
-        "h-[76px] rounded-[8px] text-[20px] font-bold",
-        bgColor ? "bg-main" : "border bg-white border-main"
-      )}
+      type={type}
+      className={twMerge(BASE_STYLE, SIZE_STYLE, THEME_STYLE, className)}
+      {...rest}
     >
       {text}
     </button>

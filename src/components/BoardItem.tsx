@@ -75,7 +75,7 @@ export default function BoardItem({
   return (
     <Link
       to={"/board/1/1"}
-      className="p-[30px] border-b border-whiteDark flex flex-col items-center transition-all hover:bg-black/10"
+      className="p-[30px] border-b border-whiteDark dark:border-gray flex flex-col items-center transition-all hover:bg-whiteDark/30 dark:hover:bg-grayDark"
     >
       {mainContents}
     </Link>

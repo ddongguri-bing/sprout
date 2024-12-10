@@ -18,7 +18,7 @@ export default function Comments() {
         )}
       >
         <TextareaAutosize
-          className="w-full h-6 focus:outline-none resize-none"
+          className="w-full h-6 focus:outline-none resize-none bg-white dark:bg-black"
           onChange={handleChange}
           value={value}
           placeholder="댓글을 입력해주세요"

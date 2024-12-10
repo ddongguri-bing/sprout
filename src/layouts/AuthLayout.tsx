@@ -11,12 +11,12 @@ export default function AuthLayout() {
 
   return (
     <>
-      <header className="w-full h-[100px] border-b border-whiteDark bg-white flex items-center justify-center">
+      <header className="w-full h-[100px] border-b border-whiteDark dark:border-gray bg-white dark:bg-black dark:text-white flex items-center justify-center">
         <Link to={"/"}>
           <img src={Logo} alt="main logo" />
         </Link>
       </header>
-      <article className="w-full flex py-[162px] justify-center">
+      <article className="w-full flex py-[162px] justify-center bg-white text-black dark:bg-black dark:text-white">
         <section className="w-[494px] h-auto flex flex-col items-center gap-[60px]">
           <h1 className="font-bold text-[32px]">{title}</h1>
           <Outlet />

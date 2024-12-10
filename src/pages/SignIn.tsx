@@ -16,8 +16,8 @@ export default function SignIn() {
         name="password"
         placeholder="비밀번호를 입력해주세요."
       />
-      <Button type="submit" text="로그인" />
-      <Button type="link" text="회원가입" bgColor={false} to="/auth/signUp" />
+      <Button text="로그인" size="lg" type="submit" />
+      <Button text="회원가입" to="/auth/signUp" size="lg" theme="sub" />
     </form>
   );
 }

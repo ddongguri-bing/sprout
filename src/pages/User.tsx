@@ -1,4 +1,5 @@
 import BoardGrid from "../components/BoardGrid";
+import Button from "../components/Button";
 
 export default function User() {
   return (
@@ -26,9 +27,7 @@ export default function User() {
                   <span className="text-gray">6</span>
                 </div>
               </div>
-              <button className="w-full max-w-[188px] h-[42px] flex items-center justify-center bg-main text-[12px] font-medium rounded-[8px]">
-                팔로잉
-              </button>
+              <Button text={"팔로잉"} size={"md"} className="max-w-[188px]" />
             </div>
           </div>
         </div>
