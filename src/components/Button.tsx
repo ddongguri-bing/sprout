@@ -28,11 +28,8 @@ export default function Button({
 
   const THEME_STYLE = {
     main: "bg-main text-black hover:bg-hoverMain",
-    sub: "border border-main bg-white dark:bg-black hover:bg-whiteDark/30",
+    sub: "border border-main bg-white dark:bg-black hover:bg-whiteDark/30 dark:hover:bg-hoverGray",
   }[theme];
-
-  //  type:main
-  //  type:sub
 
   if (to)
     return (

@@ -22,7 +22,9 @@ export default function BoardItem({
         <div className="w-[75px] h-[75px] min-w-[75px] min-h-[75px] rounded-[8px] bg-whiteDark"></div>
         <div>
           <h3 className="font-bold line-clamp-1">사용자 이름</h3>
-          <p className="text-sm text-gray">test@naver.com</p>
+          <p className="text-sm text-gray dark:text-whiteDark">
+            test@naver.com
+          </p>
         </div>
       </div>
       <div className="w-full pl-[89px]">
@@ -60,7 +62,7 @@ export default function BoardItem({
                 100
               </button>
             </div>
-            <div className="text-gray">10분 전</div>
+            <div className="text-gray dark:text-whiteDark">10분 전</div>
           </div>
           {/* 댓글 컨텐츠 들어가는 곳  */}
           {comments && <Comments />}

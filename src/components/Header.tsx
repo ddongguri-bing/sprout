@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
 export default function Header() {
   return (
-    <header className="w-[257px] max-h-screen h-screen sticky top-0 left-0 border-r border-whiteDark dark:border-gray py-[21px] px-[32px] flex flex-col">
+    <header className="w-[257px] max-h-screen h-screen sticky top-0 left-0 border-r border-whiteDark dark:border-gray py-[21px] px-[32px] flex flex-col items-start">
       <h1 className="mb-[50px]">
         <Link to={"/"}>
           <img className="w-[188px]" src={Logo} alt="main logo" />
