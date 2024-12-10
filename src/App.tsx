@@ -9,22 +9,33 @@ import Board from "./pages/Board";
 import BoardDetail from "./pages/BoardDetail";
 import Search from "./pages/Search";
 import User from "./pages/User";
+import BoardEditor from "./pages/BoardEditor";
+import UserEdit from "./pages/UserEdit";
+import { useModal } from "./stores/modalStore";
+import Modal from "./components/Modal";
 
 export default function App() {
+  const modalOpen = useModal((state) => state.modalOpen);
   return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Main />} />
-        <Route path="board/:id" element={<Board />} />
-        <Route path="board/:id/:postId" element={<BoardDetail />} />
-        <Route path="search/:query" element={<Search />} />
-        <Route path="user/:id" element={<User />} />
-      </Route>
-      <Route path="auth" element={<AuthLayout />}>
-        <Route path="signIn" element={<SignIn />} />
-        <Route path="signUp" element={<SignUp />} />
-      </Route>
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Main />} />
+          <Route path="board/:id" element={<Board />} />
+          <Route path="board/:id/create" element={<BoardEditor />} />
+          <Route path="board/:id/:postId" element={<BoardDetail />} />
+          <Route path="board/:id/:postId/update" element={<BoardEditor />} />
+          <Route path="search/:query" element={<Search />} />
+          <Route path="user/:id" element={<User />} />
+          <Route path="user/edit" element={<UserEdit />} />
+        </Route>
+        <Route path="auth" element={<AuthLayout />}>
+          <Route path="signIn" element={<SignIn />} />
+          <Route path="signUp" element={<SignUp />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {modalOpen && <Modal />}
+    </>
   );
 }
