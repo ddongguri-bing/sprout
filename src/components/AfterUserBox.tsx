@@ -5,7 +5,7 @@ export default function AfterUserBox() {
     <div className="pb-5 border-b border-whiteDark dark:border-gray">
       <div className="flex justify-end">
         <Link to={"/user/edit"}>
-          <img src={Setting} alt="setting icon" />
+          <img className="dark:invert" src={Setting} alt="setting icon" />
         </Link>
       </div>
       <Link to="/user/1" className="flex gap-[10px] items-center">

@@ -13,6 +13,8 @@ export default {
         grayDark: "#333",
         red: "#FF3333",
         hoverMain: "#7BA974",
+        hoverGray: "#414141",
+        hoverRed: "#D92B2B",
       },
     },
   },

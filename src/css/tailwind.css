@@ -32,6 +32,9 @@ body {
   background-color: #dbdbdb;
   border-radius: 4px;
 }
+.dark .scroll::-webkit-scrollbar-track {
+  background-color: #4d4d4d;
+}
 
 .font-angkor {
   font-family: "Angkor", serif;
@@ -46,4 +49,8 @@ body {
 
 .quill > .ql-container > .ql-editor.ql-blank::before {
   font-size: 16px;
+  font-style: normal;
+}
+.dark .quill > .ql-container > .ql-editor.ql-blank::before {
+  color: #dbdbdb;
 }

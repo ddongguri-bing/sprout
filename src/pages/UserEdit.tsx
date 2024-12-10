@@ -1,6 +1,7 @@
 import Back from "../assets/back.svg";
 import Camera from "../assets/camera.svg";
 import Logout from "../assets/logout.svg";
+import Button from "../components/Button";
 import SettingInput from "../components/SettingInput";
 import { useModal } from "../stores/modalStore";
 
@@ -66,19 +67,13 @@ export default function UserEdit() {
           />
         </div>
         <div className="w-full flex justify-end items-center gap-5">
-          <button
-            type="button"
+          <Button
             onClick={() => history.back()}
-            className="w-[100px] h-[42px] px-4 flex items-center justify-center bg-whiteDark text-[12px] font-medium rounded-[8px]"
-          >
-            취소
-          </button>
-          <button
-            type="submit"
-            className="w-[100px] h-[42px] px-4 flex items-center justify-center bg-main text-[12px] font-medium rounded-[8px]"
-          >
-            완료
-          </button>
+            text={"취소"}
+            size={"sm"}
+            theme="sub"
+          />
+          <Button type="submit" text={"완료"} size={"sm"} />
         </div>
       </form>
       <div className="w-full max-w-[777px] mx-auto flex items-end mb-[30px] justify-between gap-5">
