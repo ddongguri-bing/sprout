@@ -15,16 +15,16 @@ export default function Header() {
       <nav className="flex-1 flex-grow max-h-[calc(100vh-296px)] scroll overflow-y-auto">
         <ul className="flex flex-col gap-5">
           <li>
-            <NavLink to="/board/1">고양이 사진첩</NavLink>
-          </li>
-          <li>
-            <NavLink to="/board/2">강아지 사진첩</NavLink>
-          </li>
-          <li>
-            <NavLink to="/board/3">눈 풍경 사진첩</NavLink>
-          </li>
-          <li>
-            <NavLink to="/board/4">거북이 사진첩</NavLink>
+            <NavLink
+              to="/board/1"
+              className={({ isActive }) =>
+                isActive
+                  ? "font-bold text-main"
+                  : "text-black dark:text-white hover:text-main"
+              }
+            >
+              고양이 사진첩
+            </NavLink>
           </li>
         </ul>
       </nav>
