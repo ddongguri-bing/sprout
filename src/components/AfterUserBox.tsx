@@ -7,13 +7,15 @@ import {
   putNotificationSeen,
 } from "../api/notification";
 import NotiItem from "./NotiItem";
+import { useAuthStore } from "../stores/authStore";
 export default function AfterUserBox() {
+  const user = useAuthStore((state) => state.user);
+
   const [trigger, setTrigger] = useState<boolean>(false);
   const [notis, setNotis] = useState<NotiType[]>([]);
   useEffect(() => {
     const handleGetNotis = async () => {
       const data = await getNotification();
-      console.log(data);
       setNotis(data);
     };
     handleGetNotis();
@@ -32,14 +34,17 @@ export default function AfterUserBox() {
             <img className="dark:invert" src={Setting} alt="setting icon" />
           </Link>
         </div>
-        <Link to="/user/1" className="flex gap-[10px] items-center">
+        <Link
+          to={`/user/${user!._id}`}
+          className="flex gap-[10px] items-center"
+        >
           <div className="w-[50px] h-[50px] min-w-[50px] min-h-[50px] rounded-[8px] bg-whiteDark"></div>
           <div>
             <h3 className="text-sm font-bold line-clamp-1 text-black dark:text-white">
-              사용자 이름
+              {user!.fullName}
             </h3>
             <p className="text-xs text-gray dark:text-whiteDark">
-              test@naver.com
+              {user!.email}
             </p>
           </div>
         </Link>
