@@ -11,7 +11,7 @@ export default function Search() {
   useEffect(() => {
     const handleSearch = async (query?: string) => {
       try {
-        const { data } = await getSearchPosts(query);
+        const data = await getSearchPosts(query);
         setPosts(data);
       } catch (err) {
       } finally {
