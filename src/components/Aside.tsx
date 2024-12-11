@@ -2,6 +2,7 @@ import BeforeUserBox from "./BeforeUserBox";
 import UserItem from "./UserItem";
 import AfterUserBox from "./AfterUserBox";
 import Button from "./Button";
+import { useAuthStore } from "../stores/authStore";
 import { useEffect, useState } from "react";
 import { getUsers } from "../api/users";
 
@@ -10,7 +11,8 @@ interface Props {
 }
 
 export default function Aside({ toggleOpen }: Props) {
-  const isLoggedIn = false;
+  //스토어에서 로그인 상태 반영
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const [users, setUsers] = useState<any[]>([]);
   useEffect(() => {
