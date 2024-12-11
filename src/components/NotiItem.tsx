@@ -22,7 +22,7 @@ export default function NotiItem({
   return (
     <li
       className={twMerge(
-        "flex items-center gap-[5px] cursor-pointer p-2 rounded-[8px] hover:bg-whiteDark/30 relative before:block before:w-2 before:h-2 before:rounded-full",
+        "flex items-center gap-[5px] relative before:block before:w-2 before:h-2 before:rounded-full",
         active ? "before:bg-main" : "before:bg-whiteDark"
       )}
     >

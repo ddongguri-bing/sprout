@@ -3,8 +3,12 @@ import UserItem from "./UserItem";
 import AfterUserBox from "./AfterUserBox";
 import NotiItem from "./NotiItem";
 import Button from "./Button";
-import { useEffect, useState } from "react";
-import { NotiType, getNotification } from "../api/notification";
+import { useCallback, useEffect, useState } from "react";
+import {
+  NotiType,
+  getNotification,
+  putNotificationSeen,
+} from "../api/notification";
 
 interface Props {
   toggleOpen: () => void;
@@ -12,6 +16,7 @@ interface Props {
 
 export default function Aside({ toggleOpen }: Props) {
   const isLoggedIn = true;
+  const [trigger, setTrigger] = useState<boolean>(false);
   const [notis, setNotis] = useState<NotiType[]>([]);
   useEffect(() => {
     const handleGetNotis = async () => {
@@ -20,7 +25,14 @@ export default function Aside({ toggleOpen }: Props) {
       setNotis(data);
     };
     handleGetNotis();
+  }, [trigger]);
+
+  const handleClickNotiSeen = useCallback(async () => {
+    if (!notis.length) return;
+    await putNotificationSeen();
+    setTrigger((prev) => !prev);
   }, []);
+
   return (
     <aside className="w-[257px] max-h-screen h-screen sticky top-0 right-0 border-l border-whiteDark dark:border-gray pt-[22px] pb-[17px] px-[24px] text-black dark:text-white flex flex-col justify-between">
       {/* 상단 로그인/알림 박스 */}
@@ -28,9 +40,17 @@ export default function Aside({ toggleOpen }: Props) {
         <div className="flex flex-col gap-5">
           <AfterUserBox />
           <div>
-            <h2 className="font-bold mb-5">알림</h2>
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="font-bold">알림</h2>
+              <button
+                onClick={handleClickNotiSeen}
+                className="text-xs hover:underline"
+              >
+                모두 읽음
+              </button>
+            </div>
             <div className="flex-1 max-h-[20vh] scroll overflow-y-auto ">
-              <ul className="flex flex-col gap-[1px] text-xs">
+              <ul className="flex flex-col gap-[15px] text-xs">
                 {notis.length ? (
                   <>
                     {notis.map((noti) => (

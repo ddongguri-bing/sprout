@@ -70,14 +70,7 @@ export type NotiType = {
 
 //** USER ONLY */
 export const getNotification = async (): Promise<NotiType[]> => {
-  return (
-    await axiosInstance.get("/notifications", {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3NTdkZGM1OTNiODZkN2ZhYjExYzNiYiIsImVtYWlsIjoianVueW91bmdAZ21haWwuY29tIn0sImlhdCI6MTczMzg4NzM5M30.xUWeMn25RFuVZtcKsLgAzo8Z0gZwDOP4FZ4W5kfVuEI",
-      },
-    })
-  ).data;
+  return (await axiosInstance.get("/notifications")).data;
 };
 
 // notificationTypeId
