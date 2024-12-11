@@ -61,6 +61,9 @@ export const updatePost = async ({
 
 export const deletePost = async ({ postId }: { postId: string }) => {
   const { data } = await axiosInstance.delete(`/posts/delete`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     data: { id: postId },
   });
   console.log("delete 성공");
