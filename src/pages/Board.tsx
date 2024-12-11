@@ -51,7 +51,11 @@ export default function Board() {
           postImages={post.image ? [post.image] : []}
           likesCount={post.likes.length}
           commentCount={post.comments.length}
-          author={{ username: post.author.fullName, email: post.author.email }}
+          author={{
+            username: post.author.fullName,
+            email: post.author.email,
+            userId: post.author._id,
+          }}
           createdAt={post.createdAt}
           postId={post._id}
           channelId={channelId!}

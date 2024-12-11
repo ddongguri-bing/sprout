@@ -43,6 +43,7 @@ export default function BoardItem({
   author: {
     username: string;
     email: string;
+    userId?: string;
   };
   postId: string;
   channelId: string;
@@ -55,7 +56,7 @@ export default function BoardItem({
       <div
         onClick={(e) => {
           e.preventDefault();
-          navigate(`/user/${author.username}`);
+          navigate(`/user/${author.userId}`);
         }}
         className="flex gap-[10px] items-center cursor-pointer"
       >
