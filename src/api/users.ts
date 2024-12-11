@@ -1,8 +1,9 @@
 import { axiosInstance } from ".";
+import { useAuthStore } from "../stores/authStore";
 
 // 사용자 목록
-export const getUsers = async () => {
-  const { data } = await axiosInstance.get(`/users/get-users`);
+export const getUsers = async (params?: { [key: string]: string }) => {
+  const { data } = await axiosInstance.get(`/users/get-users`, { params });
   return data;
 };
 
@@ -21,9 +22,11 @@ export const postUploadPhoto = async (body: {
   formData.append("isCover", "false");
   formData.append("image", body.image);
 
+  const token = useAuthStore.getState().token; // 스토어에서 토큰 가져옴
+
   const { data } = await axiosInstance.post(`/users/upload-photo`, formData, {
     headers: {
-      Authorization: `Bearer `, // 로그인 후에 작업
+      Authorization: `Bearer ${token}`, // 토큰 추가
     },
   });
   return data;

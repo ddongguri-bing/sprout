@@ -1,21 +1,37 @@
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 import Back from "../assets/back.svg";
 import BoardItem from "../components/BoardItem";
 import Button from "../components/Button";
+import { getPostById, PostItem } from "../api/board";
 import { deletePost } from "../api/posting";
 
 export default function BoardDetail() {
-  const params = useParams();
-  const currentPostId = params.postId;
+  const { postId, channelId } = useParams();
+  const [post, setPost] = useState<PostItem | null>(null);
+  const navigate = useNavigate();
 
   const handleDeletePost = () => {
     deletePost({ postId: "67590127cd6a3632f289c887" });
   };
 
+  useEffect(() => {
+    const fetchPostData = async () => {
+      if (postId) {
+        const postData = await getPostById(postId);
+        setPost(postData);
+      }
+    };
+
+    fetchPostData();
+  }, [postId]);
+
+  if (!post) return <div>Loading...</div>;
+
   return (
     <div className="pb-[30px] flex flex-col relative">
       <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
-        <button onClick={() => history.back()} className="">
+        <button onClick={() => navigate(-1)} className="">
           <img
             className="dark:invert dark:hover:fill-white"
             src={Back}
@@ -29,10 +45,28 @@ export default function BoardDetail() {
             text="삭제"
             onClick={handleDeletePost}
           />
-          <Button to="/board/id/postid/update" size="sm" text="수정" />
+          <Button
+            to={`/board/${channelId}/${postId}/update`}
+            size="sm"
+            text="수정"
+          />
         </div>
       </div>
-      <BoardItem isDetail={true} comments={[]} />
+      <BoardItem
+        isDetail={true}
+        comments={post.comments || []}
+        postContent={post.title}
+        postImages={post.image ? [post.image] : []}
+        likesCount={post.likes.length}
+        commentCount={post.comments.length}
+        author={{
+          username: post.author.fullName,
+          email: post.author.email,
+        }}
+        createdAt={post.createdAt}
+        postId={post._id}
+        channelId={channelId!}
+      />
     </div>
   );
 }

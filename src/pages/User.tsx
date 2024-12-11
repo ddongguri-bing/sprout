@@ -38,7 +38,7 @@ export default function User() {
     };
 
     fetchSpecificUser();
-  }, []);
+  }, [specificUser]);
 
   if (!specificUser) {
     return <div>Loading...</div>;
