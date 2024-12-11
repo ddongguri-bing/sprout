@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import signUpApi from "../api/auth";
 import { useNavigate } from "react-router";
+import { postSignUp } from "../api/auth";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -41,27 +41,25 @@ export default function SignUp() {
     return true;
   };
 
-const navigate = useNavigate();
-  const signUpHandler = async ()=>{
-    if(!isValidInput()) return;
+  const navigate = useNavigate();
 
-    const result = await signUpApi({
+  const handleSignup = async () => {
+    if (!isValidInput()) return;
+
+    const { data } = await postSignUp({
       email: email,
       fullName: fullName,
       password: password,
-     });
+    });
 
-     if(result){
-      document.cookie=`token=${data.token} path=/; max-age=10800; secure=HttpOnly`;
-    console.log("회원가입 성공", data);
-    navigate("/auth/SignIn");
+    if (data) {
+      document.cookie = `token=${data.token} path=/; max-age=10800; secure=HttpOnly`;
+      console.log("회원가입 성공", data);
+      navigate("/auth/SignIn");
     } else {
       console.error("회원가입 실패");
-      }
-      } catch(error){
-      console.error("오류 발생", error);
-      }
-  }
+    }
+  };
 
   return (
     <form className="w-full max-w-[494px] flex flex-col gap-[30px]">
@@ -71,6 +69,7 @@ const navigate = useNavigate();
         name="email"
         value={email}
         placeholder="이메일을 입력해주세요."
+        onChange={(e) => setEmail(e.target.value)}
       />
       {emailError && <p className="text-red text-xs">{emailError}</p>}
       <Input
@@ -79,6 +78,7 @@ const navigate = useNavigate();
         name="fullName"
         value={fullName}
         placeholder="이름을 입력해주세요."
+        onChange={(e) => setFullName(e.target.value)}
       />
       <Input
         className="h-[76px]"
@@ -86,6 +86,7 @@ const navigate = useNavigate();
         name="password"
         value={password}
         placeholder="비밀번호를 입력해주세요."
+        onChange={(e) => setPassword(e.target.value)}
       />
       {passwordError && <p className="text-red text-xs">{passwordError}</p>}
       <Input
@@ -94,11 +95,20 @@ const navigate = useNavigate();
         name="password-confirm"
         value={confirmPassword}
         placeholder="비밀번호를 확인해주세요."
+        onChange={(e) => setConfirmPassword(e.target.value)}
       />
       {confirmPasswordError && (
         <p className="text-red text-xs">{confirmPasswordError}</p>
       )}
-      <Button text="회원가입" size="lg" type="submit" />
+      <Button
+        text="회원가입"
+        size="lg"
+        type="submit"
+        onClick={(e) => {
+          e.preventDefault;
+          handleSignup();
+        }}
+      />
     </form>
   );
 }

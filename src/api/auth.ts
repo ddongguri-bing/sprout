@@ -1,17 +1,31 @@
-import { axiosInstance } from "."
+import { axiosInstance } from ".";
 
-export default const signUpApi= async({email, fullName, password}) =>{
-    try{
-        const data = await axiosInstance.post("/signup", {
-            email, fullName, password,
-        });
-    if(data){
-        console.log("회원가입 성공", data);
-        return data;
-    } else {
-        console.error("회원가입 실패");
-    }
-    } catch(error){
-        console.error("API 요청 오류 발생", error);
-    }
-}
+export const postSignUp = async (body: {
+  email: string;
+  fullName: string;
+  password: string;
+}) => {
+  try {
+    return await axiosInstance.post("/signup", body);
+  } catch (error) {
+    console.error("API 요청 오류 발생", error);
+    throw new Error("회원가입 실패!");
+  }
+};
+
+export const postSignIn = async (body: { email: string; password: string }) => {
+  try {
+    return await axiosInstance.post("/login", body);
+  } catch (error) {
+    console.error("API 요청 오류 발생", error);
+    throw new Error("로그인 실패!");
+  }
+};
+
+export const postLogOut = async () => {
+  return await axiosInstance.post("/logout");
+};
+
+export const getAuthUser = async () => {
+  return await axiosInstance.get("/auth-user");
+};
