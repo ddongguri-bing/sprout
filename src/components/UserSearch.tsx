@@ -6,7 +6,7 @@ import UserItem from "./UserItem";
 import useDebounce from "../hooks/useDebounce";
 import { getSearchUsers } from "../api/search";
 import { useLocation } from "react-router";
-import UserItemSkeleton from "./skeleton/UserItemSkeleton";
+import UserItemSkeleton from "./UserItemSkeleton";
 
 export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
   const [value, setValue] = useState<string>("");
