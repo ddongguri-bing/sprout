@@ -8,7 +8,7 @@ export default function UserItem({ user }: { user: any }) {
         to={`/user/${user._id}`}
         className="flex gap-[10px] items-center p-2 rounded-[8px] transition-all hover:bg-whiteDark/30"
       >
-        <Avata size={"sm"} />
+        <Avata profile={user.image} size={"sm"} />
         <div className="text-xs">
           <h3 className="font-bold line-clamp-1 text-black dark:text-white">
             {user.fullName}

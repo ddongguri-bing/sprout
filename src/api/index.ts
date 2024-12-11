@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originRequest = error.config;
-    if (error.response?.status === 403 && !retry) {
+    if (error.response?.status === 401 && !retry) {
       retry = true; // 1번만시도
       try {
         const token = document.cookie.match(/token=([^ ]+)/)?.[1];

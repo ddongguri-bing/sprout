@@ -20,6 +20,7 @@ interface SpecificUserType {
   followers: string[];
   following: string[];
   posts: PostType[];
+  image?: string;
 }
 
 interface LoggedInUserType {
@@ -81,7 +82,7 @@ export default function User() {
       <div className="py-[70px] px-[50px] text-black dark:text-white flex flex-col items-center">
         <div className="w-full max-w-[826px]">
           <div className="flex mb-[30px] items-end gap-[30px]">
-            <Avata size={"lg"} />
+            <Avata profile={specificUser.image} size={"lg"} />
             <div className="flex flex-col gap-[50px]">
               <div className="flex flex-col gap-[10px]">
                 <h2 className="text-[22px] font-bold">
