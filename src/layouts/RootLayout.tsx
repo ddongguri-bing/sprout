@@ -28,6 +28,7 @@ export default function RootLayout({
         login(token, user);
       } catch (err) {
         logout();
+        document.cookie = `token=`;
       }
     };
     if (token) handleGetUser(token);
