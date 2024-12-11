@@ -1,8 +1,8 @@
 import { axiosInstance } from ".";
 
 // 사용자 목록
-export const getUsers = async () => {
-  const { data } = await axiosInstance.get(`/users/get-users`);
+export const getUsers = async (params?: { [key: string]: string }) => {
+  const { data } = await axiosInstance.get(`/users/get-users`, { params });
   return data;
 };
 
