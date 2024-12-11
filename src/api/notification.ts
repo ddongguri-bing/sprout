@@ -2,7 +2,7 @@ import { axiosInstance } from ".";
 
 //** USER ONLY */
 export const getNotification = async () => {
-  return await axiosInstance.get("/notifications");
+  return (await axiosInstance.get("/notifications")).data;
 };
 export const postNotification = async (body: {
   notificationType: string;
@@ -10,8 +10,8 @@ export const postNotification = async (body: {
   userId: string;
   postId: string;
 }) => {
-  return await axiosInstance.post("/notifications", body);
+  return (await axiosInstance.post("/notifications", body)).data;
 };
 export const putNotificationSeen = async () => {
-  return await axiosInstance.put("/notifications/seen");
+  return (await axiosInstance.put("/notifications/seen")).data;
 };

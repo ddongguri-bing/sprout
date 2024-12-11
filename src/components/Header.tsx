@@ -8,7 +8,7 @@ export default function Header() {
   const [menus, setMenus] = useState<ChannelItem[]>([]);
   useEffect(() => {
     const handleGetMenus = async () => {
-      const { data } = await getChannels();
+      const data = await getChannels();
       setMenus(data);
     };
     handleGetMenus();
