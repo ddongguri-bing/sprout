@@ -53,13 +53,16 @@ export type Like = {
 };
 
 export const getPostsByChannel = async (channelId: string) => {
-  return await axiosInstance.get(`/posts/channel/${channelId}`);
+  const { data } = await axiosInstance.get(`/posts/channel/${channelId}`);
+  return data;
 };
 
 export const getPostsByAuthor = async (authorId: string) => {
-  return await axiosInstance.get(`/posts/author/${authorId}`);
+  const { data } = await axiosInstance.get(`/posts/author/${authorId}`);
+  return data;
 };
 
 export const getPostById = async (postId: string) => {
-  return await axiosInstance.get(`/posts/${postId}`);
+  const { data } = await axiosInstance.get(`/posts/${postId}`);
+  return data;
 };
