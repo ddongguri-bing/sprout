@@ -18,9 +18,11 @@ export default function UserEdit() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const data = await postLogOut();
+    await postLogOut();
+    setOpen(false);
     logout();
-    return data;
+    document.cookie = `token=`;
+    navigate("/");
   };
 
   const handleLogoutOpen = () => {
@@ -29,11 +31,7 @@ export default function UserEdit() {
       message: "정말로 로그아웃 하시겠습니까?",
       btnText: "로그아웃",
       btnColor: "red",
-      onClick: async () => {
-        await handleLogout();
-        setOpen(false);
-        navigate("/");
-      },
+      onClick: handleLogout,
     });
   };
 
