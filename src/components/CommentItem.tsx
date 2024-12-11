@@ -1,15 +1,17 @@
 import { Link } from "react-router";
 import { Comment } from "../api/board";
+import Avata from "./Avata";
 
 interface CommentItemProps {
   comment: Comment;
 }
 
 export default function CommentItem({ comment }: CommentItemProps) {
+  console.log(comment);
   return (
     <div className="flex gap-[10px] items-start">
       <Link to={`/user/${comment.author._id}`}>
-        <div className="w-[50px] h-[50px] min-w-[50px] min-h-[50px] rounded-[8px] bg-whiteDark"></div>
+        <Avata profile={comment.author.image} size={"sm"} />
       </Link>
       <div>
         <Link to={`/user/${comment.author._id}`}>
