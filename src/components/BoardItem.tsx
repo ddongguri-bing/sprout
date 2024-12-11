@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router";
-import Comment from "../assets/comment.svg";
+import CommentSvg from "../assets/comment.svg";
 import Like from "../assets/like.svg";
 import Comments from "./Comments";
 import { useState } from "react";
+import { Comment } from "../api/board";
 
 const calculateTimeDifference = (sentAt: string | number | Date) => {
   const sentTime = new Date(sentAt).getTime();
@@ -34,7 +35,7 @@ export default function BoardItem({
   channelId,
 }: {
   isDetail?: boolean;
-  comments?: string[];
+  comments?: Comment[];
   postContent: string;
   postImages: string[];
   likesCount: number;
@@ -87,7 +88,7 @@ export default function BoardItem({
           <div className="flex justify-between mt-[10px] text-sm px-[5px]">
             <div className="flex items-center gap-[30px]">
               <button className="flex items-center gap-[10px]">
-                <img src={Comment} alt="comment icon" />
+                <img src={CommentSvg} alt="comment icon" />
                 {commentCount}
               </button>
               <button
@@ -116,7 +117,7 @@ export default function BoardItem({
             </div>
           </div>
           {/* 댓글 */}
-          {comments && <Comments />}
+          {comments && <Comments comments={comments} />}
         </div>
       </div>
     </div>
