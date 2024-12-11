@@ -1,13 +1,24 @@
+import { useNavigate } from "react-router";
+import { postLogOut } from "../api/auth";
 import Back from "../assets/back.svg";
 import Camera from "../assets/camera.svg";
 import Logout from "../assets/logout.svg";
 import Button from "../components/Button";
 import SettingInput from "../components/SettingInput";
+import { useAuthStore } from "../stores/authStore";
 import { useModal } from "../stores/modalStore";
 
 export default function UserEdit() {
   const setOpen = useModal((state) => state.setModalOpen);
   const setModalOpts = useModal((state) => state.setModalOpts);
+  const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const data = await postLogOut();
+    logout();
+    return data;
+  };
 
   const handleLogoutOpen = () => {
     setOpen(true);
@@ -15,7 +26,11 @@ export default function UserEdit() {
       message: "정말로 로그아웃 하시겠습니까?",
       btnText: "로그아웃",
       btnColor: "red",
-      onClick: () => console.log("로그아웃 이벤트"),
+      onClick: async () => {
+        await handleLogout();
+        setOpen(false);
+        navigate("/");
+      },
     });
   };
 
@@ -28,7 +43,7 @@ export default function UserEdit() {
       </div>
       <form className="w-full max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px]">
         <label className="cursor-pointer relative mb-5">
-          <input type="file" name="" id="" hidden />
+          <input type="file" accept="image/*" name="" id="" hidden />
           <div className="w-[220px] h-[220px] bg-whiteDark rounded-[8px]"></div>
           <span className=" absolute -bottom-[10px] -right-[10px] ">
             <img src={Camera} alt="camera icon" />
