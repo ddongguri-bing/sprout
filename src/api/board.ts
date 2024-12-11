@@ -1,29 +1,9 @@
 import { axiosInstance } from ".";
 import { ChannelItem } from "../api/channel";
 
-export type Author = {
-  role: string;
-  emailVerified: boolean;
-  banned: boolean;
-  isOnline: boolean;
-  posts: string[];
-  likes: string[];
-  comments: string[];
-  followers: string[];
-  following: string[];
-  notifications: string[];
-  messages: string[];
-  _id: string;
-  fullName: string;
-  email: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-};
-
 export type PostItem = {
   likes: string[];
-  comments: string[];
+  comments: Comment[];
   _id: string;
   title: string;
   image?: string;
@@ -33,6 +13,12 @@ export type PostItem = {
   createdAt: string;
   updatedAt: string;
   __v: number;
+};
+
+export type Author = {
+  _id: string;
+  fullName: string;
+  email: string;
 };
 
 export type Comment = {
