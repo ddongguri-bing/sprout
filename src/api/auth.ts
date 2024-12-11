@@ -6,7 +6,7 @@ export const postSignUp = async (body: {
   password: string;
 }) => {
   try {
-    const data = await axiosInstance.post("/signup", body);
+    const { data } = await axiosInstance.post("/signup", body);
     return data;
   } catch (error) {
     console.error("API 요청 오류 발생", error);
@@ -16,7 +16,7 @@ export const postSignUp = async (body: {
 
 export const postSignIn = async (body: { email: string; password: string }) => {
   try {
-    const data = await axiosInstance.post("/login", body);
+    const { data } = await axiosInstance.post("/login", body);
     return data;
   } catch (error) {
     console.error("API 요청 오류 발생", error);
@@ -25,11 +25,11 @@ export const postSignIn = async (body: { email: string; password: string }) => {
 };
 
 export const postLogOut = async () => {
-  const data = await axiosInstance.post("/logout");
+  const { data } = await axiosInstance.post("/logout");
   return data;
 };
 
 export const getAuthUser = async () => {
-  const data = await axiosInstance.get("/auth-user");
+  const { data } = await axiosInstance.get("/auth-user");
   return data;
 };
