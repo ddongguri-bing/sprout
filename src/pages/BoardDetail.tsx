@@ -52,6 +52,7 @@ export default function BoardDetail() {
         author={{
           username: post.author.fullName,
           email: post.author.email,
+          userId: post.author._id,
         }}
         createdAt={post.createdAt}
         postId={post._id}
