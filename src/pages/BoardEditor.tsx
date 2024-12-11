@@ -5,13 +5,14 @@ import Button from "../components/Button";
 import DraftEditor from "../components/DraftEditor";
 import "draft-js/dist/Draft.css";
 import { createPost, updatePost } from "../api/posting";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { getPostById } from "../api/board";
 
 export default function BoardEditor() {
+  const navigate = useNavigate();
   //update인지 create인지 확인용
-  const params = useParams();
-  const currentPostId = params.postId;
+  const { id, postId } = useParams();
+  const currentPostId = postId!;
 
   const [editorText, setEditorText] = useState("");
   const [preview, setPreview] = useState<string[]>([]);
@@ -24,7 +25,7 @@ export default function BoardEditor() {
 
   //현재 포스트 가져오기
   const getCurrentPost = async () => {
-    const currentPost = await getPostById("675902c23a44603489ff8782");
+    const currentPost = await getPostById(currentPostId);
     setEditorText(currentPost.title);
     if (currentPost.image) setPreview([currentPost.image]);
     setExistImage(currentPost.imagePublicId);
@@ -36,22 +37,24 @@ export default function BoardEditor() {
   };
 
   //완료 버튼
-  const handleCreatePost = () => {
+  const handleCreatePost = async () => {
     //id가 없으면 create
     if (!currentPostId) {
-      createPost({
+      await createPost({
         title: editorText,
         image: image,
-        channelId: "67581af49655831727c9c92d",
+        channelId: id!,
       });
+      navigate(-1);
       //id가 있으면 update
     } else {
-      updatePost({
-        postId: "675902c23a44603489ff8782",
+      await updatePost({
+        postId: postId,
         title: editorText,
         image: image,
         imageToDeletePublicId: imageToDelete,
       });
+      navigate(-1);
     }
   };
 
@@ -89,7 +92,7 @@ export default function BoardEditor() {
   return (
     <div className="pb-[30px] flex flex-col relative">
       <div className="h-[100px] px-[30px] mb-[50px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-10">
-        <h2 className="text-xl font-bold">고양이 사진첩</h2>
+        <h2 className="text-xl font-bold">{postId ? "수정" : "작성"}</h2>
         <div className="flex items-center gap-5">
           <Button
             onClick={() => history.back()}
