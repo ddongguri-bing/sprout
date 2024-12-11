@@ -47,10 +47,21 @@ body {
   font-style: normal;
 }
 
-.quill > .ql-container > .ql-editor.ql-blank::before {
-  font-size: 16px;
-  font-style: normal;
+.DraftEditor-root {
+  width: 100%;
+  border-radius: 8px;
+  padding: 16px 0;
+  color: black;
 }
-.dark .quill > .ql-container > .ql-editor.ql-blank::before {
+.dark .DraftEditor-root {
+  width: 100%;
+  border-radius: 8px;
+  padding: 16px 0;
+  color: #FEFEFE;
+}
+.public-DraftEditorPlaceholder-inner {
+  color: #4d4d4d;
+}
+.dark .public-DraftEditorPlaceholder-inner {
   color: #dbdbdb;
 }
