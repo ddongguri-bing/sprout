@@ -72,21 +72,6 @@ export default function BoardDetail() {
             />
           </div>
         </div>
-        <BoardItem
-          isDetail={true}
-          comments={post.comments || []}
-          postContent={post.title}
-          postImages={post.image ? [post.image] : []}
-          likesCount={post.likes.length}
-          commentCount={post.comments.length}
-          author={{
-            username: post.author.fullName,
-            email: post.author.email,
-          }}
-          createdAt={post.createdAt}
-          postId={post._id}
-          channelId={id!}
-        />
       </div>
       <BoardItem
         isDetail={true}
