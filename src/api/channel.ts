@@ -11,6 +11,19 @@ export type ChannelItem = {
   __v: number;
 };
 
-export const handleGetChannels = async () => {
+export const getChannels = async () => {
   return await axiosInstance.get("/channels");
+};
+
+export const getChannelByName = async (name: string) => {
+  return await axiosInstance.get(`/channels/${name}`);
+};
+
+//** ADMIN ONLY */
+export const postChannelCreate = async (body: {
+  authRequired: boolean;
+  description: string;
+  name: string;
+}) => {
+  return await axiosInstance.post(`/channels/create`, body);
 };

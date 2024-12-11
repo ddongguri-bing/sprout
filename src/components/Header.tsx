@@ -3,16 +3,17 @@ import Logo from "../assets/logo.svg";
 import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
 import { useEffect, useState } from "react";
-import { ChannelItem, handleGetChannels } from "../api/channel";
+import { ChannelItem, getChannels } from "../api/channel";
 export default function Header() {
   const [menus, setMenus] = useState<ChannelItem[]>([]);
   useEffect(() => {
     const handleGetMenus = async () => {
-      const { data } = await handleGetChannels();
+      const { data } = await getChannels();
       setMenus(data);
     };
     handleGetMenus();
   }, []);
+
   return (
     <header className="w-[257px] max-h-screen h-screen sticky top-0 left-0 border-r border-whiteDark dark:border-gray py-[21px] px-[32px] flex flex-col items-start">
       <h1 className="mb-[50px]">
