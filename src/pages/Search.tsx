@@ -1,19 +1,26 @@
 import { useParams } from "react-router";
 import BoardItem from "../components/BoardItem";
 import { useEffect, useState } from "react";
-import { handleSearchPost } from "../api/search";
+import { getSearchPosts } from "../api/search";
 
 export default function Search() {
   const { query } = useParams();
+  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     const handleSearch = async (query?: string) => {
-      const { data } = await handleSearchPost(query);
-      setPosts(data);
+      try {
+        const { data } = await getSearchPosts(query);
+        setPosts(data);
+      } catch (err) {
+      } finally {
+        setLoading(false);
+      }
     };
     handleSearch(query);
   }, [query]);
+
   return (
     <div className="pb-[30px] flex flex-col relative">
       <div className="h-[100px] sticky top-0 left-0 flex justify-center items-center bg-white border-b border-whiteDark">

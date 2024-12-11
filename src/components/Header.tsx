@@ -3,12 +3,12 @@ import Logo from "../assets/logo.svg";
 import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
 import { useEffect, useState } from "react";
-import { ChannelItem, handleGetChannels } from "../api/channel";
+import { ChannelItem, getChannels } from "../api/channel";
 export default function Header() {
   const [menus, setMenus] = useState<ChannelItem[]>([]);
   useEffect(() => {
     const handleGetMenus = async () => {
-      const { data } = await handleGetChannels();
+      const { data } = await getChannels();
       setMenus(data);
     };
     handleGetMenus();
