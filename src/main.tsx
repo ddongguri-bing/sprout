@@ -3,14 +3,14 @@ import { createRoot } from "react-dom/client";
 import "./css/index.css";
 import { BrowserRouter } from "react-router";
 import App from "./App";
-import ThemeLayout from "./layouts/ThemeLayout";
+import RootLayout from "./layouts/RootLayout";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <ThemeLayout>
+      <RootLayout>
         <App />
-      </ThemeLayout>
+      </RootLayout>
     </BrowserRouter>
   </StrictMode>
 );

@@ -17,15 +17,29 @@ export default function Search() {
 
   return (
     <div className="pb-[30px] flex flex-col relative">
-      <div className="h-[100px] sticky top-0 left-0 flex justify-center items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
-        <h2 className="w-full max-w-[777px] text-xl font-bold">
+      <div className="h-[100px] sticky top-0 left-0 flex justify-center items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-[9]">
+        <h2 className="w-[calc(100%-60px)] max-w-[777px] text-xl font-bold">
           {decodeURI(query || "")}
         </h2>
       </div>
       {posts.length ? (
         <>
           {posts.map((post) => (
-            <BoardItem key={post._id} />
+            <BoardItem
+              key={post._id}
+              postContent={post.title}
+              postImages={post.image ? [post.image] : []}
+              likesCount={post.likes.length}
+              commentCount={post.comments.length}
+              author={{
+                username: post.author.fullName,
+                email: post.author.email,
+                userId: post.author._id,
+              }}
+              createdAt={post.createdAt}
+              postId={post._id}
+              channelId={post.channel}
+            />
           ))}
         </>
       ) : (

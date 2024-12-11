@@ -16,7 +16,6 @@ export default function AfterUserBox() {
   useEffect(() => {
     const handleGetNotis = async () => {
       const data = await getNotification();
-      console.log(data);
       setNotis(data);
     };
     handleGetNotis();
