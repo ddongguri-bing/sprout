@@ -9,7 +9,7 @@ export default function Search() {
 
   useEffect(() => {
     const handleSearch = async (query?: string) => {
-      const data = await getSearchPosts(query);
+      const data = (await getSearchPosts(query)).filter((post) => post.author);
       setPosts(data);
     };
     handleSearch(query);
