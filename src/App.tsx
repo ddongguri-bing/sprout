@@ -13,12 +13,11 @@ import BoardEditor from "./pages/BoardEditor";
 import UserEdit from "./pages/UserEdit";
 import { useModal } from "./stores/modalStore";
 import Modal from "./components/Modal";
-import ThemeLayout from "./layouts/ThemeLayout";
 
 export default function App() {
   const modalOpen = useModal((state) => state.modalOpen);
   return (
-    <ThemeLayout>
+    <>
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Main />} />
@@ -37,6 +36,6 @@ export default function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       {modalOpen && <Modal />}
-    </ThemeLayout>
+    </>
   );
 }
