@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getUsers } from "../api/users";
 import Close from "../assets/close.svg";
 import Search from "../assets/search.svg";
@@ -6,26 +6,31 @@ import UserItem from "./UserItem";
 import useDebounce from "../hooks/useDebounce";
 import { getSearchUsers } from "../api/search";
 import { useLocation } from "react-router";
+import UserItemSkeleton from "./skeleton/UserItemSkeleton";
 
 export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
   const [value, setValue] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<any[]>([]);
 
   const location = useLocation();
   const debouncedValue = useDebounce(value.trim());
 
+  const fetchUsers = useCallback(async (query?: string) => {
+    try {
+      setLoading(true);
+      const data = query ? await getSearchUsers(query) : await getUsers();
+      setUsers(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const handleGetUsers = async () => {
-      const data = await getUsers();
-      setUsers(data);
-    };
-    const handleSearchUsers = async (q: string) => {
-      const data = await getSearchUsers(q);
-      setUsers(data);
-    };
-    if (!debouncedValue) handleGetUsers();
-    else handleSearchUsers(debouncedValue);
-  }, [debouncedValue]);
+    fetchUsers(debouncedValue);
+  }, [debouncedValue, fetchUsers]);
 
   useEffect(() => {
     toggleOpen();
@@ -51,19 +56,29 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
           />
         </form>
         <div className="flex-1 max-h-[450px] scroll overflow-y-auto">
-          <ul className="flex flex-col gap-5">
-            {users.length ? (
-              <>
-                {users.map((user) => (
-                  <UserItem key={user._id} user={user} />
+          {loading ? (
+            <div className="w-full text-lg font-bold h-[450px] flex flex-col gap-5">
+              {Array(5)
+                .fill(0)
+                .map((_, idx) => (
+                  <UserItemSkeleton key={`search-user-${idx}`} />
                 ))}
-              </>
-            ) : (
-              <li className="py-20 text-center text-sm ">
-                사용자가 존재하지 않습니다
-              </li>
-            )}
-          </ul>
+            </div>
+          ) : (
+            <ul className="flex flex-col gap-5">
+              {users.length ? (
+                <>
+                  {users.map((user) => (
+                    <UserItem key={user._id} user={user} />
+                  ))}
+                </>
+              ) : (
+                <li className="h-[450px] flex items-center justify-center text-sm ">
+                  사용자가 존재하지 않습니다
+                </li>
+              )}
+            </ul>
+          )}
         </div>
       </article>
     </div>
