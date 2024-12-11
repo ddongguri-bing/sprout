@@ -7,11 +7,9 @@ import {
   putNotificationSeen,
 } from "../api/notification";
 import NotiItem from "./NotiItem";
-import { useAuthStore } from "../stores/authStore";
 import Avata from "./Avata";
-export default function AfterUserBox() {
-  const user = useAuthStore((state) => state.user);
-
+import { User } from "../stores/authStore";
+export default function AfterUserBox({ user }: { user: User }) {
   const [trigger, setTrigger] = useState<boolean>(false);
   const [notis, setNotis] = useState<NotiType[]>([]);
   useEffect(() => {
@@ -35,17 +33,14 @@ export default function AfterUserBox() {
             <img className="dark:invert" src={Setting} alt="setting icon" />
           </Link>
         </div>
-        <Link
-          to={`/user/${user!._id}`}
-          className="flex gap-[10px] items-center"
-        >
-          <Avata size={"sm"} />
+        <Link to={`/user/${user._id}`} className="flex gap-[10px] items-center">
+          <Avata profile={user.image} size={"sm"} />
           <div>
             <h3 className="text-sm font-bold line-clamp-1 text-black dark:text-white">
-              {user!.fullName}
+              {user.fullName}
             </h3>
             <p className="text-xs text-gray dark:text-whiteDark">
-              {user!.email}
+              {user.email}
             </p>
           </div>
         </Link>
