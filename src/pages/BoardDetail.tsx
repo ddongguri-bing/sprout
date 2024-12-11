@@ -82,6 +82,7 @@ export default function BoardDetail() {
             username: post.author.fullName,
             email: post.author.email,
             userId: post.author._id,
+            image: post.author.image,
           }}
           createdAt={post.createdAt}
           postId={post._id}

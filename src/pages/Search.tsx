@@ -2,6 +2,7 @@ import { useParams } from "react-router";
 import BoardItem from "../components/BoardItem";
 import { useEffect, useState } from "react";
 import { getSearchPosts } from "../api/search";
+import { getSpecificUser } from "../api/users";
 
 export default function Search() {
   const { query } = useParams();
@@ -25,21 +26,7 @@ export default function Search() {
       {posts.length ? (
         <>
           {posts.map((post) => (
-            <BoardItem
-              key={post._id}
-              postContent={post.title}
-              postImages={post.image ? [post.image] : []}
-              likesCount={post.likes.length}
-              commentCount={post.comments.length}
-              author={{
-                username: post.author.fullName,
-                email: post.author.email,
-                userId: post.author._id,
-              }}
-              createdAt={post.createdAt}
-              postId={post._id}
-              channelId={post.channel}
-            />
+            <SearchBoardItem key={`search-${post._id}`} post={post} />
           ))}
         </>
       ) : (
@@ -50,5 +37,41 @@ export default function Search() {
         </div>
       )}
     </div>
+  );
+}
+
+function SearchBoardItem({ post }: { post: any }) {
+  const [author, setAuthor] = useState<{
+    fullName: string;
+    email: string;
+    _id: string;
+    image?: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const handleGetAuthor = async () => {
+      const data = await getSpecificUser(post.author);
+      setAuthor(data);
+    };
+    handleGetAuthor();
+  }, []);
+  if (!author) return <>loading</>;
+  return (
+    <BoardItem
+      key={post._id}
+      postContent={post.title}
+      postImages={post.image ? [post.image] : []}
+      likesCount={post.likes.length}
+      commentCount={post.comments.length}
+      author={{
+        username: author.fullName,
+        email: author.email,
+        userId: author._id,
+        image: author.image,
+      }}
+      createdAt={post.createdAt}
+      postId={post._id}
+      channelId={post.channel}
+    />
   );
 }
