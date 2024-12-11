@@ -34,6 +34,7 @@ export const postUploadPhoto = async (body: {
 
 // 사용자 비밀번호 변경
 export const putUpdatePw = async (password: string) => {
+  const token = useAuthStore.getState().token; // 스토어에서 토큰 가져옴
   const { data } = await axiosInstance.put(
     `/settings/update-password`,
     {
@@ -41,7 +42,7 @@ export const putUpdatePw = async (password: string) => {
     },
     {
       headers: {
-        Authorization: `Bearer `, // 로그인 후에 작업
+        Authorization: `Bearer ${token}`, // 토큰 추가
       },
     }
   );
