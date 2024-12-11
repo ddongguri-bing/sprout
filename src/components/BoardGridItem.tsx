@@ -12,7 +12,6 @@ interface BoardGridItemProps {
 }
 
 export default function BoardGridItem({ post }: BoardGridItemProps) {
-  console.log(post);
   return (
     <Link
       to={`/board/${post.channel}/${post._id}`}
