@@ -27,7 +27,7 @@ export default function SignUp() {
   };
 
   const isValidPassword = () => {
-    const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{8,}$/;
+    const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     if (!passwordRegExp.test(password)) {
       setPasswordError("올바른 비밀번호 형식이 아닙니다");
       return false;
