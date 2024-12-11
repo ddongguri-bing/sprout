@@ -5,7 +5,7 @@ import Button from "./Button";
 import { useAuthStore } from "../stores/authStore";
 import { useEffect, useState } from "react";
 import { getUsers } from "../api/users";
-import UserItemSkeleton from "./skeleton/UserItemSkeleton";
+import UserItemSkeleton from "./UserItemSkeleton";
 
 interface Props {
   toggleOpen: () => void;
