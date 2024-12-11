@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Back from "../assets/back.svg";
 import BoardItem from "../components/BoardItem";
 import Button from "../components/Button";
-import { getPostById, PostItem } from "../api/board";
+import { getPostById, PostItem, Comment } from "../api/board";
 
 export default function BoardDetail() {
   const { postId, channelId } = useParams();
@@ -44,7 +44,7 @@ export default function BoardDetail() {
       </div>
       <BoardItem
         isDetail={true}
-        comments={post.comments || []}
+        comments={(post.comments as unknown as Comment[]) || []}
         postContent={post.title}
         postImages={post.image ? [post.image] : []}
         likesCount={post.likes.length}

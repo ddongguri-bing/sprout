@@ -1,18 +1,24 @@
 import { Link } from "react-router";
+import { Comment } from "../api/board";
 
-export default function CommentItem() {
+interface CommentItemProps {
+  comment: Comment;
+}
+
+export default function CommentItem({ comment }: CommentItemProps) {
   return (
     <div className="flex gap-[10px] items-start">
-      <Link to={"/user/1"}>
+      <Link to={`/user/${comment.author._id}`}>
         <div className="w-[50px] h-[50px] min-w-[50px] min-h-[50px] rounded-[8px] bg-whiteDark"></div>
       </Link>
       <div>
-        <Link to={"/user/1"}>
-          <h3 className="font-bold line-clamp-1 text-xs">사용자 이름</h3>
+        <Link to={`/user/${comment.author._id}`}>
+          <h3 className="font-bold line-clamp-1 text-xs">
+            {comment.author.fullName}
+          </h3>
         </Link>
         <p className="text-gray dark:text-whiteDark text-sm">
-          아주 긴 댓글을 달면 어떻게 되는건지 한 번 보자
-          아아아아아ㅏ아ㅏ아아ㅏ아아아ㅏ아아아아아아ㅏ아아아아ㅇ아아ㅏ아아아아아아아아ㅏ아아앙ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
+          {comment.comment}
         </p>
       </div>
     </div>
