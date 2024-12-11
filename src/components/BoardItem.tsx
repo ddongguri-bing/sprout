@@ -84,11 +84,7 @@ export default function BoardItem({
           <div>{postContent}</div>
           {/* 이미지 */}
           {postImages.length > 0 && (
-            <a
-              href={postImages[0]}
-              data-fancybox="gallery"
-              data-caption={postContent}
-            >
+            <a href={postImages[0]} data-fancybox="gallery">
               <div
                 className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
                 style={{ backgroundImage: `url(${postImages[0]})` }}
