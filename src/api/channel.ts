@@ -11,7 +11,7 @@ export type ChannelItem = {
   __v: number;
 };
 
-export const getChannels = async () => {
+export const getChannels = async (): Promise<ChannelItem[]> => {
   return (await axiosInstance.get("/channels")).data;
 };
 

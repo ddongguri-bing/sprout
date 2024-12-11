@@ -2,6 +2,8 @@ import { Outlet } from "react-router";
 import Header from "../components/Header";
 import Aside from "../components/Aside";
 import { useState } from "react";
+
+//** TODO: 지연 로드 처리 */
 import UserSearch from "../components/UserSearch";
 
 export default function MainLayout() {
