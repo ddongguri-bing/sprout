@@ -32,8 +32,9 @@ export default function User() {
       }
     };
 
-    fetchSpecificUser();
     fetchUsers();
+    fetchSpecificUser();
+    console.log(admin);
   }, []);
 
   if (!specificUser) {
