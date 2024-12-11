@@ -1,47 +1,90 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PlusIcon from "../assets/plus.svg";
 import CloseIcon from "../assets/close.svg";
 import Button from "../components/Button";
 import DraftEditor from "../components/DraftEditor";
 import "draft-js/dist/Draft.css";
-import { createPost } from "../api/posting";
+import { createPost, updatePost } from "../api/posting";
+import { useParams } from "react-router";
+import { getPostById } from "../api/board";
 
 export default function BoardEditor() {
-  const [editorText, setEditorText] = useState("");
-  const [images, setImages] = useState<string[]>([]);
-  const [imageFile, setImageFile] = useState<FileList | null>(null);
+  //update인지 create인지 확인용
+  const params = useParams();
+  const currentPostId = params.postId;
 
+  const [editorText, setEditorText] = useState("");
+  const [preview, setPreview] = useState<string[]>([]);
+
+  const [image, setImage] = useState<File | null>(null);
+
+  //이미지 삭제 로직용
+  const [existImage, setExistImage] = useState("");
+  const [imageToDelete, setImageToDelete] = useState<string | null>(null);
+
+  //현재 포스트 가져오기
+  const getCurrentPost = async () => {
+    const currentPost = await getPostById("675902c23a44603489ff8782");
+    setEditorText(currentPost.title);
+    if (currentPost.image) setPreview([currentPost.image]);
+    setExistImage(currentPost.imagePublicId);
+  };
+
+  //editor에서 텍스트 가져오기
   const getEditorText = (text: string) => {
     setEditorText(text);
   };
+
   //완료 버튼
   const handleCreatePost = () => {
-    console.log(editorText);
-    console.log(images);
-    createPost({
-      title: editorText,
-      image: imageFile,
-      channelId: "67581af49655831727c9c92d",
-    });
+    //id가 없으면 create
+    if (!currentPostId) {
+      createPost({
+        title: editorText,
+        image: image,
+        channelId: "67581af49655831727c9c92d",
+      });
+      //id가 있으면 update
+    } else {
+      updatePost({
+        postId: "675902c23a44603489ff8782",
+        title: editorText,
+        image: image,
+        imageToDeletePublicId: imageToDelete,
+      });
+    }
   };
 
+  //이미지 추가 버튼
   const handleImageAdd = (e: React.ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    const targetFiles = target.files as FileList;
-    setImageFile(targetFiles);
+    const targetFiles = target.files;
+    if (!targetFiles) return;
+    const file = targetFiles[0];
+    setImage(file);
+
     const targetFilesArray = Array.from(targetFiles);
     const selectedFiles: string[] = targetFilesArray.map((file) => {
       return URL.createObjectURL(file);
     });
     console.log(selectedFiles);
-    setImages((prev) => [...prev, ...selectedFiles]);
+    setPreview((prev) => [...prev, ...selectedFiles]);
     target.value = "";
   };
 
-  //이미지 하나 업로드 가능 기준
+  //이미지 하나 업로드 가능 기준 삭제
   const handleDeleteImg = () => {
-    setImages([]);
+    setPreview([]);
+    setImage(null);
+    if (currentPostId) {
+      setImageToDelete(existImage);
+    }
   };
+
+  useEffect(() => {
+    //update라면 현재 포스트 내용 불러오기
+    if (currentPostId) getCurrentPost();
+  }, []);
 
   return (
     <div className="pb-[30px] flex flex-col relative">
@@ -58,9 +101,9 @@ export default function BoardEditor() {
         </div>
       </div>
       <div className="w-full max-w-[777px] flex flex-col items-start gap-5 mx-auto px-[15px]">
-        <DraftEditor getEditorText={getEditorText} />
+        <DraftEditor getEditorText={getEditorText} editorText={editorText} />
         <div className="w-full grid grid-cols-1 gap-[10px]">
-          {images.length === 0 ? (
+          {preview.length === 0 ? (
             <label className="bg-whiteDark flex items-center justify-center rounded-[8px] h-[189px] cursor-pointer">
               <input
                 type="file"
@@ -72,7 +115,7 @@ export default function BoardEditor() {
             </label>
           ) : (
             <>
-              {images.map((url, i) => {
+              {preview.map((url, i) => {
                 return (
                   <div
                     key={i}
