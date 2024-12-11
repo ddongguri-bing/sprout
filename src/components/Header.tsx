@@ -9,7 +9,12 @@ export default function Header() {
   useEffect(() => {
     const handleGetMenus = async () => {
       const data = await getChannels();
-      setMenus(data);
+      const cutoffTime = new Date("2024-12-11T03:10:58.171Z");
+
+      const filter = data.filter(
+        (menu) => new Date(menu.updatedAt) > cutoffTime
+      );
+      setMenus(filter);
     };
     handleGetMenus();
   }, []);

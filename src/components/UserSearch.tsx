@@ -1,8 +1,30 @@
+import { useState, useEffect } from "react";
+import { getUsers } from "../api/users";
 import Close from "../assets/close.svg";
 import Search from "../assets/search.svg";
 import UserItem from "./UserItem";
+import useDebounce from "../hooks/useDebounce";
+import { getSearchUsers } from "../api/search";
 
 export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
+  const [value, setValue] = useState<string>("");
+  const [users, setUsers] = useState<any[]>([]);
+
+  const debouncedValue = useDebounce(value.trim());
+
+  useEffect(() => {
+    const handleGetUsers = async () => {
+      const data = await getUsers();
+      setUsers(data);
+    };
+    const handleSearchUsers = async (q: string) => {
+      const data = await getSearchUsers(q);
+      setUsers(data);
+    };
+    if (!debouncedValue) handleGetUsers();
+    else handleSearchUsers(debouncedValue);
+  }, [debouncedValue]);
+
   return (
     <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 flex items-center justify-center z-[9999]">
       <article className="w-[calc(100%-32px)] max-w-[600px] bg-white dark:bg-grayDark pt-5 pb-[30px] rounded-[8px] flex flex-col px-[44px]">
@@ -19,28 +41,22 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
             id="search"
             className="w-full border rounded-[8px] border-main pl-[45px] pr-[30px] py-[15px] placeholder:text-sm focus:outline-none placeholder:text-gray dark:bg-grayDark dark:placeholder:text-whiteDark"
             placeholder="사용자를 검색해 보세요"
+            onChange={(e) => setValue(e.target.value)}
           />
         </form>
         <div className="flex-1 max-h-[450px] scroll overflow-y-auto">
           <ul className="flex flex-col gap-5">
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
-            <UserItem />
+            {users.length ? (
+              <>
+                {users.map((user) => (
+                  <UserItem key={user._id} user={user} />
+                ))}
+              </>
+            ) : (
+              <li className="py-20 text-center text-sm ">
+                사용자가 존재하지 않습니다
+              </li>
+            )}
           </ul>
         </div>
       </article>

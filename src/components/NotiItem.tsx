@@ -1,6 +1,24 @@
 import { twMerge } from "tailwind-merge";
+import { NotiType } from "../api/notification";
 
-export default function NotiItem({ active }: { active: boolean }) {
+export default function NotiItem({
+  active,
+  noti,
+}: {
+  active: boolean;
+  noti: NotiType;
+}) {
+  const handleGetMessage = (type: "comment" | "like" | "follow") => {
+    switch (type) {
+      case "comment":
+        return "댓글을 남겼습니다";
+      case "like":
+        return "당신의 게시글을 좋아합니다";
+      case "follow":
+        return "당신을 팔로우 합니다";
+    }
+  };
+
   return (
     <li
       className={twMerge(
@@ -8,7 +26,10 @@ export default function NotiItem({ active }: { active: boolean }) {
         active ? "before:bg-main" : "before:bg-whiteDark"
       )}
     >
-      [이름] 님이 댓글을 남겼습니다
+      [{noti.author.fullName}] 님이{" "}
+      {handleGetMessage(
+        noti.comment ? "comment" : noti.like ? "like" : "follow"
+      )}
     </li>
   );
 }

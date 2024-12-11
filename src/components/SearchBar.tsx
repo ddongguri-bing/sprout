@@ -16,6 +16,11 @@ export default function SearchBar() {
     if (debouncedValue) navigate(`/search/${debouncedValue}`);
     if (pathname.startsWith("/search") && !debouncedValue) navigate("/");
   }, [debouncedValue]);
+
+  useEffect(() => {
+    if (!pathname.startsWith("/search")) setValue("");
+  }, [pathname]);
+
   return (
     <form onSubmit={handleSubmit} className="relative mb-[30px]">
       <label htmlFor="search" className="absolute top-[15px] left-[15px]">
