@@ -3,6 +3,8 @@ import UserItem from "./UserItem";
 import AfterUserBox from "./AfterUserBox";
 import NotiItem from "./NotiItem";
 import Button from "./Button";
+import { useEffect, useState } from "react";
+import { getNotification } from "../api/notification";
 
 interface Props {
   toggleOpen: () => void;
@@ -10,8 +12,16 @@ interface Props {
 
 export default function Aside({ toggleOpen }: Props) {
   const isLoggedIn = true;
+  const [notis, setNotis] = useState<any[]>([]);
+  useEffect(() => {
+    const handleGetNotis = async () => {
+      const data = await getNotification();
+      setNotis(data);
+    };
+    handleGetNotis();
+  }, []);
   return (
-    <aside className="w-[257px] max-h-screen h-screen sticky top-0 right-0 border-l border-whiteDark dark:border-gray pt-[22px] pb-[17px] px-[32px] text-black dark:text-white flex flex-col justify-between">
+    <aside className="w-[257px] max-h-screen h-screen sticky top-0 right-0 border-l border-whiteDark dark:border-gray pt-[22px] pb-[17px] px-[24px] text-black dark:text-white flex flex-col justify-between">
       {/* 상단 로그인/알림 박스 */}
       {isLoggedIn ? (
         <div className="flex flex-col gap-5">
@@ -19,17 +29,18 @@ export default function Aside({ toggleOpen }: Props) {
           <div>
             <h2 className="font-bold mb-5">알림</h2>
             <div className="flex-1 max-h-[20vh] scroll overflow-y-auto ">
-              <ul className="flex flex-col gap-[15px] text-xs">
-                <NotiItem active={true} />
-                <NotiItem active={true} />
-                <NotiItem active={true} />
-                <NotiItem active={false} />
-                <NotiItem active={false} />
-                <NotiItem active={false} />
-                <NotiItem active={false} />
-                <NotiItem active={false} />
-                <NotiItem active={false} />
-                <NotiItem active={false} />
+              <ul className="flex flex-col gap-[1px] text-xs">
+                {notis.length ? (
+                  <>
+                    {notis.map((noti) => (
+                      <NotiItem key={noti._id} active={true} />
+                    ))}
+                  </>
+                ) : (
+                  <li className="text-gray dark:text-whiteDark">
+                    등록된 알림이 없습니다
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -42,7 +53,7 @@ export default function Aside({ toggleOpen }: Props) {
       <div className="flex flex-col flex-[3] h-[20%] border-t border-whiteDark dark:border-gray text-black dark:text-white overflow-hidden mt-5 scroll">
         <h2 className="font-bold mb-5 pt-5">사용자</h2>
         <div className="flex-1 scroll overflow-y-auto mb-[10px]">
-          <ul className="flex flex-col gap-5 ">
+          <ul className="flex flex-col gap-[12px]">
             <UserItem />
             <UserItem />
             <UserItem />
