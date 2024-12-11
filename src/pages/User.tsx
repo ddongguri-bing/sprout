@@ -4,6 +4,7 @@ import { getSpecificUser } from "../api/users";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import Back from "../assets/back.svg";
+import { getAuthUser } from "../api/auth";
 
 interface PostType {
   _id: string;
@@ -12,11 +13,16 @@ interface PostType {
 }
 
 interface SpecificUserType {
+  _id: string;
   fullName: string;
   email: string;
   followers: string[];
   following: string[];
   posts: PostType[];
+}
+
+interface LoggedInUserType {
+  _id: string;
 }
 
 export default function User() {
@@ -26,21 +32,35 @@ export default function User() {
   const [specificUser, setSpecificUser] = useState<SpecificUserType | null>(
     null
   );
+  const [loggedInUser, setLoggedInUser] = useState<LoggedInUserType | null>(
+    null
+  );
+
+  const fetchSpecificUser = async () => {
+    try {
+      if (id) {
+        const user = await getSpecificUser(id);
+        setSpecificUser(user);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchSpecificUser = async () => {
+    fetchSpecificUser();
+
+    const token = document.cookie.match(/token=([^ ]+)/)?.[1];
+    const checkLoggedInUser = async (token: string) => {
       try {
-        if (id) {
-          const user = await getSpecificUser(id);
-          setSpecificUser(user);
-        }
+        const loggedInUser = await getAuthUser(`Bearer ${token}`);
+        setLoggedInUser(loggedInUser);
       } catch (error) {
         console.error(error);
       }
     };
-
-    fetchSpecificUser();
-  }, [specificUser]);
+    if (token) checkLoggedInUser(token);
+  }, [id]);
 
   if (!specificUser) {
     return <div>Loading...</div>;
@@ -92,7 +112,20 @@ export default function User() {
                   </div>
                 </div>
                 {/* id가 내 id이면 프로필 수정 버튼 / 아니면 팔로잉 버튼 */}
-                <Button text={"팔로잉"} size={"md"} className="max-w-[188px]" />
+                {loggedInUser?._id === specificUser._id ? (
+                  <Button
+                    to={`/user/edit`}
+                    text={"프로필 수정"}
+                    size={"md"}
+                    className="max-w-[188px]"
+                  />
+                ) : (
+                  <Button
+                    text={"팔로잉"}
+                    size={"md"}
+                    className="max-w-[188px]"
+                  />
+                )}
               </div>
             </div>
           </div>
