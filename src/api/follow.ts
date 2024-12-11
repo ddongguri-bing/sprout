@@ -17,7 +17,9 @@ export const postFollowCreate = async (userId: string) => {
 };
 
 // 팔로우 취소
-export const deleteFollowDelete = async () => {
-  const { data } = await axiosInstance.delete(`/follow/delete`);
+export const deleteFollowDelete = async (id: string) => {
+  const { data } = await axiosInstance.delete(`/follow/delete`, {
+    data: { id },
+  });
   return data;
 };
