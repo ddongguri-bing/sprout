@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import Back from "../assets/back.svg";
 import BoardItem from "../components/BoardItem";
 import Button from "../components/Button";
-import { getPostById, PostItem } from "../api/board";
+
+import { getPostById, PostItem, Comment } from "../api/board";
 import { deletePost } from "../api/posting";
 import Modal from "../components/Modal";
 import { useModal } from "../stores/modalStore";
@@ -87,6 +88,21 @@ export default function BoardDetail() {
           channelId={id!}
         />
       </div>
+      <BoardItem
+        isDetail={true}
+        comments={(post.comments as unknown as Comment[]) || []}
+        postContent={post.title}
+        postImages={post.image ? [post.image] : []}
+        likesCount={post.likes.length}
+        commentCount={post.comments.length}
+        author={{
+          username: post.author.fullName,
+          email: post.author.email,
+        }}
+        createdAt={post.createdAt}
+        postId={post._id}
+        channelId={id!}
+      />
     </>
   );
 }

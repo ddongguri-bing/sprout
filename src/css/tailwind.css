@@ -47,6 +47,11 @@ body {
   font-style: normal;
 }
 
+.font-roboto {
+  font-family: "Roboto Condensed", sans-serif;
+  font-optical-sizing: auto;
+}
+
 .DraftEditor-root {
   width: 100%;
   border-radius: 8px;
@@ -57,7 +62,7 @@ body {
   width: 100%;
   border-radius: 8px;
   padding: 16px 0;
-  color: #FEFEFE;
+  color: #fefefe;
 }
 .public-DraftEditorPlaceholder-inner {
   color: #4d4d4d;

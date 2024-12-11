@@ -1,11 +1,13 @@
 import { useState } from "react";
+import CommentItem from "./CommentItem";
+import { Comment } from "../api/board";
+
 import Send from "../assets/send.svg";
 import SendAcitve from "../assets/send_active.svg";
 import { twMerge } from "tailwind-merge";
 import TextareaAutosize from "react-textarea-autosize";
-import CommentItem from "./CommentItem";
 
-export default function Comments() {
+export default function Comments({ comments }: { comments: Comment[] }) {
   const [value, setValue] = useState<string>("");
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setValue(e.target.value);
@@ -28,11 +30,9 @@ export default function Comments() {
           <img src={value ? SendAcitve : Send} alt="send icon" />
         </button>
       </form>
-      <CommentItem />
-      <CommentItem />
-      <CommentItem />
-      <CommentItem />
-      <CommentItem />
+      {comments.map((comment) => (
+        <CommentItem key={comment._id} comment={comment} />
+      ))}
     </div>
   );
 }
