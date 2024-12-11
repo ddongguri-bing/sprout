@@ -4,7 +4,7 @@ import AfterUserBox from "./AfterUserBox";
 import NotiItem from "./NotiItem";
 import Button from "./Button";
 import { useEffect, useState } from "react";
-import { getNotification } from "../api/notification";
+import { NotiType, getNotification } from "../api/notification";
 
 interface Props {
   toggleOpen: () => void;
@@ -12,10 +12,11 @@ interface Props {
 
 export default function Aside({ toggleOpen }: Props) {
   const isLoggedIn = true;
-  const [notis, setNotis] = useState<any[]>([]);
+  const [notis, setNotis] = useState<NotiType[]>([]);
   useEffect(() => {
     const handleGetNotis = async () => {
       const data = await getNotification();
+      console.log(data);
       setNotis(data);
     };
     handleGetNotis();
@@ -33,7 +34,11 @@ export default function Aside({ toggleOpen }: Props) {
                 {notis.length ? (
                   <>
                     {notis.map((noti) => (
-                      <NotiItem key={noti._id} active={true} />
+                      <NotiItem
+                        key={noti._id}
+                        active={!noti.seen}
+                        noti={noti}
+                      />
                     ))}
                   </>
                 ) : (
