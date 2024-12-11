@@ -8,6 +8,7 @@ import {
 } from "../api/notification";
 import NotiItem from "./NotiItem";
 import { useAuthStore } from "../stores/authStore";
+import Avata from "./Avata";
 export default function AfterUserBox() {
   const user = useAuthStore((state) => state.user);
 
@@ -38,7 +39,7 @@ export default function AfterUserBox() {
           to={`/user/${user!._id}`}
           className="flex gap-[10px] items-center"
         >
-          <div className="w-[50px] h-[50px] min-w-[50px] min-h-[50px] rounded-[8px] bg-whiteDark"></div>
+          <Avata size={"sm"} />
           <div>
             <h3 className="text-sm font-bold line-clamp-1 text-black dark:text-white">
               {user!.fullName}

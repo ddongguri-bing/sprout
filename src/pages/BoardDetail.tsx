@@ -11,7 +11,6 @@ import { useModal } from "../stores/modalStore";
 
 export default function BoardDetail() {
   const { postId, id } = useParams();
-  console.log(id);
   const [post, setPost] = useState<PostItem | null>(null);
   const navigate = useNavigate();
 
@@ -74,7 +73,7 @@ export default function BoardDetail() {
         </div>
         <BoardItem
           isDetail={true}
-          comments={post.comments || []}
+          comments={(post.comments as unknown as Comment[]) || []}
           postContent={post.title}
           postImages={post.image ? [post.image] : []}
           likesCount={post.likes.length}
@@ -82,27 +81,13 @@ export default function BoardDetail() {
           author={{
             username: post.author.fullName,
             email: post.author.email,
+            userId: post.author._id,
           }}
           createdAt={post.createdAt}
           postId={post._id}
           channelId={id!}
         />
       </div>
-      <BoardItem
-        isDetail={true}
-        comments={(post.comments as unknown as Comment[]) || []}
-        postContent={post.title}
-        postImages={post.image ? [post.image] : []}
-        likesCount={post.likes.length}
-        commentCount={post.comments.length}
-        author={{
-          username: post.author.fullName,
-          email: post.author.email,
-        }}
-        createdAt={post.createdAt}
-        postId={post._id}
-        channelId={id!}
-      />
     </>
   );
 }
