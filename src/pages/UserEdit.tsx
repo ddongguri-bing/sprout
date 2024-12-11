@@ -9,6 +9,7 @@ import { useAuthStore } from "../stores/authStore";
 import { useModal } from "../stores/modalStore";
 import { useEffect, useState } from "react";
 import { postUploadPhoto, putUpdatePw } from "../api/users";
+import Avata from "../components/Avata";
 
 export default function UserEdit() {
   // 이미지 업로드 관련
