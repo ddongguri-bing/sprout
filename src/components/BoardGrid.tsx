@@ -1,14 +1,23 @@
 import BoardGridItem from "./BoardGridItem";
 
-export default function BoardGrid() {
+interface PostType {
+  _id: string;
+  channel: string;
+  image: string;
+}
+
+interface BoardGridProps {
+  posts: PostType[];
+}
+
+export default function BoardGrid({ posts }: BoardGridProps) {
+  if (!posts || posts.length === 0)
+    return <div>아직 작성한 포스트가 없습니다</div>;
   return (
     <div className="py-[10px] border-t border-whiteDark dark:border-gray">
-      <BoardGridItem />
-      <BoardGridItem />
-      <BoardGridItem />
-      <BoardGridItem />
-      <BoardGridItem />
-      <BoardGridItem />
+      {posts.map((post) => (
+        <BoardGridItem key={post._id} post={post} />
+      ))}
     </div>
   );
 }

@@ -1,26 +1,31 @@
 import BoardGrid from "../components/BoardGrid";
 import Button from "../components/Button";
-import { getUsers, getSpecificUser } from "../api/users";
+import { getSpecificUser } from "../api/users";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 
+interface PostType {
+  _id: string;
+  channel: string;
+  image: string;
+}
+
+interface SpecificUserType {
+  fullName: string;
+  email: string;
+  followers: string[];
+  following: string[];
+  posts: PostType[];
+}
+
 export default function User() {
   const { id } = useParams();
-  const [admin, setAdmin] = useState<any | null>(null);
-  const [specificUser, setSpecificUser] = useState<any | null>(null);
+
+  const [specificUser, setSpecificUser] = useState<SpecificUserType | null>(
+    null
+  );
 
   useEffect(() => {
-    // api 문제 -> followers가 있는 admin 계정으로 테스트 하기 위함
-    const fetchUsers = async () => {
-      try {
-        const data = await getUsers();
-        const lastUser = data[data.length - 1];
-        setAdmin(lastUser);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     const fetchSpecificUser = async () => {
       try {
         if (id) {
@@ -32,9 +37,7 @@ export default function User() {
       }
     };
 
-    fetchUsers();
     fetchSpecificUser();
-    console.log(admin);
   }, []);
 
   if (!specificUser) {
@@ -58,19 +61,19 @@ export default function User() {
                 <div className="flex items-center gap-[10px]">
                   <span className="font-bold">팔로우</span>{" "}
                   <span className="text-gray dark:text-whiteDark">
-                    {admin.followers.length}
+                    {specificUser.followers.length}
                   </span>
                 </div>
                 <div className="flex items-center gap-[10px]">
                   <span className="font-bold">팔로잉</span>{" "}
                   <span className="text-gray dark:text-whiteDark">
-                    {admin.following.length}
+                    {specificUser.following.length}
                   </span>
                 </div>
                 <div className="flex items-center gap-[10px]">
                   <span className="font-bold">포스트</span>{" "}
                   <span className="text-gray dark:text-whiteDark">
-                    {admin.posts.length}
+                    {specificUser.posts.length}
                   </span>
                 </div>
               </div>
@@ -79,7 +82,7 @@ export default function User() {
             </div>
           </div>
         </div>
-        <BoardGrid />
+        <BoardGrid posts={specificUser.posts} />
       </div>
     </div>
   );
