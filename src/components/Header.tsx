@@ -37,7 +37,7 @@ export default function Header() {
                 className={({ isActive }) =>
                   isActive
                     ? "font-bold text-main"
-                    : "text-black dark:text-white hover:text-main transition-all"
+                    : "text-black dark:text-white hover:text-main dark:hover:text-main transition-all"
                 }
               >
                 {menu.name}

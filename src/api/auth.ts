@@ -29,7 +29,11 @@ export const postLogOut = async () => {
   return data;
 };
 
-export const getAuthUser = async () => {
-  const { data } = await axiosInstance.get("/auth-user");
+export const getAuthUser = async (Authorization: string) => {
+  const { data } = await axiosInstance.get("/auth-user", {
+    headers: {
+      Authorization,
+    },
+  });
   return data;
 };
