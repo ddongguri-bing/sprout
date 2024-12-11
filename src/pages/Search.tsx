@@ -5,25 +5,19 @@ import { getSearchPosts } from "../api/search";
 
 export default function Search() {
   const { query } = useParams();
-  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     const handleSearch = async (query?: string) => {
-      try {
-        const data = await getSearchPosts(query);
-        setPosts(data);
-      } catch (err) {
-      } finally {
-        setLoading(false);
-      }
+      const data = await getSearchPosts(query);
+      setPosts(data);
     };
     handleSearch(query);
   }, [query]);
 
   return (
     <div className="pb-[30px] flex flex-col relative">
-      <div className="h-[100px] sticky top-0 left-0 flex justify-center items-center bg-white border-b border-whiteDark">
+      <div className="h-[100px] sticky top-0 left-0 flex justify-center items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
         <h2 className="w-full max-w-[777px] text-xl font-bold">
           {decodeURI(query || "")}
         </h2>
