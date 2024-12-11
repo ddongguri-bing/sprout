@@ -11,7 +11,6 @@ import { useModal } from "../stores/modalStore";
 
 export default function BoardDetail() {
   const { postId, id } = useParams();
-  console.log(id);
   const [post, setPost] = useState<PostItem | null>(null);
   const navigate = useNavigate();
 

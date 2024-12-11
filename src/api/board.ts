@@ -19,6 +19,7 @@ export type Author = {
   _id: string;
   fullName: string;
   email: string;
+  image?: string;
 };
 
 export type Comment = {

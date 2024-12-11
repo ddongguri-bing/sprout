@@ -8,6 +8,7 @@ import darkComment from "../assets/dark_comment.svg";
 import darkLike from "../assets/dark_like.svg";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import Avata from "./Avata";
 
 const calculateTimeDifference = (sentAt: string | number | Date) => {
   const sentTime = new Date(sentAt).getTime();
@@ -49,6 +50,7 @@ export default function BoardItem({
     username: string;
     email: string;
     userId?: string;
+    image?: string;
   };
   postId: string;
   channelId: string;
@@ -70,7 +72,7 @@ export default function BoardItem({
         }}
         className="flex gap-[10px] items-center cursor-pointer"
       >
-        <div className="w-[75px] h-[75px] min-w-[75px] min-h-[75px] rounded-[8px] bg-whiteDark"></div>
+        <Avata profile={author.image} size={"md"} />
         <div>
           <h3 className="font-bold line-clamp-1">{author.username}</h3>
           <p className="text-sm text-gray dark:text-whiteDark">
@@ -84,16 +86,21 @@ export default function BoardItem({
           <div>{postContent}</div>
           {/* 이미지 */}
           {postImages.length > 0 && (
-            <a
-              href={postImages[0]}
-              data-fancybox="gallery"
-              data-caption={postContent}
-            >
-              <div
-                className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
-                style={{ backgroundImage: `url(${postImages[0]})` }}
-              />
-            </a>
+            <>
+              {isDetail ? (
+                <a href={postImages[0]} data-fancybox="gallery">
+                  <div
+                    className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
+                    style={{ backgroundImage: `url(${postImages[0]})` }}
+                  />
+                </a>
+              ) : (
+                <div
+                  className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
+                  style={{ backgroundImage: `url(${postImages[0]})` }}
+                />
+              )}
+            </>
           )}
           {/* 하단 컨텐츠 */}
           <div className="flex justify-between mt-[10px] text-sm px-[5px]">
