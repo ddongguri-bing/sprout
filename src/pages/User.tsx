@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import Back from "../assets/back.svg";
 import { getAuthUser } from "../api/auth";
+import Avata from "../components/Avata";
 
 interface PostType {
   _id: string;
@@ -80,7 +81,7 @@ export default function User() {
       <div className="py-[70px] px-[50px] text-black dark:text-white flex flex-col items-center">
         <div className="w-full max-w-[826px]">
           <div className="flex mb-[30px] items-end gap-[30px]">
-            <div className="w-[220px] h-[220px] bg-whiteDark rounded-[8px]"></div>
+            <Avata size={"lg"} />
             <div className="flex flex-col gap-[50px]">
               <div className="flex flex-col gap-[10px]">
                 <h2 className="text-[22px] font-bold">
