@@ -39,6 +39,7 @@ export default function BoardDetail() {
     const fetchPostData = async () => {
       if (postId) {
         const postData = await getPostById(postId);
+        console.log(postData);
         setPost(postData);
       }
     };

@@ -16,7 +16,6 @@ export default function CommentItem({
   const setOpen = useModal((state) => state.setModalOpen);
   const setModalOpts = useModal((state) => state.setModalOpts);
   const auth = useAuthStore((state) => state.user);
-  console.log(auth?._id, comment?.author._id);
 
   const handleDeleteOpen = () => {
     setOpen(true);
