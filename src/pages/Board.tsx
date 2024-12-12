@@ -34,8 +34,8 @@ export default function Board() {
   }, [channelId]);
 
   return (
-    <div className="pb-[30px] flex flex-col relative">
-      <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
+    <div className="pb-[30px] flex flex-col ">
+      <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
         <h2 className="text-xl font-bold">{channelName}</h2>
         {/* 채널 이름 표시 */}
         <Button
@@ -55,6 +55,7 @@ export default function Board() {
             username: post.author.fullName,
             email: post.author.email,
             userId: post.author._id,
+            image: post.author.image,
           }}
           createdAt={post.createdAt}
           postId={post._id}

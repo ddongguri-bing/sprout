@@ -1,16 +1,27 @@
 import { useParams } from "react-router";
-import BoardItem from "../components/BoardItem";
 import { useEffect, useState } from "react";
 import { getSearchPosts } from "../api/search";
+import SearchBoardItem from "../components/SearchBoardItem";
+import BoardItemSkeleton from "../components/BoardItemSkeleton";
 
 export default function Search() {
   const { query } = useParams();
+  const [loading, setLoading] = useState<boolean>(true);
   const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     const handleSearch = async (query?: string) => {
-      const data = await getSearchPosts(query);
-      setPosts(data);
+      try {
+        setLoading(true);
+        const data = (await getSearchPosts(query)).filter(
+          (post) => post.author
+        );
+        setPosts(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
     handleSearch(query);
   }, [query]);
@@ -22,28 +33,16 @@ export default function Search() {
           {decodeURI(query || "")}
         </h2>
       </div>
-      {posts.length ? (
+      {loading ? (
+        <BoardItemSkeleton />
+      ) : posts.length ? (
         <>
           {posts.map((post) => (
-            <BoardItem
-              key={post._id}
-              postContent={post.title}
-              postImages={post.image ? [post.image] : []}
-              likesCount={post.likes.length}
-              commentCount={post.comments.length}
-              author={{
-                username: post.author.fullName,
-                email: post.author.email,
-                userId: post.author._id,
-              }}
-              createdAt={post.createdAt}
-              postId={post._id}
-              channelId={post.channel}
-            />
+            <SearchBoardItem key={`search-${post._id}`} post={post} />
           ))}
         </>
       ) : (
-        <div className="w-full max-w-[777px] text-xl mx-auto mt-20 ">
+        <div className="w-[calc(100%-60px)] max-w-[777px] text-xl mx-auto mt-20 ">
           검색어{" "}
           <b className="text-4xl text-main">"{decodeURI(query || "")}"</b>에
           해당하는 포스트가 없습니다.

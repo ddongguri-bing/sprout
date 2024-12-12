@@ -18,7 +18,8 @@ export default function Button({
   className,
   ...rest
 }: ButtonPtops) {
-  const BASE_STYLE = "rounded-[8px] flex items-center justify-center";
+  const BASE_STYLE =
+    "rounded-[8px] flex items-center justify-center transition-all";
 
   const SIZE_STYLE = {
     lg: "h-[76px] text-[20px] font-bold",

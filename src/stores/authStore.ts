@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface User {
+export interface User {
   role: string;
   emailVerified: boolean;
   banned: boolean;
@@ -18,6 +18,7 @@ interface User {
   password: string;
   createdAt: string;
   updatedAt: string;
+  image?: string;
   __v: number;
 }
 
