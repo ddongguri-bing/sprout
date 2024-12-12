@@ -4,6 +4,7 @@ type ModalOpts = {
   btnText: string; //
   btnColor: string; // main | red
   onClick: () => void;
+  isOneBtn?: boolean;
 };
 interface ModalType {
   modalOpen: boolean;
@@ -19,7 +20,9 @@ export const useModal = create<ModalType>((set) => ({
     btnText: "삭제",
     btnColor: "main",
     onClick: () => console.log("클릭"),
+    isOneBtn: false,
   },
   setModalOpen: (open: boolean) => set(() => ({ modalOpen: open })),
-  setModalOpts: (opts: ModalOpts) => set(() => ({ modalOpts: opts })),
+  setModalOpts: (opts: ModalOpts) =>
+    set(() => ({ modalOpts: { isOneBtn: false, ...opts } })),
 }));
