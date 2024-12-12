@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { postSignUp } from "../api/auth";
 
 export default function SignUp() {
+  const [disabled, setDisabled] = useState<boolean>(false);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
@@ -50,19 +51,26 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    if (!isValidEmail() && isValidPassword() && isConfirmPassword()) return;
+    if (!isValidEmail() || !isValidPassword() || !isConfirmPassword()) return;
+    try {
+      setDisabled(true);
+      const data = await postSignUp({
+        email: email,
+        fullName: fullName,
+        password: password,
+      });
 
-    const data = await postSignUp({
-      email: email,
-      fullName: fullName,
-      password: password,
-    });
-
-    if (data) {
-      console.log("회원가입 성공", data);
-      navigate("/auth/SignIn");
-    } else {
-      console.error("회원가입 실패");
+      if (data) {
+        console.log("회원가입 성공", data);
+        navigate("/auth/SignIn");
+      } else {
+        console.error("회원가입 실패");
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err);
+    } finally {
+      setDisabled(false);
     }
   };
 
@@ -75,10 +83,7 @@ export default function SignUp() {
           name="email"
           value={email}
           placeholder="이메일을 입력해주세요."
-          onChange={(e) => {
-            setEmail(e.target.value);
-            isValidEmail();
-          }}
+          onChange={(e) => setEmail(e.target.value)}
         />
         {emailError && (
           <p className="text-red text-xs mt-[10px]">{emailError}</p>
@@ -99,10 +104,7 @@ export default function SignUp() {
           name="password"
           value={password}
           placeholder="비밀번호를 입력해주세요."
-          onChange={(e) => {
-            setPassword(e.target.value);
-            isValidPassword();
-          }}
+          onChange={(e) => setPassword(e.target.value)}
         />
         {passwordError && (
           <p className="text-red text-xs mt-[10px]">{passwordError}</p>
@@ -115,10 +117,7 @@ export default function SignUp() {
           name="password-confirm"
           value={confirmPassword}
           placeholder="비밀번호를 확인해주세요."
-          onChange={(e) => {
-            setConfirmPassword(e.target.value);
-            isConfirmPassword();
-          }}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
         {confirmPasswordError && (
           <p className="text-red text-xs mt-[10px]">{confirmPasswordError}</p>
@@ -132,6 +131,7 @@ export default function SignUp() {
           e.preventDefault();
           handleSignup();
         }}
+        disabled={disabled}
       />
     </form>
   );
