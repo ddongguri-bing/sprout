@@ -88,7 +88,6 @@ export default function Comments({
   const handleSubmit = async () => {
     if (!value.trim()) return;
 
-
     try {
       const newComment = await createComment(postId, value);
       if (!newComment) return;
