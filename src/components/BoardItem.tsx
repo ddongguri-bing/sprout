@@ -13,6 +13,7 @@ import like_fill from "../assets/like_fill.svg";
 import { useAuthStore } from "../stores/authStore";
 import { postNotification } from "../api/notification";
 import { useModal } from "../stores/modalStore";
+import { useTheme } from "../stores/themeStore";
 
 const calculateTimeDifference = (sentAt: string | number | Date) => {
   const sentTime = new Date(sentAt).getTime();
@@ -59,6 +60,7 @@ export default function BoardItem({
   postId: string;
   channelId: string;
 }) {
+  const isDark = useTheme((state) => state.isDarkMode);
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
@@ -184,14 +186,9 @@ export default function BoardItem({
             <div className="flex items-center gap-[30px]">
               <button className="flex items-center gap-[10px]">
                 <img
-                  src={darkComment}
+                  src={isDark ? darkComment : CommentSvg}
                   alt="comment icon"
                   className="dark:block hidden"
-                />
-                <img
-                  src={CommentSvg}
-                  alt="comment icon"
-                  className="dark:hidden block"
                 />
                 {commentsCount}
               </button>
@@ -207,11 +204,7 @@ export default function BoardItem({
                   alt="like icon"
                   className="dark:block hidden"
                 />
-                <img
-                  src={likeId ? like_fill : Like}
-                  alt="like icon"
-                  className="dark:hidden block"
-                />
+                <img src={likeId ? like_fill : Like} alt="like icon" />
                 {likeCount}
               </button>
             </div>
