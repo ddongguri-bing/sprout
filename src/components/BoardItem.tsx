@@ -10,6 +10,7 @@ import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import Avata from "./Avata";
 import like_fill from "../assets/like_fill.svg";
+import { useAuthStore } from "../stores/authStore";
 
 const calculateTimeDifference = (sentAt: string | number | Date) => {
   const sentTime = new Date(sentAt).getTime();
@@ -56,6 +57,7 @@ export default function BoardItem({
   postId: string;
   channelId: string;
 }) {
+  const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const exactDate = new Date(createdAt).toLocaleString();
@@ -65,12 +67,13 @@ export default function BoardItem({
     const fetchPostData = async () => {
       try {
         const post = await getPostById(postId);
+        if (!user) return;
         const currentUserLike = post.likes.find(
-          (like: { user: string }) => like.user === "currentUserId"
+          (like: { user: string }) => like.user === user._id
         );
+        console.log("currentUserLike", currentUserLike);
         if (currentUserLike) {
           setLikeId(currentUserLike._id);
-          console.log(currentUserLike._id);
         } else {
           setLikeId(null);
         }
@@ -81,7 +84,7 @@ export default function BoardItem({
 
     fetchPostData();
     Fancybox.bind('[data-fancybox="gallery"]');
-  }, [postId]);
+  }, [postId, user]);
 
   const handleLikeClick = async () => {
     if (likeId) {
