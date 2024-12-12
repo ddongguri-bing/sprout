@@ -131,7 +131,7 @@ export default function BoardItem({
       <div className="w-full pl-[89px]">
         <div className="w-full max-w-[688px] font-medium flex flex-col gap-[10px]">
           {/* 게시물 내용 */}
-          <div>{postContent}</div>
+          <div className="whitespace-pre-line">{postContent}</div>
           {/* 이미지 */}
           {postImages.length > 0 && (
             <>
