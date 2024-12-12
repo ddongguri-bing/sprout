@@ -27,6 +27,7 @@ export default function SignIn() {
         setFailLogin(false);
       }
     } catch {
+      console.error("로그인 실패");
       setFailLogin(true);
     }
   };
@@ -55,7 +56,7 @@ export default function SignIn() {
             이메일 또는 비밀번호를 다시 확인해주세요.
             <br />
             등록되지 않은 이메일이거나, 이메일 혹은 비밀번호를 잘못
-            입력하셨습니다.
+            입력하셨습니다
           </p>
         )}
       </div>
