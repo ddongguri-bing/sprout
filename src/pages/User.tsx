@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Back from "../assets/back.svg";
 import { getAuthUser } from "../api/auth";
 import Avata from "../components/Avata";
+import { deleteFollowDelete, postFollowCreate } from "../api/follow";
 
 interface PostType {
   _id: string;
@@ -25,6 +26,8 @@ interface SpecificUserType {
 
 interface LoggedInUserType {
   _id: string;
+  followers: string[];
+  following: string[];
 }
 
 export default function User() {
@@ -37,8 +40,44 @@ export default function User() {
   const [loggedInUser, setLoggedInUser] = useState<LoggedInUserType | null>(
     null
   );
-  const [subscribeCount, setSubscribeCount] = useState(0);
-  const [subscribed, setScribed] = useState(false);
+
+  // 팔로우/팔로잉 기능
+  const [followerCount, setFollowerCount] = useState(0);
+  const [isFollow, setIsFollow] = useState(false);
+  const [followId, setFollowId] = useState<string | null>(null);
+
+  const handleFollow = async () => {
+    console.log("팔로우 버튼 누름!!!");
+    // 로그인된 유저 정보가 없음 || 팔로우 대상의 정보가 없음 || 이미 팔로우 상태
+    if (!loggedInUser || !specificUser || isFollow) return;
+    if (specificUser.followers.includes(loggedInUser._id)) {
+      console.log("이미 팔로잉 중입니다");
+    }
+
+    try {
+      const response = await postFollowCreate(specificUser._id);
+
+      setFollowerCount((prev) => prev + 1);
+      setFollowId(response._id);
+      setIsFollow(true);
+    } catch (error) {
+      console.error(`팔로우 실패` + error);
+    }
+  };
+
+  const handleUnfollow = async () => {
+    console.log("언팔로우 버튼 누름!!!");
+    if (!followId) return;
+    try {
+      await deleteFollowDelete(followId);
+
+      setFollowerCount((prev) => prev - 1);
+      setFollowId(null);
+      setIsFollow(false);
+    } catch (error) {
+      console.error(`언팔로우 실패` + error);
+    }
+  };
 
   // 특정 유저 불러오기
   const fetchSpecificUser = async () => {
@@ -68,14 +107,26 @@ export default function User() {
     if (token) checkLoggedInUser(token);
   }, [id]);
 
+  // 팔로우/팔로잉 기능
+  useEffect(() => {
+    console.log("loggedInUser:", loggedInUser);
+    console.log("specificUser:", specificUser);
+
+    if (loggedInUser && specificUser) {
+      const isFollowing = specificUser.followers.includes(loggedInUser._id);
+      setIsFollow(isFollowing);
+      setFollowerCount(specificUser.followers.length);
+    }
+  }, [loggedInUser, specificUser]);
+
   if (!specificUser) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
-      <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
-        <button onClick={() => navigate(-1)} className="">
+      <div className="h-[100px] px-[30px] z-[9] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
+        <button onClick={() => navigate(-1)}>
           <img
             className="dark:invert dark:hover:fill-white"
             src={Back}
@@ -101,7 +152,7 @@ export default function User() {
                   <div className="flex items-center gap-[10px]">
                     <span className="font-bold">팔로우</span>{" "}
                     <span className="text-gray dark:text-whiteDark">
-                      {specificUser.followers.length}
+                      {followerCount}
                     </span>
                   </div>
                   <div className="flex items-center gap-[10px]">
@@ -127,9 +178,10 @@ export default function User() {
                   />
                 ) : (
                   <Button
-                    text={"팔로잉"}
+                    text={isFollow ? "팔로우 끊기" : "팔로우"}
                     size={"md"}
                     className="max-w-[188px]"
+                    onClick={isFollow ? handleUnfollow : handleFollow}
                   />
                 )}
               </div>
