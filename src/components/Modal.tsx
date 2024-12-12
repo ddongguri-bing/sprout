@@ -16,7 +16,7 @@ export default function Modal() {
         </div>
         {isOneBtn ? (
           <>
-            <Button onClick={() => setOpen(false)} text={"확인"} size={"sm"} />
+            <Button onClick={() => setOpen(false)} text={btnText} size={"sm"} />
           </>
         ) : (
           <div className="flex items-center gap-5">

@@ -23,16 +23,18 @@ axiosInstance.interceptors.response.use(
       retry = true; // 1번만시도
       try {
         const token = document.cookie.match(/token=([^ ]+)/)?.[1];
-        const { data } = await axiosInstance.get("/token", {
+        const { data } = await axiosInstance.get("/auth-user", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        useAuthStore.setState({
-          token: token,
-          user: data,
-          isLoggedIn: true,
-        });
-        retry = false; // 성공하면 다시 시도할 수 있게 수정
-        originRequest.headers["Authorization"] = `Bearer ${data.token}`;
+        if (data) {
+          useAuthStore.setState({
+            token: token,
+            user: data,
+            isLoggedIn: true,
+          });
+          retry = false; // 성공하면 다시 시도할 수 있게 수정
+          originRequest.headers["Authorization"] = `Bearer ${data.token}`;
+        }
         return axiosInstance(originRequest);
       } catch (err) {
         console.log(err);

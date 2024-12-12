@@ -3,7 +3,7 @@ type ModalOpts = {
   message: string;
   btnText: string; //
   btnColor: string; // main | red
-  onClick: () => void;
+  onClick?: () => void;
   isOneBtn?: boolean;
 };
 interface ModalType {

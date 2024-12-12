@@ -31,23 +31,25 @@ export default function UserEdit() {
   };
 
   const handleUploadPhoto = async () => {
-    if (!selectedFile) {
-      console.error("업로드할 파일이 없습니다");
-      return;
-    }
+    if (!selectedFile) return false;
     try {
       const data = await postUploadPhoto({
         isCover: false,
         image: selectedFile,
       });
-      setPhotoUrl(data.image);
-      setPhotoId(data._id);
-      useAuthStore.setState((state) => ({
-        ...state,
-        user: state.user ? { ...state.user, image: data.image } : null,
-      }));
+      if (data) {
+        setPhotoUrl(data.image);
+        setPhotoId(data._id);
+        useAuthStore.setState((state) => ({
+          ...state,
+          user: state.user ? { ...state.user, image: data.image } : null,
+        }));
+        setSelectedFile(null);
+        return true;
+      } else return false;
     } catch (error) {
       console.log("이미지 업로드 실패", error);
+      return false;
     }
   };
   //변경 못하는 정보 반영하기(내 이메일, 이름)
@@ -65,6 +67,7 @@ export default function UserEdit() {
   // 비밀번호조건(대소문자+숫자 8자리 이상) 만족
   const isValidUpdatePassword = () => {
     const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    console.log(updatePassword);
     const isValidPw = passwordRegExp.test(updatePassword);
     setUpdatePasswordError(isValidPw ? "" : "올바른 비밀번호가 아닙니다");
     return isValidPw;
@@ -82,14 +85,19 @@ export default function UserEdit() {
   }, [confirmUpdatePassword]);
 
   const handleUpdatePassword = async () => {
-    const isValid = isValidUpdatePassword() || isConfirmUpdatePassword();
-    if (!isValid) return;
     try {
+      if (!updatePassword && !selectedFile) {
+        isValidUpdatePassword();
+        return false;
+      }
+      const pwValid = isValidUpdatePassword();
+      const pwConfirValud = isConfirmUpdatePassword();
+      if (!pwValid || !pwConfirValud) return false;
       await putUpdatePw(updatePassword);
-      await setUpdatePassword("");
-      await setConfirmUpdatePassword("");
+      return true;
     } catch (error) {
       console.log("error");
+      return false;
     }
   };
   //로그아웃 관련
@@ -117,11 +125,26 @@ export default function UserEdit() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const data = await Promise.all([
+      const [photoBol, pwBol] = await Promise.all([
         handleUploadPhoto(),
         handleUpdatePassword(),
       ]);
-      console.log("제발 되라", data);
+      if (photoBol || pwBol) {
+        setOpen(true);
+        setModalOpts({
+          message:
+            photoBol && pwBol
+              ? "수정이 완료되었습니다"
+              : photoBol
+              ? "프로필 이미지가 수정됐습니다"
+              : "비밀번호가 변경됐습니다",
+          btnText: "확인",
+          btnColor: "main",
+          isOneBtn: true,
+        });
+        setUpdatePassword("");
+        setConfirmUpdatePassword("");
+      }
     } catch (error) {
       console.error("버튼 클릭 이벤트 실패:", error);
     } finally {
@@ -167,10 +190,7 @@ export default function UserEdit() {
             <SettingInput
               type={"password"}
               value={updatePassword}
-              onChange={(e) => {
-                setUpdatePassword(e.target.value);
-                isValidUpdatePassword();
-              }}
+              onChange={(e) => setUpdatePassword(e.target.value)}
               placeholder="변경할 비밀번호를 입력해주세요"
               className="w-full"
             />
@@ -187,10 +207,7 @@ export default function UserEdit() {
             <SettingInput
               type={"password"}
               value={confirmUpdatePassword}
-              onChange={(e) => {
-                setConfirmUpdatePassword(e.target.value);
-                isConfirmUpdatePassword();
-              }}
+              onChange={(e) => setConfirmUpdatePassword(e.target.value)}
               placeholder="비밀번호를 확인해주세요"
             />
             {confirmUpdatePasswordError && (
