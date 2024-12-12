@@ -27,7 +27,7 @@ interface SpecificUserType {
 interface LoggedInUserType {
   _id: string;
   followers: string[];
-  following: string[];
+  following: any[];
 }
 
 export default function User() {
@@ -113,8 +113,11 @@ export default function User() {
     console.log("specificUser:", specificUser);
 
     if (loggedInUser && specificUser) {
-      const isFollowing = specificUser.followers.includes(loggedInUser._id);
-      setIsFollow(isFollowing);
+      console.log(specificUser);
+      const isFollowing = loggedInUser.following.find((fu) => fu.user === id);
+      if (!isFollowing) return;
+      setIsFollow(!!isFollowing);
+      setFollowId(isFollowing._id);
       setFollowerCount(specificUser.followers.length);
     }
   }, [loggedInUser, specificUser]);
