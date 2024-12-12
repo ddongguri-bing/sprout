@@ -67,7 +67,6 @@ export default function UserEdit() {
   // 비밀번호조건(대소문자+숫자 8자리 이상) 만족
   const isValidUpdatePassword = () => {
     const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    console.log(updatePassword);
     const isValidPw = passwordRegExp.test(updatePassword);
     setUpdatePasswordError(isValidPw ? "" : "올바른 비밀번호가 아닙니다");
     return isValidPw;
@@ -122,6 +121,8 @@ export default function UserEdit() {
     });
   };
 
+  //수정 완료 관련
+  const id = useAuthStore((state) => state.user?._id);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -129,6 +130,7 @@ export default function UserEdit() {
         handleUploadPhoto(),
         handleUpdatePassword(),
       ]);
+
       if (photoBol || pwBol) {
         setOpen(true);
         setModalOpts({
@@ -141,6 +143,10 @@ export default function UserEdit() {
           btnText: "확인",
           btnColor: "main",
           isOneBtn: true,
+          onClick: () => {
+            navigate(`/user/${id}`);
+            setOpen(false);
+          },
         });
         setUpdatePassword("");
         setConfirmUpdatePassword("");

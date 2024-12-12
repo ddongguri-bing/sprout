@@ -11,6 +11,7 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import Avata from "./Avata";
 import like_fill from "../assets/like_fill.svg";
 import { useAuthStore } from "../stores/authStore";
+import { postNotification } from "../api/notification";
 
 const calculateTimeDifference = (sentAt: string | number | Date) => {
   const sentTime = new Date(sentAt).getTime();
@@ -51,7 +52,7 @@ export default function BoardItem({
   author: {
     username: string;
     email: string;
-    userId?: string;
+    userId: string;
     image?: string;
   };
   postId: string;
@@ -103,6 +104,12 @@ export default function BoardItem({
         setLikeId(response._id);
 
         const updatedPost = await getPostById(postId);
+        await postNotification({
+          notificationType: "LIKE",
+          notificationTypeId: response._id,
+          userId: author.userId,
+          postId,
+        });
         setLikeCount(updatedPost.likes.length);
         console.log(updatedPost.likes);
       } catch (error) {
@@ -203,7 +210,13 @@ export default function BoardItem({
             </div>
           </div>
           {/* 댓글 */}
-          {comments && <Comments comments={comments} postId={postId} />}
+          {comments && (
+            <Comments
+              comments={comments}
+              postId={postId}
+              userId={author.userId}
+            />
+          )}
         </div>
       </div>
     </div>

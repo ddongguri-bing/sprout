@@ -8,13 +8,16 @@ import TextareaAutosize from "react-textarea-autosize";
 import { useAuthStore } from "../stores/authStore";
 import { useModal } from "../stores/modalStore";
 import { useNavigate } from "react-router";
+import { postNotification } from "../api/notification";
 
 export default function Comments({
   comments,
   postId,
+  userId,
 }: {
   comments: Comment[];
   postId: string;
+  userId: string;
 }) {
   const [value, setValue] = useState<string>("");
   const [commentList, setCommentList] = useState<Comment[]>(comments);
@@ -80,8 +83,16 @@ export default function Comments({
   const handleSubmit = async () => {
     if (!value.trim()) return;
 
+
     try {
       const newComment = await createComment(postId, value);
+      if (!newComment) return;
+      await postNotification({
+        notificationType: "COMMENT",
+        notificationTypeId: newComment._id,
+        userId,
+        postId,
+      });
       setCommentList((prev) => [...prev, newComment]);
       setValue("");
     } catch (error) {
