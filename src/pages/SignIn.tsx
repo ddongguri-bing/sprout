@@ -22,7 +22,6 @@ export default function SignIn() {
       login(data.token, data.user);
       // 토큰 유효기간 3시간 설정해 쿠키에 저장 (토큰 유효시간 갱신 처리 아직)
       document.cookie = `token=${data.token} path=/; max-age=10800; secure`;
-      console.log("로그인 성공", data);
       navigate("/");
       setFailLogin("");
     } else {

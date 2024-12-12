@@ -48,7 +48,7 @@ export default function UserEdit() {
         return true;
       } else return false;
     } catch (error) {
-      console.log("이미지 업로드 실패", error);
+      console.error("이미지 업로드 실패", error);
       return false;
     }
   };
@@ -95,7 +95,7 @@ export default function UserEdit() {
       await putUpdatePw(updatePassword);
       return true;
     } catch (error) {
-      console.log("error");
+      console.error("error");
       return false;
     }
   };
