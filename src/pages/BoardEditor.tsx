@@ -91,7 +91,6 @@ export default function BoardEditor() {
     const selectedFiles: string[] = targetFilesArray.map((file) => {
       return URL.createObjectURL(file);
     });
-    console.log(selectedFiles);
     setPreview((prev) => [...prev, ...selectedFiles]);
     target.value = "";
   };

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import Main from "./pages/Main";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
@@ -13,9 +13,12 @@ import BoardEditor from "./pages/BoardEditor";
 import UserEdit from "./pages/UserEdit";
 import { useModal } from "./stores/modalStore";
 import Modal from "./components/Modal";
+import { useAuthStore } from "./stores/authStore";
 
 export default function App() {
   const modalOpen = useModal((state) => state.modalOpen);
+  const isLogIn = useAuthStore((state) => state.token);
+
   return (
     <>
       <Routes>
@@ -29,7 +32,10 @@ export default function App() {
           <Route path="user/:id" element={<User />} />
           <Route path="user/edit" element={<UserEdit />} />
         </Route>
-        <Route path="auth" element={<AuthLayout />}>
+        <Route
+          path="auth"
+          element={isLogIn ? <Navigate to="/" replace /> : <AuthLayout />}
+        >
           <Route path="signIn" element={<SignIn />} />
           <Route path="signUp" element={<SignUp />} />
         </Route>

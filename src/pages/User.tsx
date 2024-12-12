@@ -7,6 +7,7 @@ import Back from "../assets/back.svg";
 import { getAuthUser } from "../api/auth";
 import Avata from "../components/Avata";
 import { deleteFollowDelete, postFollowCreate } from "../api/follow";
+import { postNotification } from "../api/notification";
 
 interface PostType {
   _id: string;
@@ -47,12 +48,10 @@ export default function User() {
   const [followId, setFollowId] = useState<string | null>(null);
 
   const handleFollow = async () => {
-    console.log("팔로우 버튼 누름!!!");
     // 로그인된 유저 정보가 없음 || 팔로우 대상의 정보가 없음 || 이미 팔로우 상태
     if (!loggedInUser || !specificUser || isFollow) return;
-    if (specificUser.followers.includes(loggedInUser._id)) {
-      console.log("이미 팔로잉 중입니다");
-    }
+    if (specificUser.followers.includes(loggedInUser._id))
+      return console.log("이미 팔로잉 중입니다");
 
     try {
       const response = await postFollowCreate(specificUser._id);
@@ -60,13 +59,18 @@ export default function User() {
       setFollowerCount((prev) => prev + 1);
       setFollowId(response._id);
       setIsFollow(true);
+      await postNotification({
+        notificationType: "FOLLOW",
+        notificationTypeId: response._id,
+        userId: specificUser._id,
+        postId: loggedInUser._id,
+      });
     } catch (error) {
       console.error(`팔로우 실패` + error);
     }
   };
 
   const handleUnfollow = async () => {
-    console.log("언팔로우 버튼 누름!!!");
     if (!followId) return;
     try {
       await deleteFollowDelete(followId);
@@ -109,15 +113,15 @@ export default function User() {
 
   // 팔로우/팔로잉 기능
   useEffect(() => {
-    console.log("loggedInUser:", loggedInUser);
-    console.log("specificUser:", specificUser);
-
     if (loggedInUser && specificUser) {
-      console.log(specificUser);
       const isFollowing = loggedInUser.following.find((fu) => fu.user === id);
-      if (!isFollowing) return;
-      setIsFollow(!!isFollowing);
-      setFollowId(isFollowing._id);
+      if (isFollowing) {
+        setIsFollow(!!isFollowing);
+        setFollowId(isFollowing._id);
+      } else {
+        setIsFollow(false);
+        setFollowId(null);
+      }
       setFollowerCount(specificUser.followers.length);
     }
   }, [loggedInUser, specificUser]);
