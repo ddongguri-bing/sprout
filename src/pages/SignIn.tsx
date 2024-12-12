@@ -24,6 +24,7 @@ export default function SignIn() {
       document.cookie = `token=${data.token} path=/; max-age=10800; secure`;
       console.log("로그인 성공", data);
       navigate("/");
+      setFailLogin("");
     } else {
       console.error("로그인 실패");
       setFailLogin(
