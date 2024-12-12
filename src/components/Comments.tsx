@@ -1,7 +1,6 @@
 import { useState } from "react";
 import CommentItem from "./CommentItem";
-import { Comment } from "../api/board";
-import { createComment } from "../api/board";
+import { createComment, deleteComment, Comment } from "../api/board";
 import Send from "../assets/send.svg";
 import SendActive from "../assets/send_active.svg";
 import { twMerge } from "tailwind-merge";
@@ -34,6 +33,16 @@ export default function Comments({
       console.error(error);
     }
   };
+  const handleDeleteComment = async (commentId: string) => {
+    try {
+      await deleteComment(commentId);
+      setCommentList((prev) =>
+        prev.filter((comment) => comment._id !== commentId)
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="w-full flex flex-col gap-5 mt-[10px]">
@@ -55,7 +64,11 @@ export default function Comments({
         </button>
       </form>
       {commentList.map((comment) => (
-        <CommentItem key={comment._id} comment={comment} />
+        <CommentItem
+          key={comment._id}
+          comment={comment}
+          onDeleteComment={handleDeleteComment}
+        />
       ))}
     </div>
   );

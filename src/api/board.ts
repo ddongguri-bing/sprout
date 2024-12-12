@@ -68,3 +68,14 @@ export const createComment = async (postId: string, comment: string) => {
   );
   return data;
 };
+
+export const deleteComment = async (commentId: string) => {
+  const token = useAuthStore.getState().token;
+  const { data } = await axiosInstance.delete("/comments/delete", {
+    data: { id: commentId },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return data;
+};

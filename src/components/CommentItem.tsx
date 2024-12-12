@@ -2,12 +2,33 @@ import { Link } from "react-router";
 import { Comment } from "../api/board";
 import Avata from "./Avata";
 import Close from "../assets/close.svg";
+import { useModal } from "../stores/modalStore";
+
 interface CommentItemProps {
   comment: Comment;
+  onDeleteComment: (commentId: string) => void;
 }
 
-export default function CommentItem({ comment }: CommentItemProps) {
-  console.log(comment);
+export default function CommentItem({
+  comment,
+  onDeleteComment,
+}: CommentItemProps) {
+  const setOpen = useModal((state) => state.setModalOpen);
+  const setModalOpts = useModal((state) => state.setModalOpts);
+
+  const handleDeleteOpen = () => {
+    setOpen(true);
+    setModalOpts({
+      message: "정말로 댓글을 삭제하시겠습니까?",
+      btnText: "삭제",
+      btnColor: "red",
+      onClick: () => {
+        onDeleteComment(comment._id);
+        setOpen(false);
+      },
+    });
+  };
+
   return (
     <div className="flex items-start justify-between gap-[10px]">
       <div className="flex gap-[10px] items-start">
@@ -25,7 +46,7 @@ export default function CommentItem({ comment }: CommentItemProps) {
           </p>
         </div>
       </div>
-      <button>
+      <button onClick={handleDeleteOpen}>
         <img className="dark:invert w-3" src={Close} alt="close icon" />
       </button>
     </div>
