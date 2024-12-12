@@ -72,7 +72,6 @@ export default function BoardItem({
         const currentUserLike = post.likes.find(
           (like: { user: string }) => like.user === user._id
         );
-        console.log("currentUserLike", currentUserLike);
         if (currentUserLike) {
           setLikeId(currentUserLike._id);
         } else {
@@ -94,7 +93,6 @@ export default function BoardItem({
         setLikeId(null);
         const updatedPost = await getPostById(postId);
         setLikeCount(updatedPost.likes.length);
-        console.log(updatedPost.likes);
       } catch (error) {
         console.error("좋아요 취소 중 오류 발생:", error);
       }
@@ -111,7 +109,6 @@ export default function BoardItem({
           postId,
         });
         setLikeCount(updatedPost.likes.length);
-        console.log(updatedPost.likes);
       } catch (error) {
         console.error("좋아요 추가 중 오류 발생:", error);
       }

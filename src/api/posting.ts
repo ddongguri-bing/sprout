@@ -21,7 +21,6 @@ export const createPost = async ({
       "Content-Type": "multipart/form-data",
     },
   });
-  console.log("posting 성공");
   return data;
 };
 
@@ -54,7 +53,6 @@ export const updatePost = async ({
       "Content-Type": "multipart/form-data",
     },
   });
-  console.log("update 성공");
   return data;
 };
 
@@ -62,6 +60,5 @@ export const deletePost = async ({ postId }: { postId: string }) => {
   const { data } = await axiosInstance.delete(`/posts/delete`, {
     data: { id: postId },
   });
-  console.log("delete 성공");
   return data;
 };

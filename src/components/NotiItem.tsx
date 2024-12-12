@@ -20,7 +20,6 @@ export default function NotiItem({
     }
   };
 
-  console.log(noti);
   const type = noti.comment ? "comment" : noti.like ? "like" : "follow";
   const handleLink = (type: "comment" | "like" | "follow") => {
     switch (type) {
