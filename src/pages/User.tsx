@@ -8,6 +8,7 @@ import { getAuthUser } from "../api/auth";
 import Avata from "../components/Avata";
 import { deleteFollowDelete, postFollowCreate } from "../api/follow";
 import { postNotification } from "../api/notification";
+import { useModal } from "../stores/modalStore";
 
 interface PostType {
   _id: string;
@@ -46,9 +47,28 @@ export default function User() {
   const [followerCount, setFollowerCount] = useState(0);
   const [isFollow, setIsFollow] = useState(false);
   const [followId, setFollowId] = useState<string | null>(null);
+  const setModalOpts = useModal((state) => state.setModalOpts);
+  const setOpen = useModal((state) => state.setModalOpen);
+
+  // 로그인 전 팔로우 버튼 누르면 모달
+  const handleFollowModal = () => {
+    setModalOpts({
+      message: "로그인 후 팔로우 해주세요!",
+      btnText: "확인",
+      btnColor: "main",
+      onClick: () => {
+        setOpen(false);
+        navigate("/auth/signIn");
+      },
+    });
+    setOpen(true);
+  };
 
   const handleFollow = async () => {
     // 로그인된 유저 정보가 없음 || 팔로우 대상의 정보가 없음 || 이미 팔로우 상태
+    if (!loggedInUser) {
+      handleFollowModal();
+    }
     if (!loggedInUser || !specificUser || isFollow) return;
     if (specificUser.followers.includes(loggedInUser._id))
       return console.log("이미 팔로잉 중입니다");
