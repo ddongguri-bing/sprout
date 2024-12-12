@@ -7,6 +7,7 @@ import Back from "../assets/back.svg";
 import { getAuthUser } from "../api/auth";
 import Avata from "../components/Avata";
 import { deleteFollowDelete, postFollowCreate } from "../api/follow";
+import { postNotification } from "../api/notification";
 
 interface PostType {
   _id: string;
@@ -60,6 +61,12 @@ export default function User() {
       setFollowerCount((prev) => prev + 1);
       setFollowId(response._id);
       setIsFollow(true);
+      await postNotification({
+        notificationType: "FOLLOW",
+        notificationTypeId: response._id,
+        userId: specificUser._id,
+        postId: loggedInUser._id,
+      });
     } catch (error) {
       console.error(`팔로우 실패` + error);
     }
