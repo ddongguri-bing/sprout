@@ -42,7 +42,7 @@ export default function CommentItem({
               {comment.author.fullName}
             </h3>
           </Link>
-          <p className="text-gray dark:text-whiteDark text-sm">
+          <p className="text-gray dark:text-whiteDark text-sm whitespace-pre-line">
             {comment.comment}
           </p>
         </div>
