@@ -14,10 +14,12 @@ export default function Comments({
   comments,
   postId,
   userId,
+  updateCommentCount,
 }: {
   comments: Comment[];
   postId: string;
   userId: string;
+  updateCommentCount: (newCount: number) => void;
 }) {
   const [value, setValue] = useState<string>("");
   const [commentList, setCommentList] = useState<Comment[]>(comments);
@@ -39,6 +41,7 @@ export default function Comments({
     });
     setOpen(true);
   };
+
   const handleLineBreak = () => {
     setModalOpts({
       message: "최대 7줄까지만 입력 가능합니다.",
@@ -98,6 +101,7 @@ export default function Comments({
         postId,
       });
       setCommentList((prev) => [...prev, newComment]);
+      updateCommentCount(commentList.length + 1);
       setValue("");
     } catch (error) {
       console.error(error);
@@ -110,6 +114,7 @@ export default function Comments({
       setCommentList((prev) =>
         prev.filter((comment) => comment._id !== commentId)
       );
+      updateCommentCount(commentList.length - 1);
     } catch (error) {
       console.error(error);
     }
@@ -151,7 +156,7 @@ export default function Comments({
         <CommentItem
           key={comment._id}
           comment={comment}
-          onDeleteComment={handleDeleteComment}
+          onDeleteComment={() => handleDeleteComment(comment._id)}
         />
       ))}
     </div>
