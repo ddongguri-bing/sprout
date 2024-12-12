@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useNavigate } from "react-router";
@@ -47,6 +47,10 @@ export default function SignUp() {
     }
     return true;
   };
+
+  useEffect(() => {
+    isConfirmPassword();
+  }, [confirmPassword]);
 
   const navigate = useNavigate();
 
