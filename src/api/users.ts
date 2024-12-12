@@ -16,7 +16,7 @@ export const getSpecificUser = async (id: string) => {
 // 사용자 프로필 이미지 변경
 export const postUploadPhoto = async (body: {
   isCover: boolean;
-  image: File | null;
+  image: File;
 }) => {
   const formData = new FormData();
   formData.append("isCover", "false");
