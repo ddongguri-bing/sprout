@@ -26,7 +26,7 @@ export default function AfterUserBox({ user }: { user: User }) {
     if (!notis.length) return;
     await putNotificationSeen();
     setTrigger();
-  }, []);
+  }, [notis]);
   return (
     <div className="flex flex-col gap-5">
       <div className="pb-5 border-b border-whiteDark dark:border-gray">
@@ -58,7 +58,7 @@ export default function AfterUserBox({ user }: { user: User }) {
           </button>
         </div>
         <div className="flex-1 max-h-[20vh] scroll overflow-y-auto ">
-          <ul className="flex flex-col gap-[15px] text-xs">
+          <ul className="flex flex-col gap-[1px] text-xs">
             {notis.length ? (
               <>
                 {notis.map((noti) => (
