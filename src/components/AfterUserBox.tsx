@@ -25,8 +25,8 @@ export default function AfterUserBox({ user }: { user: User }) {
   const handleClickNotiSeen = useCallback(async () => {
     if (!notis.length) return;
     await putNotificationSeen();
-    setTrigger(!trigger);
-  }, [trigger]);
+    setTrigger();
+  }, []);
   return (
     <div className="flex flex-col gap-5">
       <div className="pb-5 border-b border-whiteDark dark:border-gray">

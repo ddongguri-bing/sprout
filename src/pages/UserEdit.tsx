@@ -12,7 +12,6 @@ import { postUploadPhoto, putUpdatePw } from "../api/users";
 import Avata from "../components/Avata";
 import { useTriggerStore } from "../stores/triggerStore";
 export default function UserEdit() {
-  const trigger = useTriggerStore((state) => state.trigger);
   const setTrigger = useTriggerStore((state) => state.setTrigger);
 
   // 이미지 업로드 관련
@@ -43,9 +42,10 @@ export default function UserEdit() {
       });
       setPhotoUrl(data.image);
       setPhotoId(data._id);
-      // useAuthStore.setState((state) => ({
-      //   user: { ...state.user, image: user.image },
-      // }));
+      useAuthStore.setState((state) => ({
+        ...state,
+        user: state.user ? { ...state.user, image: data.image } : null,
+      }));
     } catch (error) {
       console.log("이미지 업로드 실패", error);
     }
@@ -111,6 +111,22 @@ export default function UserEdit() {
       onClick: handleLogout,
     });
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const data = await Promise.all([
+        handleUploadPhoto(),
+        handleUpdatePassword(),
+      ]);
+      console.log("제발 되라", data);
+    } catch (error) {
+      console.error("버튼 클릭 이벤트 실패:", error);
+    } finally {
+      setTrigger();
+    }
+  };
+
   return (
     <>
       <div className="w-full h-[100px] px-[30px] mb-10 sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-[9]">
@@ -120,18 +136,7 @@ export default function UserEdit() {
       </div>
       <form
         className="w-full max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px]"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          try {
-            await handleUploadPhoto();
-            await handleUpdatePassword();
-            console.log("제발 되라");
-          } catch (error) {
-            console.error("버튼 클릭 이벤트 실패:", error);
-          } finally {
-            setTrigger(!trigger);
-          }
-        }}
+        onSubmit={handleSubmit}
       >
         <label className="cursor-pointer relative mb-5">
           <input
