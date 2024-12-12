@@ -33,15 +33,18 @@ export const updatePost = async ({
   title,
   image,
   imageToDeletePublicId,
+  channelId,
 }: {
   postId: string;
   title: string;
   image?: File | null;
   imageToDeletePublicId?: string | null;
+  channelId: string;
 }) => {
   const formData = new FormData();
   formData.append("postId", postId);
   formData.append("title", title);
+  formData.append("channelId", channelId);
   if (image) {
     formData.append("image", image);
   }

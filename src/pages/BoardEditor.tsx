@@ -73,6 +73,7 @@ export default function BoardEditor() {
         title: editorText,
         image: image,
         imageToDeletePublicId: imageToDelete,
+        channelId: id!,
       });
       navigate(-1);
     }
