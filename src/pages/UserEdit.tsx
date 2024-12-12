@@ -114,6 +114,7 @@ export default function UserEdit() {
     });
   };
 
+  // const id = useAuthStore((state) => state.user?._id); 추가(내프로필 이동)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -121,6 +122,7 @@ export default function UserEdit() {
         handleUploadPhoto(),
         handleUpdatePassword(),
       ]);
+      // navigate(`/user/${id}`); 추가(내프로필 이동)
       console.log("제발 되라", data);
     } catch (error) {
       console.error("버튼 클릭 이벤트 실패:", error);
