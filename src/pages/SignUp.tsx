@@ -30,7 +30,7 @@ export default function SignUp() {
   const isValidPassword = () => {
     const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     if (!passwordRegExp.test(password)) {
-      setPasswordError("올바른 비밀번호 형식이 아닙니다");
+      setPasswordError("대소문자(영문), 숫자 포함 8자리 이상이어야 합니다");
       return false;
     } else {
       setPasswordError("");
