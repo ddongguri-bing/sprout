@@ -9,8 +9,10 @@ import {
 import NotiItem from "./NotiItem";
 import Avata from "./Avata";
 import { User } from "../stores/authStore";
+import { useTriggerStore } from "../stores/triggerStore";
 export default function AfterUserBox({ user }: { user: User }) {
-  const [trigger, setTrigger] = useState<boolean>(false);
+  const trigger = useTriggerStore((state) => state.trigger);
+  const setTrigger = useTriggerStore((state) => state.setTrigger);
   const [notis, setNotis] = useState<NotiType[]>([]);
   useEffect(() => {
     const handleGetNotis = async () => {
@@ -23,7 +25,7 @@ export default function AfterUserBox({ user }: { user: User }) {
   const handleClickNotiSeen = useCallback(async () => {
     if (!notis.length) return;
     await putNotificationSeen();
-    setTrigger((prev) => !prev);
+    setTrigger();
   }, []);
   return (
     <div className="flex flex-col gap-5">

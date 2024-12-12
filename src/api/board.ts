@@ -1,5 +1,6 @@
 import { axiosInstance } from ".";
 import { ChannelItem } from "../api/channel";
+import { useAuthStore } from "../stores/authStore";
 
 export type PostItem = {
   likes: string[];
@@ -51,5 +52,30 @@ export const getPostsByAuthor = async (authorId: string) => {
 
 export const getPostById = async (postId: string) => {
   const { data } = await axiosInstance.get(`/posts/${postId}`);
+  return data;
+};
+
+export const createComment = async (postId: string, comment: string) => {
+  const token = useAuthStore.getState().token;
+  const { data } = await axiosInstance.post(
+    "/comments/create",
+    { postId, comment },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data;
+};
+
+export const deleteComment = async (commentId: string) => {
+  const token = useAuthStore.getState().token;
+  const { data } = await axiosInstance.delete("/comments/delete", {
+    data: { id: commentId },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return data;
 };

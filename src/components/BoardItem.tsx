@@ -152,7 +152,7 @@ export default function BoardItem({
             </div>
           </div>
           {/* 댓글 */}
-          {comments && <Comments comments={comments} />}
+          {comments && <Comments comments={comments} postId={postId} />}
         </div>
       </div>
     </div>
