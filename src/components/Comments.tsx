@@ -21,6 +21,7 @@ export default function Comments({
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setOpen = useModal((state) => state.setModalOpen);
   const setModalOpts = useModal((state) => state.setModalOpts);
+  const isModalOpen = useModal((state) => state.modalOpen);
   const navigate = useNavigate();
 
   const handleOpenModal = () => {
@@ -61,6 +62,10 @@ export default function Comments({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (isModalOpen) {
+      e.preventDefault();
+      return;
+    }
     if (
       e.key === "Enter" &&
       !e.shiftKey &&
