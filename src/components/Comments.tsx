@@ -25,6 +25,7 @@ export default function Comments({
   const setOpen = useModal((state) => state.setModalOpen);
   const setModalOpts = useModal((state) => state.setModalOpts);
   const navigate = useNavigate();
+
   const handleOpenModal = () => {
     setModalOpts({
       message: "로그인 후 댓글을 작성해주세요!",
@@ -37,19 +38,51 @@ export default function Comments({
     });
     setOpen(true);
   };
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(e.target.value);
+  const handleLineBreak = () => {
+    setModalOpts({
+      message: "최대 7줄까지만 입력 가능합니다.",
+      btnText: "확인",
+      isOneBtn: true,
+      btnColor: "main",
+      onClick: () => {
+        setOpen(false);
+      },
+    });
+    setOpen(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputValue = e.target.value;
+    const lineCount = (inputValue.match(/[^\n]*\n[^\n]*/gi)?.length ?? 0) + 1;
 
-    if (!isLoggedIn) {
-      handleOpenModal();
+    if (lineCount > 7) {
+      handleLineBreak();
       return;
     }
-    if (!value) return;
+
+    setValue(inputValue);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (
+      e.key === "Enter" &&
+      !e.shiftKey &&
+      e.nativeEvent.isComposing === false
+    ) {
+      e.preventDefault();
+      if (!isLoggedIn) {
+        handleOpenModal();
+        return;
+      }
+      if (value.trim()) {
+        handleSubmit();
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!value.trim()) return;
+
 
     try {
       const newComment = await createComment(postId, value);
@@ -81,19 +114,31 @@ export default function Comments({
   return (
     <div className="w-full flex flex-col gap-5 mt-[10px]">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!isLoggedIn) {
+            handleOpenModal();
+            return;
+          }
+          handleSubmit();
+        }}
         className={twMerge(
           "w-full flex items-start px-5 py-[15px] border border-main rounded-[8px]"
         )}
       >
         <TextareaAutosize
-          className="w-full h-6 focus:outline-none resize-none bg-white dark:bg-black"
+          className="w-full h-6 focus:outline-none  scroll resize-none bg-white dark:bg-black"
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           value={value}
           placeholder="댓글을 입력해주세요"
           maxRows={3}
         />
-        <button className="mt-[2px]" type="submit" disabled={!value}>
+        <button
+          className="mt-[2px] ml-1"
+          type="submit"
+          disabled={!value.trim()}
+        >
           <img src={value ? SendActive : Send} alt="send icon" />
         </button>
       </form>
