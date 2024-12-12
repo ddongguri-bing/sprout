@@ -12,6 +12,7 @@ import Avata from "./Avata";
 import like_fill from "../assets/like_fill.svg";
 import { useAuthStore } from "../stores/authStore";
 import { postNotification } from "../api/notification";
+import { useModal } from "../stores/modalStore";
 
 const calculateTimeDifference = (sentAt: string | number | Date) => {
   const sentTime = new Date(sentAt).getTime();
@@ -64,6 +65,22 @@ export default function BoardItem({
   const exactDate = new Date(createdAt).toLocaleString();
   const [likeId, setLikeId] = useState<string | null>(null);
   const [likeCount, setLikeCount] = useState(likesCount);
+  const setOpen = useModal((state) => state.setModalOpen);
+  const setModalOpts = useModal((state) => state.setModalOpts);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
+  const handleLikeModal = () => {
+    setModalOpts({
+      message: "로그인 후 좋아요를 눌러주세요!",
+      btnText: "확인",
+      btnColor: "main",
+      onClick: () => {
+        setOpen(false);
+        navigate("/auth/signIn");
+      },
+    });
+    setOpen(true);
+  };
   useEffect(() => {
     const fetchPostData = async () => {
       try {
@@ -88,6 +105,10 @@ export default function BoardItem({
   }, [postId, user]);
 
   const handleLikeClick = async () => {
+    if (!isLoggedIn) {
+      handleLikeModal();
+      return;
+    }
     if (likeId) {
       try {
         await deleteLike(likeId);
