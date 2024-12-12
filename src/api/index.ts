@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
         }
         return axiosInstance(originRequest);
       } catch (err) {
-        console.log(err);
+        console.error(err);
         const logout = useAuthStore.getState().logout;
         logout();
         document.cookie = `token=`;

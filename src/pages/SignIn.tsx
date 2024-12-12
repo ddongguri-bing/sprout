@@ -14,6 +14,7 @@ export default function SignIn() {
   const login = useAuthStore((state) => state.login);
 
   const handleLogin = async () => {
+<<<<<<< HEAD
     try {
       const data = await postSignIn({
         email: email,
@@ -28,6 +29,19 @@ export default function SignIn() {
         setFailLogin(false);
       }
     } catch {
+=======
+    const data = await postSignIn({
+      email: email,
+      password: password,
+    });
+    if (data) {
+      login(data.token, data.user);
+      // 토큰 유효기간 3시간 설정해 쿠키에 저장 (토큰 유효시간 갱신 처리 아직)
+      document.cookie = `token=${data.token} path=/; max-age=10800; secure`;
+      navigate("/");
+      setFailLogin("");
+    } else {
+>>>>>>> 216312f0b987375aeb0f335c28ab15a645d326b3
       console.error("로그인 실패");
       setFailLogin(true);
     }

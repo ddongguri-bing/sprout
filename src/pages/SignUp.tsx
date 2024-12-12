@@ -65,7 +65,6 @@ export default function SignUp() {
       });
 
       if (data) {
-        console.log("회원가입 성공", data);
         navigate("/auth/SignIn");
       } else {
         console.error("회원가입 실패");
