@@ -123,7 +123,11 @@ export default function User() {
   }, [loggedInUser, specificUser]);
 
   if (!specificUser) {
-    return <div>Loading...</div>;
+    return (
+      <div className="font-bold text-[30px] text-main flex flex-col items-center justify-center h-full">
+        Loading...
+      </div>
+    );
   }
 
   return (
