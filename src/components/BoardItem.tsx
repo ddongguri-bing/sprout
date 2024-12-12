@@ -225,7 +225,7 @@ export default function BoardItem({
               {calculateTimeDifference(createdAt)}
               {isHovered && (
                 <div
-                  className="absolute w-[170px] text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10 
+                  className="absolute w-[156px] text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10 
                   bg-black text-white dark:bg-whiteDark dark:text-black"
                 >
                   {exactDate}
