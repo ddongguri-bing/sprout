@@ -7,9 +7,16 @@ import "draft-js/dist/Draft.css";
 import { createPost, updatePost } from "../api/posting";
 import { useNavigate, useParams } from "react-router";
 import { getPostById } from "../api/board";
+import Modal from "../components/Modal";
+import { useModal } from "../stores/modalStore";
 
 export default function BoardEditor() {
   const navigate = useNavigate();
+
+  const modalOpen = useModal((state) => state.modalOpen);
+  const setModalOpen = useModal((state) => state.setModalOpen);
+  const setModalOpts = useModal((state) => state.setModalOpts);
+
   //update인지 create인지 확인용
   const { id, postId } = useParams();
   const currentPostId = postId!;
@@ -38,6 +45,19 @@ export default function BoardEditor() {
 
   //완료 버튼
   const handleCreatePost = async () => {
+    if (!editorText && !image) {
+      setModalOpen(true);
+      setModalOpts({
+        message: "내용이 없습니다. 작성을 취소하시겠습니까?",
+        btnText: "확인",
+        btnColor: "main",
+        onClick: () => {
+          navigate(-1);
+          setModalOpen(false);
+        },
+      });
+      return;
+    }
     //id가 없으면 create
     if (!currentPostId) {
       await createPost({
@@ -53,6 +73,7 @@ export default function BoardEditor() {
         title: editorText,
         image: image,
         imageToDeletePublicId: imageToDelete,
+        channelId: id!,
       });
       navigate(-1);
     }
@@ -90,63 +111,66 @@ export default function BoardEditor() {
   }, []);
 
   return (
-    <div className="pb-[30px] flex flex-col relative">
-      <div className="h-[100px] px-[30px] mb-[50px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-10">
-        <h2 className="text-xl font-bold">{postId ? "수정" : "작성"}</h2>
-        <div className="flex items-center gap-5">
-          <Button
-            onClick={() => history.back()}
-            theme="sub"
-            text={"취소"}
-            size={"sm"}
-          />
-          <Button text={"완료"} size={"sm"} onClick={handleCreatePost} />
+    <>
+      {modalOpen && <Modal />}
+      <div className="pb-[30px] flex flex-col relative">
+        <div className="h-[100px] px-[30px] mb-[50px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-10">
+          <h2 className="text-xl font-bold">{postId ? "수정" : "작성"}</h2>
+          <div className="flex items-center gap-5">
+            <Button
+              onClick={() => history.back()}
+              theme="sub"
+              text={"취소"}
+              size={"sm"}
+            />
+            <Button text={"완료"} size={"sm"} onClick={handleCreatePost} />
+          </div>
         </div>
-      </div>
-      <div className="w-full max-w-[777px] flex flex-col items-start gap-5 mx-auto px-[15px]">
-        <DraftEditor getEditorText={getEditorText} editorText={editorText} />
-        <div className="w-full grid grid-cols-1 gap-[10px]">
-          {preview.length === 0 ? (
-            <label className="bg-whiteDark flex items-center justify-center rounded-[8px] h-[189px] cursor-pointer">
-              <input
-                type="file"
-                hidden
-                accept="image/*"
-                onChange={handleImageAdd}
-              />
-              <img src={PlusIcon} alt="plus icon" />
-            </label>
-          ) : (
-            <>
-              {preview.map((url, i) => {
-                return (
-                  <div
-                    key={i}
-                    className="rounded-[8px] overflow-hidden relative"
-                  >
-                    <button
-                      type="button"
-                      onClick={handleDeleteImg}
-                      className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]"
+        <div className="w-full max-w-[777px] flex flex-col items-start gap-5 mx-auto px-[15px]">
+          <DraftEditor getEditorText={getEditorText} editorText={editorText} />
+          <div className="w-full grid grid-cols-1 gap-[10px]">
+            {preview.length === 0 ? (
+              <label className="bg-whiteDark flex items-center justify-center rounded-[8px] h-[189px] cursor-pointer">
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={handleImageAdd}
+                />
+                <img src={PlusIcon} alt="plus icon" />
+              </label>
+            ) : (
+              <>
+                {preview.map((url, i) => {
+                  return (
+                    <div
+                      key={i}
+                      className="rounded-[8px] overflow-hidden relative"
                     >
+                      <button
+                        type="button"
+                        onClick={handleDeleteImg}
+                        className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]"
+                      >
+                        <img
+                          src={CloseIcon}
+                          alt="close icon"
+                          className="invert"
+                        />
+                      </button>
                       <img
-                        src={CloseIcon}
-                        alt="close icon"
-                        className="invert"
+                        src={url}
+                        alt={`image${i}`}
+                        className="obejct-cover w-full h-full"
                       />
-                    </button>
-                    <img
-                      src={url}
-                      alt={`image${i}`}
-                      className="obejct-cover w-full h-full"
-                    />
-                  </div>
-                );
-              })}
-            </>
-          )}
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
