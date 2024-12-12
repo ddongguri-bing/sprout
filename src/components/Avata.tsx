@@ -32,10 +32,7 @@ export default function Avata({
         <img
           src={isDark ? ProfileDark : Profile}
           alt="profile image"
-          className={twMerge(
-            IMG_BASE_STYLE,
-            "w-[40%] min-h-0 hidden dark:block"
-          )}
+          className={twMerge(IMG_BASE_STYLE, "w-[40%] min-h-0 ")}
         />
       )}
     </div>
