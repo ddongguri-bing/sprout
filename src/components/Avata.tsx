@@ -1,6 +1,7 @@
 import Profile from "../assets/profileLight.svg";
 import ProfileDark from "../assets/profileDark.svg";
 import { twMerge } from "tailwind-merge";
+import { useTheme } from "../stores/themeStore";
 
 export default function Avata({
   profile,
@@ -9,6 +10,7 @@ export default function Avata({
   profile?: string;
   size: "sm" | "md" | "lg";
 }) {
+  const isDark = useTheme((state) => state.isDarkMode);
   const BOX_BASE_STYLE =
     "rounded-[8px] relative border border-whiteDark dark:border-gray overflow-hidden";
   const BOX_SIZE = {
@@ -27,24 +29,14 @@ export default function Avata({
           className={twMerge(IMG_BASE_STYLE)}
         />
       ) : (
-        <>
-          <img
-            src={ProfileDark}
-            alt="profile image"
-            className={twMerge(
-              IMG_BASE_STYLE,
-              "w-[40%] min-h-0 hidden dark:block"
-            )}
-          />
-          <img
-            src={Profile}
-            alt="profile image"
-            className={twMerge(
-              IMG_BASE_STYLE,
-              "w-[40%] min-h-0 block dark:hidden"
-            )}
-          />
-        </>
+        <img
+          src={isDark ? ProfileDark : Profile}
+          alt="profile image"
+          className={twMerge(
+            IMG_BASE_STYLE,
+            "w-[40%] min-h-0 hidden dark:block"
+          )}
+        />
       )}
     </div>
   );
