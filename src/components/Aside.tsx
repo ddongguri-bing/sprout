@@ -43,7 +43,7 @@ export default function Aside({ toggleOpen }: Props) {
       {/* 사용자 리스트 및 고정된 링크 */}
       <div className="flex flex-col flex-[3] h-[20%] border-t border-whiteDark dark:border-gray text-black dark:text-white overflow-hidden mt-5 scroll">
         <h2 className="font-bold mb-5 pt-5">사용자</h2>
-        <div className="flex-1 scroll overflow-y-auto mb-[10px]">
+        <div className="flex-1 scroll overflow-y-auto overflow-x-hidden mb-[10px]">
           {loading ? (
             <div className="w-full text-lg font-bold h-[450px] flex flex-col gap-5">
               {Array(5)
