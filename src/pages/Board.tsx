@@ -22,6 +22,7 @@ export default function Board() {
       if (channelId) {
         const postsData = await getPostsByChannel(channelId);
         setPosts(postsData);
+        console.log(postsData)
 
         const channelData = await getChannels();
         const selectedChannel = channelData.find(
@@ -52,8 +53,8 @@ export default function Board() {
       {posts.map((post) => (
         <BoardItem
           key={post._id}
-          postContent={post.title}
-          postImages={post.image ? [post.image] : []}
+          postContent={JSON.parse(post.title).text}
+          postImages={JSON.parse(post.title).images}
           likesCount={post.likes.length}
           commentCount={post.comments.length}
           author={{

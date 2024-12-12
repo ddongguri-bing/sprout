@@ -82,8 +82,8 @@ export default function BoardDetail() {
         <BoardItem
           isDetail={true}
           comments={(post.comments as unknown as Comment[]) || []}
-          postContent={post.title}
-          postImages={post.image ? [post.image] : []}
+          postContent={JSON.parse(post.title).text}
+          postImages={JSON.parse(post.title).images}
           likesCount={post.likes.length}
           commentCount={post.comments.length}
           author={{
