@@ -34,7 +34,6 @@ export default function BoardDetail() {
   };
 
   const auth = useAuthStore((state) => state.user);
-  console.log(auth?.email, post?.author.email);
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -62,7 +61,7 @@ export default function BoardDetail() {
             />
           </button>
           <div className="flex items-center gap-5">
-            {auth?.email === post?.author.email && (
+            {auth?._id === post?.author._id && (
               <>
                 <Button
                   theme="sub"
