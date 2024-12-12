@@ -67,3 +67,10 @@ export const deleteComment = async (commentId: string) => {
   });
   return data;
 };
+
+export const createLike = async (postId: string) => {
+  const { data } = await axiosInstance.post("/likes/create", {
+    postId,
+  });
+  return data;
+};
