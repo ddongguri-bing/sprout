@@ -1,12 +1,13 @@
 import { Link } from "react-router";
 import Notfound from "../assets/not_found.svg";
 import NotfoundIn from "../assets/not_found_i.svg";
+import { useTheme } from "../stores/themeStore";
 export default function NotFound() {
+  const isDark = useTheme((state) => state.isDarkMode);
   return (
     <div className="w-full h-screen  flex items-center justify-center bg-white dark:bg-black">
       <div className="w-full gap-[100px] flex items-start justify-center">
-        <img className="dark:hidden block" src={Notfound} alt="not found" />
-        <img className="dark:block hidden" src={NotfoundIn} alt="not found" />
+        <img src={isDark ? NotfoundIn : Notfound} alt="not found" />
         <div className="flex flex-col">
           <div className="text-[80px] leading-[57px] mb-10 font-angkor text-main">
             404
