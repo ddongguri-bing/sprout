@@ -51,7 +51,7 @@ export default function BoardItem({
   author: {
     username: string;
     email: string;
-    userId?: string;
+    userId: string;
     image?: string;
   };
   postId: string;
@@ -203,7 +203,13 @@ export default function BoardItem({
             </div>
           </div>
           {/* 댓글 */}
-          {comments && <Comments comments={comments} postId={postId} />}
+          {comments && (
+            <Comments
+              comments={comments}
+              postId={postId}
+              userId={author.userId}
+            />
+          )}
         </div>
       </div>
     </div>
