@@ -37,7 +37,10 @@ export default function User() {
   const [loggedInUser, setLoggedInUser] = useState<LoggedInUserType | null>(
     null
   );
+  const [subscribeCount, setSubscribeCount] = useState(0);
+  const [subscribed, setScribed] = useState(false);
 
+  // 특정 유저 불러오기
   const fetchSpecificUser = async () => {
     try {
       if (id) {
@@ -52,6 +55,7 @@ export default function User() {
   useEffect(() => {
     fetchSpecificUser();
 
+    // 현재 로그인한 유저 정보 가져오기
     const token = document.cookie.match(/token=([^ ]+)/)?.[1];
     const checkLoggedInUser = async (token: string) => {
       try {
