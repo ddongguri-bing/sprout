@@ -30,7 +30,7 @@ export type Comment = {
   updatedAt: string;
 };
 
-export type Like = {
+export type LikeType = {
   _id: string;
   user: string;
   post: string;
@@ -64,6 +64,20 @@ export const createComment = async (postId: string, comment: string) => {
 export const deleteComment = async (commentId: string) => {
   const { data } = await axiosInstance.delete("/comments/delete", {
     data: { id: commentId },
+  });
+  return data;
+};
+
+export const createLike = async (postId: string) => {
+  const { data } = await axiosInstance.post("/likes/create", {
+    postId,
+  });
+  return data;
+};
+
+export const deleteLike = async (id: string) => {
+  const { data } = await axiosInstance.delete("/likes/delete", {
+    data: { id },
   });
   return data;
 };
