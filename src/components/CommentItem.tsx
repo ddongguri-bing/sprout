@@ -3,7 +3,7 @@ import { Comment } from "../api/board";
 import Avata from "./Avata";
 import Close from "../assets/close.svg";
 import { useModal } from "../stores/modalStore";
-
+import { useAuthStore } from "../stores/authStore";
 interface CommentItemProps {
   comment: Comment;
   onDeleteComment: (commentId: string) => void;
@@ -15,6 +15,8 @@ export default function CommentItem({
 }: CommentItemProps) {
   const setOpen = useModal((state) => state.setModalOpen);
   const setModalOpts = useModal((state) => state.setModalOpts);
+  const auth = useAuthStore((state) => state.user);
+  console.log(auth?._id, comment?.author._id);
 
   const handleDeleteOpen = () => {
     setOpen(true);
@@ -46,9 +48,12 @@ export default function CommentItem({
           </p>
         </div>
       </div>
-      <button onClick={handleDeleteOpen}>
-        <img className="dark:invert w-3" src={Close} alt="close icon" />
-      </button>
+
+      {auth?._id === comment.author._id && (
+        <button onClick={handleDeleteOpen}>
+          <img className="dark:invert w-3" src={Close} alt="close icon" />
+        </button>
+      )}
     </div>
   );
 }

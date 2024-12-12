@@ -5,6 +5,9 @@ import Send from "../assets/send.svg";
 import SendActive from "../assets/send_active.svg";
 import { twMerge } from "tailwind-merge";
 import TextareaAutosize from "react-textarea-autosize";
+import { useAuthStore } from "../stores/authStore";
+import { useModal } from "../stores/modalStore";
+import { useNavigate } from "react-router";
 
 export default function Comments({
   comments,
@@ -15,6 +18,23 @@ export default function Comments({
 }) {
   const [value, setValue] = useState<string>("");
   const [commentList, setCommentList] = useState<Comment[]>(comments);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const setOpen = useModal((state) => state.setModalOpen);
+  const setModalOpts = useModal((state) => state.setModalOpts);
+  const navigate = useNavigate();
+  const handleOpenModal = () => {
+    setModalOpts({
+      message: "로그인 후 댓글을 작성해주세요!",
+      btnText: "확인",
+      btnColor: "main",
+      onClick: () => {
+        setOpen(false);
+
+        navigate("/auth/signIn");
+      },
+    });
+    setOpen(true);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -22,6 +42,11 @@ export default function Comments({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!isLoggedIn) {
+      handleOpenModal();
+      return;
+    }
 
     if (!value) return;
 
@@ -33,6 +58,7 @@ export default function Comments({
       console.error(error);
     }
   };
+
   const handleDeleteComment = async (commentId: string) => {
     try {
       await deleteComment(commentId);
@@ -63,6 +89,7 @@ export default function Comments({
           <img src={value ? SendActive : Send} alt="send icon" />
         </button>
       </form>
+
       {commentList.map((comment) => (
         <CommentItem
           key={comment._id}
