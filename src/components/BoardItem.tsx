@@ -3,12 +3,13 @@ import CommentSvg from "../assets/comment.svg";
 import Like from "../assets/like.svg";
 import Comments from "./Comments";
 import { useState, useEffect } from "react";
-import { Comment } from "../api/board";
+import { Comment, createLike, deleteLike, getPostById } from "../api/board";
 import darkComment from "../assets/dark_comment.svg";
 import darkLike from "../assets/dark_like.svg";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import Avata from "./Avata";
+import like_fill from "../assets/like_fill.svg";
 
 const calculateTimeDifference = (sentAt: string | number | Date) => {
   const sentTime = new Date(sentAt).getTime();
@@ -58,10 +59,54 @@ export default function BoardItem({
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const exactDate = new Date(createdAt).toLocaleString();
-
+  const [likeId, setLikeId] = useState<string | null>(null);
+  const [likeCount, setLikeCount] = useState(likesCount);
   useEffect(() => {
+    const fetchPostData = async () => {
+      try {
+        const post = await getPostById(postId);
+        const currentUserLike = post.likes.find(
+          (like: { user: string }) => like.user === "currentUserId"
+        );
+        if (currentUserLike) {
+          setLikeId(currentUserLike._id);
+          console.log(currentUserLike._id);
+        } else {
+          setLikeId(null);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPostData();
     Fancybox.bind('[data-fancybox="gallery"]');
-  }, []);
+  }, [postId]);
+
+  const handleLikeClick = async () => {
+    if (likeId) {
+      try {
+        await deleteLike(likeId);
+        setLikeId(null);
+        const updatedPost = await getPostById(postId);
+        setLikeCount(updatedPost.likes.length);
+        console.log(updatedPost.likes);
+      } catch (error) {
+        console.error("좋아요 취소 중 오류 발생:", error);
+      }
+    } else {
+      try {
+        const response = await createLike(postId);
+        setLikeId(response._id);
+
+        const updatedPost = await getPostById(postId);
+        setLikeCount(updatedPost.likes.length);
+        console.log(updatedPost.likes);
+      } catch (error) {
+        console.error("좋아요 추가 중 오류 발생:", error);
+      }
+    }
+  };
 
   const mainContents = (
     <div className="w-full max-w-[777px] flex flex-col items-start gap-5">
@@ -121,17 +166,21 @@ export default function BoardItem({
               <button
                 onClick={(e) => {
                   e.preventDefault();
-                  console.log("좋아요");
+                  handleLikeClick();
                 }}
                 className="flex items-center gap-[10px]"
               >
                 <img
-                  src={darkLike}
+                  src={likeId ? like_fill : darkLike}
                   alt="like icon"
                   className="dark:block hidden"
                 />
-                <img src={Like} alt="like icon" className="dark:hidden block" />
-                {likesCount}
+                <img
+                  src={likeId ? like_fill : Like}
+                  alt="like icon"
+                  className="dark:hidden block"
+                />
+                {likeCount}
               </button>
             </div>
             <div
@@ -140,7 +189,6 @@ export default function BoardItem({
               className="text-gray dark:text-whiteDark relative"
             >
               {calculateTimeDifference(createdAt)}
-
               {isHovered && (
                 <div
                   className="absolute w-[170px] text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10 
