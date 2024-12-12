@@ -8,6 +8,7 @@ import { getPostById, PostItem, Comment } from "../api/board";
 import { deletePost } from "../api/posting";
 import Modal from "../components/Modal";
 import { useModal } from "../stores/modalStore";
+import { useAuthStore } from "../stores/authStore";
 
 export default function BoardDetail() {
   const { postId, id } = useParams();
@@ -32,6 +33,8 @@ export default function BoardDetail() {
     });
   };
 
+  const auth = useAuthStore((state) => state.user);
+
   useEffect(() => {
     const fetchPostData = async () => {
       if (postId) {
@@ -49,7 +52,7 @@ export default function BoardDetail() {
     <>
       {modalOpen && <Modal />}
       <div className="pb-[30px] flex flex-col relative">
-        <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
+        <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
           <button onClick={() => navigate(-1)} className="">
             <img
               className="dark:invert dark:hover:fill-white"
@@ -58,17 +61,21 @@ export default function BoardDetail() {
             />
           </button>
           <div className="flex items-center gap-5">
-            <Button
-              theme="sub"
-              size="sm"
-              text="삭제"
-              onClick={handleDeletePost}
-            />
-            <Button
-              to={`/board/${id}/${postId}/update`}
-              size="sm"
-              text="수정"
-            />
+            {auth?._id === post?.author._id && (
+              <>
+                <Button
+                  theme="sub"
+                  size="sm"
+                  text="삭제"
+                  onClick={handleDeletePost}
+                />
+                <Button
+                  to={`/board/${id}/${postId}/update`}
+                  size="sm"
+                  text="수정"
+                />
+              </>
+            )}
           </div>
         </div>
         <BoardItem
