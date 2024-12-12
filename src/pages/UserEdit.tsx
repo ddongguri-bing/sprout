@@ -61,15 +61,15 @@ export default function UserEdit() {
   const [updatePasswordError, setUpdatePasswordError] = useState("");
   const [confirmUpdatePasswordError, setConfirmUpdatePasswordError] =
     useState("");
-  const defaultPassword = useAuthStore((state) => state.user?.password);
-  // 비밀번호조건(대소문자+숫자 8자리 이상) 만족 & 이전 비밀번호와 달라야 함
+
+  // 비밀번호조건(대소문자+숫자 8자리 이상) 만족
   const isValidUpdatePassword = () => {
     const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    const isValid =
-      passwordRegExp.test(updatePassword) && updatePassword !== defaultPassword;
-    setUpdatePasswordError(isValid ? "" : "올바른 비밀번호가 아닙니다");
-    return isValid;
+    const isValidPw = passwordRegExp.test(updatePassword);
+    setUpdatePasswordError(isValidPw ? "" : "올바른 비밀번호가 아닙니다");
+    return isValidPw;
   };
+
   const isConfirmUpdatePassword = () => {
     const isValid = confirmUpdatePassword === updatePassword;
     setConfirmUpdatePasswordError(
@@ -86,6 +86,8 @@ export default function UserEdit() {
     if (!isValid) return;
     try {
       await putUpdatePw(updatePassword);
+      await setUpdatePassword("");
+      await setConfirmUpdatePassword("");
     } catch (error) {
       console.log("error");
     }
