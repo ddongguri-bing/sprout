@@ -14,12 +14,10 @@ export default function CommentItem({
   onDeleteComment,
 }: CommentItemProps) {
   const setOpen = useModal((state) => state.setModalOpen);
-  const setModalOpts = useModal((state) => state.setModalOpts);
   const auth = useAuthStore((state) => state.user);
 
   const handleDeleteOpen = () => {
-    setOpen(true);
-    setModalOpts({
+    setOpen(true, {
       message: "정말로 댓글을 삭제하시겠습니까?",
       btnText: "삭제",
       btnColor: "red",

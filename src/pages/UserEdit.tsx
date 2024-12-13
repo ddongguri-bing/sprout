@@ -99,7 +99,6 @@ export default function UserEdit() {
   };
   //로그아웃 관련
   const setOpen = useModal((state) => state.setModalOpen);
-  const setModalOpts = useModal((state) => state.setModalOpts);
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -110,8 +109,7 @@ export default function UserEdit() {
     navigate("/");
   };
   const handleLogoutOpen = () => {
-    setOpen(true);
-    setModalOpts({
+    setOpen(true, {
       message: "정말로 로그아웃 하시겠습니까?",
       btnText: "로그아웃",
       btnColor: "red",
@@ -130,8 +128,7 @@ export default function UserEdit() {
       ]);
 
       if (photoBol || pwBol) {
-        setOpen(true);
-        setModalOpts({
+        setOpen(true, {
           message:
             photoBol && pwBol
               ? "수정이 완료되었습니다"

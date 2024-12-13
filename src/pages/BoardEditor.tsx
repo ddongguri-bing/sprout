@@ -16,7 +16,6 @@ export default function BoardEditor() {
 
   const modalOpen = useModal((state) => state.modalOpen);
   const setModalOpen = useModal((state) => state.setModalOpen);
-  const setModalOpts = useModal((state) => state.setModalOpts);
 
   //update인지 create인지 확인용
   const { id, postId } = useParams();
@@ -49,8 +48,7 @@ export default function BoardEditor() {
   //완료 버튼
   const handleCreatePost = async () => {
     if (!editorText && preview.length === 0) {
-      setModalOpen(true);
-      setModalOpts({
+      setModalOpen(true, {
         message: "내용이 없습니다. 작성을 취소하시겠습니까?",
         btnText: "확인",
         btnColor: "main",

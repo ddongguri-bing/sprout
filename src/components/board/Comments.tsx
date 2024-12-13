@@ -24,12 +24,11 @@ export default function Comments({
   const [commentList, setCommentList] = useState<Comment[]>(comments);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setOpen = useModal((state) => state.setModalOpen);
-  const setModalOpts = useModal((state) => state.setModalOpts);
   const isModalOpen = useModal((state) => state.modalOpen);
   const navigate = useNavigate();
 
   const handleOpenModal = () => {
-    setModalOpts({
+    setOpen(true, {
       message: "로그인 후 댓글을 작성해주세요!",
       btnText: "확인",
       btnColor: "main",
@@ -38,11 +37,10 @@ export default function Comments({
         navigate("/auth/signIn");
       },
     });
-    setOpen(true);
   };
 
   const handleLineBreak = () => {
-    setModalOpts({
+    setOpen(true, {
       message: "최대 7줄까지만 입력 가능합니다.",
       btnText: "확인",
       isOneBtn: true,
@@ -51,7 +49,6 @@ export default function Comments({
         setOpen(false);
       },
     });
-    setOpen(true);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
