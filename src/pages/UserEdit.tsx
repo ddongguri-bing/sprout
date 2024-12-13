@@ -9,6 +9,7 @@ import { postUploadPhoto, putUpdatePw } from "../api/users";
 import Avata from "../components/common/Avata";
 import { useTriggerStore } from "../stores/triggerStore";
 import Input from "../components/common/Input";
+import { useCookies } from "react-cookie";
 export default function UserEdit() {
   const setTrigger = useTriggerStore((state) => state.setTrigger);
 
@@ -98,6 +99,8 @@ export default function UserEdit() {
     }
   };
   //로그아웃 관련
+  const [_, _set, removeCookie] = useCookies(["token"]);
+
   const setOpen = useModal((state) => state.setModalOpen);
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
@@ -105,7 +108,7 @@ export default function UserEdit() {
     await postLogOut();
     setOpen(false);
     logout();
-    document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/`;
+    removeCookie("token");
     navigate("/");
   };
   const handleLogoutOpen = () => {

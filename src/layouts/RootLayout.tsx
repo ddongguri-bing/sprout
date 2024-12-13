@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../stores/themeStore";
 import { useAuthStore } from "../stores/authStore";
 import { getAuthUser } from "../api/auth";
+import { useCookies } from "react-cookie";
 
 export default function RootLayout({
   children,
@@ -14,23 +15,23 @@ export default function RootLayout({
   // auth 상태값 확인
   const login = useAuthStore((state) => state.login);
   const logout = useAuthStore((state) => state.logout);
+  const [cookies, _, removeCookie] = useCookies(["token"]);
 
   useEffect(() => {
     if (localStorage.getItem("theme") === "dark") {
       setIsDarkMode(true);
       document.documentElement.classList.add("dark"); // 처음 페이지 로드 시 'dark' 클래스를 추가
     }
-    const token = document.cookie.match(/token=([^ ]+)/)?.[1];
+    const { token } = cookies;
 
     const handleGetUser = async (token: string) => {
       try {
         const user = await getAuthUser(`Bearer ${token}`);
         console.log(user);
         login(token, user);
-        document.cookie = `token=${token} path=/; max-age=10800; secure`;
       } catch (err) {
         logout();
-        document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/`;
+        removeCookie("token");
       }
     };
     console.log("token", token);
