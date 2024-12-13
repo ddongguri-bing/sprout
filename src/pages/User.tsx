@@ -1,7 +1,7 @@
 import BoardGrid from "../components/user/BoardGrid";
 import Button from "../components/common/Button";
 import { getSpecificUser } from "../api/users";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import Avata from "../components/common/Avata";
 import { deleteFollowDelete, postFollowCreate } from "../api/follow";
@@ -9,6 +9,7 @@ import { postNotification } from "../api/notification";
 import { useModal } from "../stores/modalStore";
 import images from "../constants/images";
 import { useAuthStore } from "../stores/authStore";
+import FollowList from "../components/user/FollowList";
 import SendMessage from "../components/user/SendMessage";
 import ChatMessage from "../components/user/ChatMessage";
 import Loading from "../components/common/Loading";
@@ -32,7 +33,14 @@ interface SpecificUserType {
     updatedAt: string;
     __v: number;
   }[];
-  following: string[];
+  following: {
+    _id: string;
+    user: string;
+    follower: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }[];
   posts: PostType[];
   image?: string;
 }
@@ -40,10 +48,14 @@ interface SpecificUserType {
 export default function User() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [specificUser, setSpecificUser] = useState<SpecificUserType | null>(
     null
   );
+  const [followList, setFollowList] = useState<
+    { _id: string; fullName: string; email: string; image: string }[]
+  >([]);
   const loggedInUser = useAuthStore((state) => state.user);
 
   // 팔로우/팔로잉 기능
@@ -51,6 +63,57 @@ export default function User() {
   const [isFollow, setIsFollow] = useState(false);
   const [followId, setFollowId] = useState<string | null>(null);
   const setOpen = useModal((state) => state.setModalOpen);
+
+  // FollowList 모달 관리
+  const [isFollowListOpen, setFollowListOpen] = useState(false);
+  const [followListType, setFollowListType] = useState<
+    "followers" | "following"
+  >("followers");
+  const [loadingFollowList, setLoadingFollowList] = useState(false);
+  const toggleFollowList = () => setFollowListOpen((prev) => !prev);
+
+  const fetchUserDetails = async (userId: string) => {
+    try {
+      const user = await getSpecificUser(userId);
+      return {
+        _id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        image: user.image,
+      };
+    } catch (error) {
+      return {
+        _id: userId,
+        fullName: "알 수 없는 사용자",
+        email: "",
+        image: "Avatar",
+      };
+    }
+  };
+
+  const loadFollowList = async () => {
+    if (!specificUser) return;
+    setLoadingFollowList(true);
+    setFollowList([]);
+
+    try {
+      if (followListType === "followers") {
+        const followers = await Promise.all(
+          specificUser.followers.map(async (f) => fetchUserDetails(f.follower))
+        );
+        setFollowList(followers);
+      } else {
+        const following = await Promise.all(
+          specificUser.following.map(async (f) => fetchUserDetails(f.user))
+        );
+        setFollowList(following);
+      }
+    } catch (error) {
+      console.error("팔로우/팔로잉 목록 로드 실패", error);
+    } finally {
+      setLoadingFollowList(false);
+    }
+  };
 
   // 로그인 전 팔로우 버튼 누르면 모달
   const handleOpenModal = () => {
@@ -100,7 +163,6 @@ export default function User() {
     }
   };
 
-  // 특정 유저 불러오기
   const fetchSpecificUser = async () => {
     try {
       if (!id) return;
@@ -115,7 +177,12 @@ export default function User() {
     fetchSpecificUser();
   }, [id]);
 
-  // 팔로우/팔로잉 기능
+  useEffect(() => {
+    if (isFollowListOpen) {
+      loadFollowList();
+    }
+  }, [isFollowListOpen, followListType]);
+
   useEffect(() => {
     if (loggedInUser && specificUser) {
       const isFollowing = specificUser.followers.find(
@@ -131,6 +198,13 @@ export default function User() {
       setFollowerCount(specificUser.followers.length);
     }
   }, [loggedInUser, specificUser]);
+
+  // URL 변경 시 모달 닫기
+  useEffect(() => {
+    if (isFollowListOpen) {
+      setFollowListOpen(false);
+    }
+  }, [location]);
 
   //* Message */
   const [msgOpen, setMsgOpen] = useState<boolean>(false);
@@ -180,15 +254,27 @@ export default function User() {
               </div>
               <div className="flex flex-col gap-[20px]">
                 <div className="flex gap-[30px]">
-                  <div className="flex items-center gap-[10px]">
-                    <span>팔로워</span>{" "}
-                    <span className="text-gray dark:text-whiteDark font-semibold">
+                  <div
+                    className="flex items-center gap-[10px]"
+                    onClick={() => {
+                      setFollowListType("followers");
+                      toggleFollowList();
+                    }}
+                  >
+                    <span className="font-bold">팔로우</span>{" "}
+                    <span className="text-gray dark:text-whiteDark">
                       {followerCount}
                     </span>
                   </div>
-                  <div className="flex items-center gap-[10px]">
-                    <span>팔로잉</span>{" "}
-                    <span className="text-gray dark:text-whiteDark font-semibold">
+                  <div
+                    className="flex items-center gap-[10px]"
+                    onClick={() => {
+                      setFollowListType("following");
+                      toggleFollowList();
+                    }}
+                  >
+                    <span className="font-bold">팔로잉</span>{" "}
+                    <span className="text-gray dark:text-whiteDark">
                       {specificUser.following.length}
                     </span>
                   </div>
@@ -199,6 +285,7 @@ export default function User() {
                     </span>
                   </div>
                 </div>
+
                 {/* id가 내 id이면 프로필 수정 버튼 / 아니면 팔로잉 버튼 */}
                 <div className="flex gap-[30px] items-center">
                   <Button
@@ -226,6 +313,13 @@ export default function User() {
           <BoardGrid posts={specificUser.posts} />
         </div>
       </div>
+      {isFollowListOpen && (
+        <FollowList
+          users={followList}
+          title={followListType === "followers" ? "팔로워" : "팔로잉"}
+          loading={loadingFollowList}
+          toggleOpen={toggleFollowList}
+        />
       {msgOpen && (
         <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 flex items-center justify-center z-[9999]">
           {type === "SEND" && <SendMessage onClose={() => setMsgOpen(false)} />}
