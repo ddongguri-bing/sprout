@@ -19,11 +19,11 @@ let retry = false;
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    const [cookies, _, remove] = useCookies(["token"]);
     const originRequest = error.config;
     if (error.response?.status === 401 && !retry) {
       retry = true; // 1번만시도
       try {
-        const [cookies] = useCookies(["token"]);
         const { token } = cookies;
         const { data } = await axiosInstance.get("/auth-user", {
           headers: { Authorization: `Bearer ${token}` },
@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
         console.error(err);
         const logout = useAuthStore.getState().logout;
         logout();
-        document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/`;
+        remove("token");
       }
     }
   }
