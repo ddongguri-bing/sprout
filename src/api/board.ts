@@ -39,45 +39,46 @@ export type LikeType = {
 };
 
 export const getPostsByChannel = async (channelId: string) => {
-  const { data } = await axiosInstance.get(`/posts/channel/${channelId}`);
-  return data;
+  return (await axiosInstance.get(`/posts/channel/${channelId}`)).data;
 };
 
 export const getPostsByAuthor = async (authorId: string) => {
-  const { data } = await axiosInstance.get(`/posts/author/${authorId}`);
-  return data;
+  return (await axiosInstance.get(`/posts/author/${authorId}`)).data;
 };
 
 export const getPostById = async (postId: string) => {
-  const { data } = await axiosInstance.get(`/posts/${postId}`);
-  return data;
+  return (await axiosInstance.get(`/posts/${postId}`)).data;
 };
 
 export const createComment = async (postId: string, comment: string) => {
-  const { data } = await axiosInstance.post("/comments/create", {
-    postId,
-    comment,
-  });
-  return data;
+  return (
+    await axiosInstance.post("/comments/create", {
+      postId,
+      comment,
+    })
+  ).data;
 };
 
 export const deleteComment = async (commentId: string) => {
-  const { data } = await axiosInstance.delete("/comments/delete", {
-    data: { id: commentId },
-  });
-  return data;
+  return (
+    await axiosInstance.delete("/comments/delete", {
+      data: { id: commentId },
+    })
+  ).data;
 };
 
 export const createLike = async (postId: string) => {
-  const { data } = await axiosInstance.post("/likes/create", {
-    postId,
-  });
-  return data;
+  return (
+    await axiosInstance.post("/likes/create", {
+      postId,
+    })
+  ).data;
 };
 
 export const deleteLike = async (id: string) => {
-  const { data } = await axiosInstance.delete("/likes/delete", {
-    data: { id },
-  });
-  return data;
+  return (
+    await axiosInstance.delete("/likes/delete", {
+      data: { id },
+    })
+  ).data;
 };
