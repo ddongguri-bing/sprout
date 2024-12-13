@@ -9,8 +9,9 @@ import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import images from "../constants/images";
 
-import axios from "axios";
 import { useTriggerStore } from "../stores/triggerStore";
+import { twMerge } from "tailwind-merge";
+import { postImages } from "../api/imgbb";
 import Loading from "../components/common/Loading";
 
 export default function BoardEditor() {
@@ -74,16 +75,8 @@ export default function BoardEditor() {
         const formData = new FormData();
         formData.append("image", file);
 
-        const response = await axios.post(
-          `${import.meta.env.VITE_IMAGE_UPLOAD_URL}`,
-          formData,
-          {
-            params: { key: `${import.meta.env.VITE_IMAGE_UPLOAD_KEY}` },
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
-
-        const data = response.data;
+        //이미지 업로드
+        const data = await postImages(formData);
 
         if (data.success) {
           uploadedUrls.push(data.data.url); // 업로드된 URL을 배열에 추가
@@ -182,17 +175,6 @@ export default function BoardEditor() {
         <div className="w-full max-w-[777px] flex flex-col items-start gap-5 mx-auto px-[15px]">
           <DraftEditor getEditorText={getEditorText} editorText={editorText} />
           <div className="w-full grid grid-cols-2 gap-[10px]">
-            {preview.length < 4 && (
-              <label className="bg-whiteDark flex items-center justify-center rounded-[8px] h-[450px] cursor-pointer">
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={handleImageAdd}
-                />
-                <img src={images.Plus} alt="plus icon" />
-              </label>
-            )}
             {
               <>
                 {preview.length > 0 &&
@@ -200,7 +182,10 @@ export default function BoardEditor() {
                     return (
                       <div
                         key={i}
-                        className="h-[450px] rounded-[8px] overflow-hidden relative">
+                        className={twMerge(
+                          "h-[450px] rounded-[8px] overflow-hidden relative",
+                        )}
+                      >
                         <button
                           type="button"
                           onClick={() => handleDeleteImg(i)}
@@ -221,6 +206,21 @@ export default function BoardEditor() {
                   })}
               </>
             }
+            {preview.length < 4 && (
+              <label
+                className={twMerge(
+                  "bg-whiteDark flex items-center justify-center rounded-[8px] cursor-pointer h-[450px]",
+                )}
+              >
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={handleImageAdd}
+                />
+                <img src={images.Plus} alt="plus icon" />
+              </label>
+            )}
           </div>
         </div>
       </div>
