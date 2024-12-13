@@ -184,19 +184,35 @@ export default function User() {
                 </div>
                 {/* id가 내 id이면 프로필 수정 버튼 / 아니면 팔로잉 버튼 */}
                 {loggedInUser?._id === specificUser._id ? (
-                  <Button
-                    to={`/user/edit`}
-                    text={"프로필 수정"}
-                    size={"md"}
-                    className="max-w-[188px]"
-                  />
+                  <div className="flex gap-[30px] items-center">
+                    <Button
+                      to={`/user/edit`}
+                      text={"프로필 수정"}
+                      size={"md"}
+                      className="max-w-[188px]"
+                    />
+                    <button>
+                      <img
+                        className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
+                        src={images.MessageBoxBtn}
+                      />
+                    </button>
+                  </div>
                 ) : (
-                  <Button
-                    text={isFollow ? "팔로우 끊기" : "팔로우"}
-                    size={"md"}
-                    className="max-w-[188px]"
-                    onClick={isFollow ? handleUnfollow : handleFollow}
-                  />
+                  <div className="flex gap-[30px] items-center">
+                    <Button
+                      text={isFollow ? "팔로우 끊기" : "팔로우"}
+                      size={"md"}
+                      className="max-w-[188px]"
+                      onClick={isFollow ? handleUnfollow : handleFollow}
+                    />
+                    <button>
+                      <img
+                        className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
+                        src={images.MessageSendBtn}
+                      />
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
