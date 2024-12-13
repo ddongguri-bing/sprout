@@ -12,6 +12,7 @@ import images from "../constants/images";
 import { useTriggerStore } from "../stores/triggerStore";
 import { twMerge } from "tailwind-merge";
 import { postImages } from "../api/imgbb";
+import Loading from "../components/common/Loading";
 
 export default function BoardEditor() {
   const navigate = useNavigate();
@@ -153,7 +154,7 @@ export default function BoardEditor() {
     };
   }, []);
 
-  if (uploading) return <h1>loading</h1>;
+  if (uploading) return <Loading />;
 
   return (
     <>

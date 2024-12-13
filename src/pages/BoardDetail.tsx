@@ -10,6 +10,7 @@ import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import { useAuthStore } from "../stores/authStore";
 import { useTriggerStore } from "../stores/triggerStore";
+import Loading from "../components/common/Loading";
 
 export default function BoardDetail() {
   const { postId, id } = useParams();
@@ -48,7 +49,7 @@ export default function BoardDetail() {
     };
   }, [postId]);
 
-  if (!post) return <div>Loading...</div>;
+  if (!post) return <Loading />;
 
   return (
     <>
