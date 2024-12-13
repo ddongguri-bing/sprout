@@ -17,7 +17,6 @@ import { useModal } from "../stores/modalStore";
 import { useTheme } from "../stores/themeStore";
 import { twMerge } from "tailwind-merge";
 
-
 const calculateTimeDifference = (sentAt: string | number | Date) => {
   const sentTime = new Date(sentAt).getTime();
   const currentTime = new Date().getTime();
@@ -199,7 +198,7 @@ export default function BoardItem({
                 <img
                   src={isDark ? darkComment : CommentSvg}
                   alt="comment icon"
-                  className="dark:block hidden"
+                  className="dark:block "
                 />
                 {commentsCount}
               </button>
@@ -215,7 +214,11 @@ export default function BoardItem({
                   alt="like icon"
                   className="dark:block hidden"
                 />
-                <img src={likeId ? like_fill : Like} alt="like icon" />
+                <img
+                  src={likeId ? like_fill : Like}
+                  alt="like icon"
+                  className="dark:hidden block"
+                />
                 {likeCount}
               </button>
             </div>
