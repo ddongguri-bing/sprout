@@ -320,6 +320,7 @@ export default function User() {
           loading={loadingFollowList}
           toggleOpen={toggleFollowList}
         />
+      )}
       {msgOpen && (
         <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 flex items-center justify-center z-[9999]">
           {type === "SEND" && <SendMessage onClose={() => setMsgOpen(false)} />}
