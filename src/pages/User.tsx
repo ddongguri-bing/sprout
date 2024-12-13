@@ -9,6 +9,7 @@ import { postNotification } from "../api/notification";
 import { useModal } from "../stores/modalStore";
 import images from "../constants/images";
 import { useAuthStore } from "../stores/authStore";
+import Loading from "../components/common/Loading";
 
 interface PostType {
   _id: string;
@@ -129,13 +130,7 @@ export default function User() {
     }
   }, [loggedInUser, specificUser]);
 
-  if (!specificUser) {
-    return (
-      <div className="font-bold text-[30px] text-main flex flex-col items-center justify-center h-full">
-        Loading...
-      </div>
-    );
-  }
+  if (!specificUser) return <Loading />;
 
   return (
     <>
