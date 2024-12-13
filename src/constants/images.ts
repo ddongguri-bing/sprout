@@ -16,6 +16,9 @@ import Back from "../assets/back.svg";
 import Plus from "../assets/plus.svg";
 import Camera from "../assets/camera.svg";
 import Logout from "../assets/logout.svg";
+import MessageBoxBtn from "../assets/messageBoxBtn.svg";
+import MessageSendBtn from "../assets/messageSendBtn.svg";
+
 const images = {
   Logo,
   Profile,
@@ -35,6 +38,8 @@ const images = {
   Plus,
   Camera,
   Logout,
+  MessageBoxBtn,
+  MessageSendBtn,
 };
 
 export default images;

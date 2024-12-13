@@ -3,16 +3,20 @@ import Button from "../components/common/Button";
 import DraftEditor from "../components/board/DraftEditor";
 import "draft-js/dist/Draft.css";
 import { createPost, updatePost } from "../api/posting";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useSearchParams } from "react-router";
 import { getPostById } from "../api/board";
 import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import images from "../constants/images";
 
 import axios from "axios";
+import { useTriggerStore } from "../stores/triggerStore";
+import Loading from "../components/common/Loading";
 
 export default function BoardEditor() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const channelName = searchParams.get("name");
 
   const modalOpen = useModal((state) => state.modalOpen);
   const setModalOpen = useModal((state) => state.setModalOpen);
@@ -146,12 +150,18 @@ export default function BoardEditor() {
     setImageUrl((prev) => prev.filter((_, index) => index !== indexToDelete));
   };
 
+  const setTargetLink = useTriggerStore((state) => state.setTargetLink);
+
   useEffect(() => {
+    if (channelName) setTargetLink(channelName);
     //update라면 현재 포스트 내용 불러오기
     if (currentPostId) getCurrentPost();
+    return () => {
+      setTargetLink(null);
+    };
   }, []);
 
-  if (uploading) return <h1>loading</h1>;
+  if (uploading) return <Loading />;
 
   return (
     <>
@@ -190,13 +200,11 @@ export default function BoardEditor() {
                     return (
                       <div
                         key={i}
-                        className="h-[450px] rounded-[8px] overflow-hidden relative"
-                      >
+                        className="h-[450px] rounded-[8px] overflow-hidden relative">
                         <button
                           type="button"
                           onClick={() => handleDeleteImg(i)}
-                          className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]"
-                        >
+                          className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]">
                           <img
                             src={images.Close}
                             alt="close icon"

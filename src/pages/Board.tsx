@@ -42,7 +42,7 @@ export default function Board() {
         {/* 채널 이름 표시 */}
         {isLoggedIn && (
           <Button
-            to={`/board/${channelId}/create`}
+            to={`/board/${channelId}/create?name=${channelName}`}
             text="포스트 작성"
             size={"sm"}
           />

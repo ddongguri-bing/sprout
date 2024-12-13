@@ -27,6 +27,7 @@ export default function AfterUserBox({ user }: { user: User }) {
     await putNotificationSeen();
     setTrigger();
   }, [notis]);
+
   return (
     <div className="flex flex-col gap-5">
       <div className="pb-5 border-b border-whiteDark dark:border-gray">
