@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import PlusIcon from "../assets/plus.svg";
-import CloseIcon from "../assets/close.svg";
-import Button from "../components/Button";
-import DraftEditor from "../components/DraftEditor";
+import Button from "../components/common/Button";
+import DraftEditor from "../components/board/DraftEditor";
 import "draft-js/dist/Draft.css";
 import { createPost, updatePost } from "../api/posting";
 import { useNavigate, useParams } from "react-router";
 import { getPostById } from "../api/board";
-import Modal from "../components/Modal";
+import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
+import images from "../constants/images";
 
 import axios from "axios";
 
@@ -17,7 +16,6 @@ export default function BoardEditor() {
 
   const modalOpen = useModal((state) => state.modalOpen);
   const setModalOpen = useModal((state) => state.setModalOpen);
-  const setModalOpts = useModal((state) => state.setModalOpts);
 
   //update인지 create인지 확인용
   const { id, postId } = useParams();
@@ -50,8 +48,7 @@ export default function BoardEditor() {
   //완료 버튼
   const handleCreatePost = async () => {
     if (!editorText && preview.length === 0) {
-      setModalOpen(true);
-      setModalOpts({
+      setModalOpen(true, {
         message: "내용이 없습니다. 작성을 취소하시겠습니까?",
         btnText: "확인",
         btnColor: "main",
@@ -183,7 +180,7 @@ export default function BoardEditor() {
                   accept="image/*"
                   onChange={handleImageAdd}
                 />
-                <img src={PlusIcon} alt="plus icon" />
+                <img src={images.Plus} alt="plus icon" />
               </label>
             )}
             {
@@ -201,7 +198,7 @@ export default function BoardEditor() {
                           className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]"
                         >
                           <img
-                            src={CloseIcon}
+                            src={images.Close}
                             alt="close icon"
                             className="invert"
                           />

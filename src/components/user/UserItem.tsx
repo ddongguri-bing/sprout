@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import Avata from "./Avata";
+import Avata from "../common/Avata";
 
 export default function UserItem({ user }: { user: any }) {
   return (

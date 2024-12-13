@@ -1,84 +1,43 @@
 import { Link, useNavigate } from "react-router";
-import CommentSvg from "../assets/comment.svg";
-import Like from "../assets/like.svg";
+import images from "../../constants/images";
 import Comments from "./Comments";
 import { useState, useEffect } from "react";
-import { Comment, createLike, deleteLike, getPostById } from "../api/board";
-import darkComment from "../assets/dark_comment.svg";
-import darkLike from "../assets/dark_like.svg";
+import { PostItem, createLike, deleteLike, getPostById } from "../../api/board";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
-import Avata from "./Avata";
+import Avata from "../common/Avata";
 
-import like_fill from "../assets/like_fill.svg";
-import { useAuthStore } from "../stores/authStore";
-import { postNotification } from "../api/notification";
-import { useModal } from "../stores/modalStore";
-import { useTheme } from "../stores/themeStore";
+import { useAuthStore } from "../../stores/authStore";
+import { postNotification } from "../../api/notification";
+import { useModal } from "../../stores/modalStore";
+import { useTheme } from "../../stores/themeStore";
 import { twMerge } from "tailwind-merge";
+import calculateTimeDifference from "../../utils/calculateTimeDifference";
 
-const calculateTimeDifference = (sentAt: string | number | Date) => {
-  const sentTime = new Date(sentAt).getTime();
-  const currentTime = new Date().getTime();
-  const differenceInMs = currentTime - sentTime;
-  const differenceInHours = Math.floor(differenceInMs / (1000 * 60 * 60));
-  const differenceInDays = Math.floor(differenceInHours / 24);
-
-  if (differenceInDays > 0) {
-    return `${differenceInDays}일 전`;
-  } else if (differenceInHours === 0) {
-    const differenceInMinutes = Math.floor(differenceInMs / (1000 * 60));
-    return `${differenceInMinutes}분 전`;
-  } else {
-    return `${differenceInHours}시간 전`;
-  }
-};
-
-export default function BoardItem({
-  isDetail,
-  comments,
-  postContent,
-  postImages,
-  likesCount,
-  createdAt,
-  commentCount,
-  author,
-  postId,
-  channelId,
-}: {
+interface Props {
   isDetail?: boolean;
-  comments?: Comment[];
-  postContent: string;
-  postImages: string[];
-  likesCount: number;
-  createdAt: string;
-  commentCount: number;
-  author: {
-    username: string;
-    email: string;
-    userId: string;
-    image?: string;
-  };
-  postId: string;
+  post: PostItem;
   channelId: string;
-}) {
+}
+
+export default function BoardItem({ isDetail, post, channelId }: Props) {
+  const { createdAt, likes, comments, _id: postId, author } = post;
   const isDark = useTheme((state) => state.isDarkMode);
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
-  const [isHovered, setIsHovered] = useState(false);
   const exactDate = new Date(createdAt).toLocaleString();
   const [likeId, setLikeId] = useState<string | null>(null);
-  const [likeCount, setLikeCount] = useState(likesCount);
+  const [likeCount, setLikeCount] = useState(likes.length);
   const setOpen = useModal((state) => state.setModalOpen);
-  const setModalOpts = useModal((state) => state.setModalOpts);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const [commentsCount, setCommentsCount] = useState(commentCount);
+  const [commentsCount, setCommentsCount] = useState(comments.length);
+  const postImages = JSON.parse(post.title).images;
 
   const updateCommentCount = (newCount: number) => {
     setCommentsCount(newCount);
   };
   const handleLikeModal = () => {
-    setModalOpts({
+    setOpen(true, {
       message: "로그인 후 좋아요를 눌러주세요!",
       btnText: "확인",
       btnColor: "main",
@@ -87,7 +46,6 @@ export default function BoardItem({
         navigate("/auth/signIn");
       },
     });
-    setOpen(true);
   };
   useEffect(() => {
     const fetchPostData = async () => {
@@ -97,11 +55,8 @@ export default function BoardItem({
         const currentUserLike = post.likes.find(
           (like: { user: string }) => like.user === user._id
         );
-        if (currentUserLike) {
-          setLikeId(currentUserLike._id);
-        } else {
-          setLikeId(null);
-        }
+        if (currentUserLike) setLikeId(currentUserLike._id);
+        else setLikeId(null);
       } catch (error) {
         console.error(error);
       }
@@ -112,35 +67,25 @@ export default function BoardItem({
   }, [postId, user]);
 
   const handleLikeClick = async () => {
-    if (!isLoggedIn) {
-      handleLikeModal();
-      return;
-    }
-    if (likeId) {
-      try {
-        await deleteLike(likeId);
-        setLikeId(null);
-        const updatedPost = await getPostById(postId);
-        setLikeCount(updatedPost.likes.length);
-      } catch (error) {
-        console.error("좋아요 취소 중 오류 발생:", error);
-      }
-    } else {
-      try {
-        const response = await createLike(postId);
-        setLikeId(response._id);
+    if (!isLoggedIn) return handleLikeModal();
+    try {
+      const response = likeId
+        ? await deleteLike(likeId)
+        : await createLike(postId);
 
-        const updatedPost = await getPostById(postId);
+      const updatedPost = await getPostById(postId);
+      setLikeCount(updatedPost.likes.length);
+      if (!likeId && response) {
+        setLikeId(response._id);
         await postNotification({
           notificationType: "LIKE",
           notificationTypeId: response._id,
-          userId: author.userId,
+          userId: author._id,
           postId,
         });
-        setLikeCount(updatedPost.likes.length);
-      } catch (error) {
-        console.error("좋아요 추가 중 오류 발생:", error);
-      }
+      } else setLikeId(null);
+    } catch (error) {
+      console.error(`좋아요 ${likeId ? "취소" : "추가"} 중 오류 발생:`, error);
     }
   };
 
@@ -149,13 +94,13 @@ export default function BoardItem({
       <div
         onClick={(e) => {
           e.preventDefault();
-          navigate(`/user/${author.userId}`);
+          navigate(`/user/${author._id}`);
         }}
         className="flex gap-[10px] items-center cursor-pointer"
       >
         <Avata profile={author.image} size={"md"} />
         <div>
-          <h3 className="font-bold line-clamp-1">{author.username}</h3>
+          <h3 className="font-bold line-clamp-1">{author.fullName}</h3>
           <p className="text-sm text-gray dark:text-whiteDark">
             {author.email}
           </p>
@@ -164,7 +109,9 @@ export default function BoardItem({
       <div className="w-full pl-[89px]">
         <div className="w-full max-w-[688px] font-medium flex flex-col gap-[10px]">
           {/* 게시물 내용 */}
-          <div className="whitespace-pre-line">{postContent}</div>
+          <div className="whitespace-pre-line">
+            {JSON.parse(post.title).text}
+          </div>
           {/* 이미지 */}
           <div
             className={twMerge(
@@ -173,7 +120,7 @@ export default function BoardItem({
             )}
           >
             {postImages.length > 0 &&
-              postImages.map((url, i) => (
+              postImages.map((url: string, i: number) => (
                 <div key={i}>
                   {isDetail ? (
                     <a href={postImages[i]} data-fancybox="gallery">
@@ -196,7 +143,7 @@ export default function BoardItem({
             <div className="flex items-center gap-[30px]">
               <button className="flex items-center gap-[10px]">
                 <img
-                  src={isDark ? darkComment : CommentSvg}
+                  src={isDark ? images.darkComment : images.CommentSvg}
                   alt="comment icon"
                   className="dark:block "
                 />
@@ -210,40 +157,31 @@ export default function BoardItem({
                 className="flex items-center gap-[10px]"
               >
                 <img
-                  src={likeId ? like_fill : darkLike}
+                  src={likeId ? images.like_fill : images.darkLike}
                   alt="like icon"
                   className="dark:block hidden"
                 />
                 <img
-                  src={likeId ? like_fill : Like}
+                  src={likeId ? images.like_fill : images.Like}
                   alt="like icon"
                   className="dark:hidden block"
                 />
                 {likeCount}
               </button>
             </div>
-            <div
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              className="text-gray dark:text-whiteDark relative"
-            >
+            <div className="text-gray dark:text-whiteDark relative group">
               {calculateTimeDifference(createdAt)}
-              {isHovered && (
-                <div
-                  className="absolute w-[156px] text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10 
-                  bg-black text-white dark:bg-whiteDark dark:text-black"
-                >
-                  {exactDate}
-                </div>
-              )}
+              <div className="hidden group-hover:block absolute w-[156px] text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10bg-black bg-black text-white dark:bg-whiteDark dark:text-black">
+                {exactDate}
+              </div>
             </div>
           </div>
           {/* 댓글 */}
-          {comments && (
+          {isDetail && (
             <Comments
               comments={comments}
               postId={postId}
-              userId={author.userId}
+              userId={author._id}
               updateCommentCount={updateCommentCount}
             />
           )}

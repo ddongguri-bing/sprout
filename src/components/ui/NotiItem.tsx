@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { NotiType } from "../api/notification";
+import { NotiType } from "../../api/notification";
 import { Link } from "react-router";
 
 export default function NotiItem({

@@ -1,12 +1,12 @@
 import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import Back from "../assets/back.svg";
-import BoardItem from "../components/BoardItem";
-import Button from "../components/Button";
+import BoardItem from "../components/board/BoardItem";
+import Button from "../components/common/Button";
+import images from "../constants/images";
 
-import { getPostById, PostItem, Comment } from "../api/board";
+import { getPostById, PostItem } from "../api/board";
 import { deletePost } from "../api/posting";
-import Modal from "../components/Modal";
+import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import { useAuthStore } from "../stores/authStore";
 
@@ -17,11 +17,9 @@ export default function BoardDetail() {
 
   const modalOpen = useModal((state) => state.modalOpen);
   const setModalOpen = useModal((state) => state.setModalOpen);
-  const setModalOpts = useModal((state) => state.setModalOpts);
 
   const handleDeletePost = () => {
-    setModalOpen(true);
-    setModalOpts({
+    setModalOpen(true, {
       message: "정말로 포스트를 삭제하시겠습니까?",
       btnText: "삭제",
       btnColor: "main",
@@ -57,7 +55,7 @@ export default function BoardDetail() {
           <button onClick={() => navigate(-1)} className="">
             <img
               className="dark:invert dark:hover:fill-white"
-              src={Back}
+              src={images.Back}
               alt="back icon"
             />
           </button>
@@ -79,23 +77,7 @@ export default function BoardDetail() {
             )}
           </div>
         </div>
-        <BoardItem
-          isDetail={true}
-          comments={(post.comments as unknown as Comment[]) || []}
-          postContent={JSON.parse(post.title).text}
-          postImages={JSON.parse(post.title).images}
-          likesCount={post.likes.length}
-          commentCount={post.comments.length}
-          author={{
-            username: post.author.fullName,
-            email: post.author.email,
-            userId: post.author._id,
-            image: post.author.image,
-          }}
-          createdAt={post.createdAt}
-          postId={post._id}
-          channelId={id!}
-        />
+        <BoardItem post={post} isDetail={true} channelId={id!} />
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { useTheme } from "../stores/themeStore";
+import { useTheme } from "../../stores/themeStore";
 
 export default function ThemeToggle() {
   const isDarkMode = useTheme((state) => state.isDarkMode);

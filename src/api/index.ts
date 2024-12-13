@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
         console.error(err);
         const logout = useAuthStore.getState().logout;
         logout();
-        document.cookie = `token=`;
+        document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/`;
       }
     }
   }

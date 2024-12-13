@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { useModal } from "../stores/modalStore";
+import { useModal } from "../../stores/modalStore";
 import Button from "./Button";
 
 export default function Modal() {

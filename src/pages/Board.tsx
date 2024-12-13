@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { getChannels, ChannelItem } from "../api/channel";
 import { getPostsByChannel } from "../api/board";
 import { PostItem } from "../api/board";
-import BoardItem from "../components/BoardItem";
-import Button from "../components/Button";
+import BoardItem from "../components/board/BoardItem";
+import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
 
 export default function Board() {
@@ -22,8 +22,6 @@ export default function Board() {
       if (channelId) {
         const postsData = await getPostsByChannel(channelId);
         setPosts(postsData);
-        console.log(postsData)
-
         const channelData = await getChannels();
         const selectedChannel = channelData.find(
           (channel: ChannelItem) => channel._id === channelId
@@ -53,18 +51,8 @@ export default function Board() {
       {posts.map((post) => (
         <BoardItem
           key={post._id}
-          postContent={JSON.parse(post.title).text}
-          postImages={JSON.parse(post.title).images}
-          likesCount={post.likes.length}
-          commentCount={post.comments.length}
-          author={{
-            username: post.author.fullName,
-            email: post.author.email,
-            userId: post.author._id,
-            image: post.author.image,
-          }}
-          createdAt={post.createdAt}
-          postId={post._id}
+          post={post}
+          isDetail={false}
           channelId={channelId!}
         />
       ))}
