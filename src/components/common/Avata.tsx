@@ -1,8 +1,6 @@
-import Profile from "../assets/profileLight.svg";
-import ProfileDark from "../assets/profileDark.svg";
 import { twMerge } from "tailwind-merge";
-import { useTheme } from "../stores/themeStore";
-
+import { useTheme } from "../../stores/themeStore";
+import images from "../../constants/images";
 export default function Avata({
   profile,
   size,
@@ -30,7 +28,7 @@ export default function Avata({
         />
       ) : (
         <img
-          src={isDark ? ProfileDark : Profile}
+          src={isDark ? images.ProfileDark : images.Profile}
           alt="profile image"
           className={twMerge(IMG_BASE_STYLE, "w-[40%] min-h-0 ")}
         />

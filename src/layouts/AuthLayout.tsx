@@ -1,4 +1,4 @@
-import Logo from "../assets/logo.svg";
+import images from "../constants/images";
 import { Link, Outlet, useLocation } from "react-router";
 
 export default function AuthLayout() {
@@ -13,7 +13,7 @@ export default function AuthLayout() {
     <>
       <header className="w-full h-[100px] border-b border-whiteDark dark:border-gray bg-white dark:bg-black dark:text-white flex items-center justify-center">
         <Link to={"/"}>
-          <img src={Logo} alt="main logo" />
+          <img src={images.Logo} alt="main logo" />
         </Link>
       </header>
       <article className="w-full min-h-screen flex py-[162px] justify-center bg-white text-black dark:bg-black dark:text-white">

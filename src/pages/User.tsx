@@ -1,14 +1,14 @@
-import BoardGrid from "../components/BoardGrid";
-import Button from "../components/Button";
+import BoardGrid from "../components/user/BoardGrid";
+import Button from "../components/common/Button";
 import { getSpecificUser } from "../api/users";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
-import Back from "../assets/back.svg";
 import { getAuthUser } from "../api/auth";
-import Avata from "../components/Avata";
+import Avata from "../components/common/Avata";
 import { deleteFollowDelete, postFollowCreate } from "../api/follow";
 import { postNotification } from "../api/notification";
 import { useModal } from "../stores/modalStore";
+import images from "../constants/images";
 
 interface PostType {
   _id: string;
@@ -161,7 +161,7 @@ export default function User() {
         <button onClick={() => navigate(-1)}>
           <img
             className="dark:invert dark:hover:fill-white"
-            src={Back}
+            src={images.Back}
             alt="back icon"
           />
         </button>

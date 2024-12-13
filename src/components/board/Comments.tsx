@@ -1,14 +1,13 @@
 import { useState } from "react";
 import CommentItem from "./CommentItem";
-import { createComment, deleteComment, Comment } from "../api/board";
-import Send from "../assets/send.svg";
-import SendActive from "../assets/send_active.svg";
+import { createComment, deleteComment, Comment } from "../../api/board";
+import images from "../../constants/images";
 import { twMerge } from "tailwind-merge";
 import TextareaAutosize from "react-textarea-autosize";
-import { useAuthStore } from "../stores/authStore";
-import { useModal } from "../stores/modalStore";
+import { useAuthStore } from "../../stores/authStore";
+import { useModal } from "../../stores/modalStore";
 import { useNavigate } from "react-router";
-import { postNotification } from "../api/notification";
+import { postNotification } from "../../api/notification";
 
 export default function Comments({
   comments,
@@ -148,7 +147,7 @@ export default function Comments({
           type="submit"
           disabled={!value.trim()}
         >
-          <img src={value ? SendActive : Send} alt="send icon" />
+          <img src={value ? images.SendActive : images.Send} alt="send icon" />
         </button>
       </form>
 

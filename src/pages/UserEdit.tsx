@@ -1,16 +1,14 @@
 import { useNavigate } from "react-router";
 import { postLogOut } from "../api/auth";
-import Back from "../assets/back.svg";
-import Camera from "../assets/camera.svg";
-import Logout from "../assets/logout.svg";
-import Button from "../components/Button";
-import SettingInput from "../components/SettingInput";
+import images from "../constants/images";
+import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
 import { useModal } from "../stores/modalStore";
 import { useEffect, useState } from "react";
 import { postUploadPhoto, putUpdatePw } from "../api/users";
-import Avata from "../components/Avata";
+import Avata from "../components/common/Avata";
 import { useTriggerStore } from "../stores/triggerStore";
+import Input from "../components/common/Input";
 export default function UserEdit() {
   const setTrigger = useTriggerStore((state) => state.setTrigger);
 
@@ -162,7 +160,7 @@ export default function UserEdit() {
     <>
       <div className="w-full h-[100px] px-[30px] mb-10 sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-[9]">
         <button onClick={() => history.back()} className="">
-          <img className="dark:invert" src={Back} alt="back icon" />
+          <img className="dark:invert" src={images.Back} alt="back icon" />
         </button>
       </div>
       <form
@@ -179,21 +177,27 @@ export default function UserEdit() {
           />
           <Avata profile={photoUrl || profileImg} size={"lg"} />
           <span className=" absolute -bottom-[10px] -right-[10px] ">
-            <img src={Camera} alt="camera icon" />
+            <img src={images.Camera} alt="camera icon" />
           </span>
         </label>
         <div className="w-full flex items-center justify-between gap-5">
           <label htmlFor="">이메일</label>
-          <SettingInput type={"text"} value={email || ""} disabled />
+          <Input theme="setting" type={"text"} value={email || ""} disabled />
         </div>
         <div className="w-full flex items-center justify-between gap-5">
           <label htmlFor="">이름</label>
-          <SettingInput type={"text"} value={fullName || ""} disabled />
+          <Input
+            theme="setting"
+            type={"text"}
+            value={fullName || ""}
+            disabled
+          />
         </div>
         <div className="w-full flex items-center justify-between gap-5">
           <label htmlFor="">비밀번호</label>
           <div className="flex flex-col w-[500px]">
-            <SettingInput
+            <Input
+              theme="setting"
               type={"password"}
               value={updatePassword}
               onChange={(e) => setUpdatePassword(e.target.value)}
@@ -210,7 +214,8 @@ export default function UserEdit() {
         <div className="w-full flex items-center justify-between gap-5">
           <label htmlFor="">비밀번호 확인</label>
           <div className="flex flex-col w-[500px]">
-            <SettingInput
+            <Input
+              theme="setting"
               type={"password"}
               value={confirmUpdatePassword}
               onChange={(e) => setConfirmUpdatePassword(e.target.value)}
@@ -246,7 +251,7 @@ export default function UserEdit() {
           className="text-red text-xs font-medium underline flex items-center gap-[10px]"
         >
           로그아웃
-          <img src={Logout} alt="logout icon" />
+          <img src={images.Logout} alt="logout icon" />
         </button>
       </div>
     </>

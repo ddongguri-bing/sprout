@@ -1,20 +1,16 @@
 import { Link, useNavigate } from "react-router";
-import CommentSvg from "../assets/comment.svg";
-import Like from "../assets/like.svg";
+import images from "../../constants/images";
 import Comments from "./Comments";
 import { useState, useEffect } from "react";
-import { Comment, createLike, deleteLike, getPostById } from "../api/board";
-import darkComment from "../assets/dark_comment.svg";
-import darkLike from "../assets/dark_like.svg";
+import { Comment, createLike, deleteLike, getPostById } from "../../api/board";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
-import Avata from "./Avata";
+import Avata from "../common/Avata";
 
-import like_fill from "../assets/like_fill.svg";
-import { useAuthStore } from "../stores/authStore";
-import { postNotification } from "../api/notification";
-import { useModal } from "../stores/modalStore";
-import { useTheme } from "../stores/themeStore";
+import { useAuthStore } from "../../stores/authStore";
+import { postNotification } from "../../api/notification";
+import { useModal } from "../../stores/modalStore";
+import { useTheme } from "../../stores/themeStore";
 import { twMerge } from "tailwind-merge";
 
 const calculateTimeDifference = (sentAt: string | number | Date) => {
@@ -196,7 +192,7 @@ export default function BoardItem({
             <div className="flex items-center gap-[30px]">
               <button className="flex items-center gap-[10px]">
                 <img
-                  src={isDark ? darkComment : CommentSvg}
+                  src={isDark ? images.darkComment : images.CommentSvg}
                   alt="comment icon"
                   className="dark:block "
                 />
@@ -210,12 +206,12 @@ export default function BoardItem({
                 className="flex items-center gap-[10px]"
               >
                 <img
-                  src={likeId ? like_fill : darkLike}
+                  src={likeId ? images.like_fill : images.darkLike}
                   alt="like icon"
                   className="dark:block hidden"
                 />
                 <img
-                  src={likeId ? like_fill : Like}
+                  src={likeId ? images.like_fill : images.Like}
                   alt="like icon"
                   className="dark:hidden block"
                 />

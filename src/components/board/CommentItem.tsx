@@ -1,9 +1,9 @@
 import { Link } from "react-router";
-import { Comment } from "../api/board";
-import Avata from "./Avata";
-import Close from "../assets/close.svg";
-import { useModal } from "../stores/modalStore";
-import { useAuthStore } from "../stores/authStore";
+import { Comment } from "../../api/board";
+import Avata from "../common/Avata";
+import images from "../../constants/images";
+import { useModal } from "../../stores/modalStore";
+import { useAuthStore } from "../../stores/authStore";
 interface CommentItemProps {
   comment: Comment;
   onDeleteComment: (commentId: string) => void;
@@ -50,7 +50,11 @@ export default function CommentItem({
 
       {auth?._id === comment.author._id && (
         <button onClick={handleDeleteOpen}>
-          <img className="dark:invert w-3" src={Close} alt="close icon" />
+          <img
+            className="dark:invert w-3"
+            src={images.Close}
+            alt="close icon"
+          />
         </button>
       )}
     </div>

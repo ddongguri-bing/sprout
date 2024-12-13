@@ -1,9 +1,10 @@
 import { Link, NavLink } from "react-router";
-import Logo from "../assets/logo.svg";
-import SearchBar from "./SearchBar";
-import ThemeToggle from "./ThemeToggle";
+import images from "../../constants/images";
+import SearchBar from "../search/SearchBar";
+import ThemeToggle from "../common/ThemeToggle";
 import { useEffect, useState } from "react";
-import { ChannelItem, getChannels } from "../api/channel";
+import { ChannelItem, getChannels } from "../../api/channel";
+
 export default function Header() {
   const [menus, setMenus] = useState<ChannelItem[]>([]);
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function Header() {
     <header className="w-[257px] max-h-screen h-screen sticky top-0 left-0 border-r border-whiteDark dark:border-gray py-[21px] px-[32px] flex flex-col items-start">
       <h1 className="mb-[50px]">
         <Link to={"/"}>
-          <img className="w-[188px]" src={Logo} alt="main logo" />
+          <img className="w-[188px]" src={images.Logo} alt="main logo" />
         </Link>
       </h1>
       <SearchBar />

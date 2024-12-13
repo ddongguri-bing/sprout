@@ -1,15 +1,15 @@
 import { Link } from "react-router";
-import Setting from "../assets/setting.svg";
+import images from "../../constants/images";
 import { useState, useEffect, useCallback } from "react";
 import {
   NotiType,
   getNotification,
   putNotificationSeen,
-} from "../api/notification";
-import NotiItem from "./NotiItem";
-import Avata from "./Avata";
-import { User } from "../stores/authStore";
-import { useTriggerStore } from "../stores/triggerStore";
+} from "../../api/notification";
+import NotiItem from "../ui/NotiItem";
+import Avata from "../common/Avata";
+import { User } from "../../stores/authStore";
+import { useTriggerStore } from "../../stores/triggerStore";
 export default function AfterUserBox({ user }: { user: User }) {
   const trigger = useTriggerStore((state) => state.trigger);
   const setTrigger = useTriggerStore((state) => state.setTrigger);
@@ -32,7 +32,11 @@ export default function AfterUserBox({ user }: { user: User }) {
       <div className="pb-5 border-b border-whiteDark dark:border-gray">
         <div className="flex justify-end">
           <Link to={"/user/edit"}>
-            <img className="dark:invert" src={Setting} alt="setting icon" />
+            <img
+              className="dark:invert"
+              src={images.Setting}
+              alt="setting icon"
+            />
           </Link>
         </div>
         <Link to={`/user/${user._id}`} className="flex gap-[10px] items-center">

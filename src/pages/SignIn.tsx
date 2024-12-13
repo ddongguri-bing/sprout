@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import Button from "../components/Button";
-import Input from "../components/Input";
+import Button from "../components/common/Button";
+import Input from "../components/common/Input";
 import { useAuthStore } from "../stores/authStore";
 import { postSignIn } from "../api/auth";
 import { useState } from "react";
@@ -35,6 +35,7 @@ export default function SignIn() {
   return (
     <form className="w-full max-w-[494px] flex flex-col gap-[30px]">
       <Input
+        theme="auth"
         className="h-[76px]"
         type="text"
         name="email"
@@ -44,6 +45,7 @@ export default function SignIn() {
       />
       <div>
         <Input
+          theme="auth"
           className="h-[76px]"
           type="password"
           name="password"

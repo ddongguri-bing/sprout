@@ -1,8 +1,8 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { getSearchPosts } from "../api/search";
-import SearchBoardItem from "../components/SearchBoardItem";
-import BoardItemSkeleton from "../components/BoardItemSkeleton";
+import SearchBoardItem from "../components/search/SearchBoardItem";
+import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
 
 export default function Search() {
   const { query } = useParams();

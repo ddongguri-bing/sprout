@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getSpecificUser } from "../api/users";
-import BoardItem from "./BoardItem";
-import BoardItemSkeleton from "./BoardItemSkeleton";
+import { getSpecificUser } from "../../api/users";
+import BoardItem from "../board/BoardItem";
+import BoardItemSkeleton from "../common/skeleton/BoardItemSkeleton";
 
 export default function SearchBoardItem({ post }: { post: any }) {
   const [author, setAuthor] = useState<{

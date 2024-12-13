@@ -1,12 +1,12 @@
 import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import Back from "../assets/back.svg";
-import BoardItem from "../components/BoardItem";
-import Button from "../components/Button";
+import BoardItem from "../components/board/BoardItem";
+import Button from "../components/common/Button";
+import images from "../constants/images";
 
 import { getPostById, PostItem, Comment } from "../api/board";
 import { deletePost } from "../api/posting";
-import Modal from "../components/Modal";
+import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import { useAuthStore } from "../stores/authStore";
 
@@ -57,7 +57,7 @@ export default function BoardDetail() {
           <button onClick={() => navigate(-1)} className="">
             <img
               className="dark:invert dark:hover:fill-white"
-              src={Back}
+              src={images.Back}
               alt="back icon"
             />
           </button>

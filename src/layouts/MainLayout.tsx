@@ -1,10 +1,10 @@
+import React, { Suspense } from "react";
 import { Outlet } from "react-router";
-import Header from "../components/Header";
-import Aside from "../components/Aside";
+import Header from "../components/ui/Header";
+import Aside from "../components/ui/Aside";
 import { useState } from "react";
 
-//** TODO: 지연 로드 처리 */
-import UserSearch from "../components/UserSearch";
+const UserSearch = React.lazy(() => import("../components/search/UserSearch"));
 
 export default function MainLayout() {
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
@@ -16,7 +16,11 @@ export default function MainLayout() {
         <Outlet />
       </div>
       <Aside toggleOpen={toggleUserSearch} />
-      {searchOpen && <UserSearch toggleOpen={toggleUserSearch} />}
+      {searchOpen && (
+        <Suspense>
+          <UserSearch toggleOpen={toggleUserSearch} />
+        </Suspense>
+      )}
     </div>
   );
 }
