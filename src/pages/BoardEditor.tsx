@@ -184,7 +184,6 @@ export default function BoardEditor() {
                         key={i}
                         className={twMerge(
                           "h-[450px] rounded-[8px] overflow-hidden relative",
-                          preview.length > 2 ? "h-[300px]" : "h-[450px]"
                         )}
                       >
                         <button
@@ -211,8 +210,7 @@ export default function BoardEditor() {
             {preview.length < 4 && (
               <label
                 className={twMerge(
-                  "bg-whiteDark flex items-center justify-center rounded-[8px] cursor-pointer",
-                  preview.length > 1 ? "h-[300px]" : "h-[450px]"
+                  "bg-whiteDark flex items-center justify-center rounded-[8px] cursor-pointer h-[450px]",
                 )}
               >
                 <input
