@@ -5,6 +5,11 @@ export const getUsers = async (params?: { [key: string]: string }) => {
   return (await axiosInstance.get(`/users/get-users`, { params })).data;
 };
 
+// 사용자 목록
+export const getOnlineUsers = async () => {
+  return (await axiosInstance.get(`users/online-users`)).data;
+};
+
 // (특정) 사용자 정보
 export const getSpecificUser = async (id: string) => {
   return (await axiosInstance.get(`/users/${id}`)).data;

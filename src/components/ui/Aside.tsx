@@ -4,9 +4,10 @@ import AfterUserBox from "../user/AfterUserBox";
 import Button from "../common/Button";
 import { useAuthStore } from "../../stores/authStore";
 import { useEffect, useState } from "react";
-import { getUsers } from "../../api/users";
+import { getOnlineUsers, getUsers } from "../../api/users";
 import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
 import { useTriggerStore } from "../../stores/triggerStore";
+import { useUserStore } from "../../stores/userStore";
 
 interface Props {
   toggleOpen: () => void;
@@ -17,6 +18,7 @@ export default function Aside({ toggleOpen }: Props) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user = useAuthStore((state) => state.user);
   const trigger = useTriggerStore((state) => state.trigger);
+  const setOnlineUsers = useUserStore((state) => state.setOnlineUsers);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<any[]>([]);
@@ -27,6 +29,8 @@ export default function Aside({ toggleOpen }: Props) {
         setLoading(true);
         const data = await getUsers({ limit: "10" });
         setUsers(data);
+        const online = await getOnlineUsers();
+        setOnlineUsers(online);
       } catch (err) {
         console.error(err);
       } finally {
@@ -34,7 +38,7 @@ export default function Aside({ toggleOpen }: Props) {
       }
     };
     handleGetUsers();
-  }, [trigger]);
+  }, [user, trigger]);
 
   return (
     <aside className="w-[257px] max-h-screen h-screen sticky top-0 right-0 bg-white dark:bg-black border-l border-whiteDark dark:border-gray pt-[22px] pb-[17px] px-[24px] text-black dark:text-white flex flex-col justify-between">
