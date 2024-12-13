@@ -27,14 +27,14 @@ export default function RootLayout({
     const handleGetUser = async (token: string) => {
       try {
         const user = await getAuthUser(`Bearer ${token}`);
-        console.log(user);
+
         login(token, user);
       } catch (err) {
         logout();
         removeCookie("token");
       }
     };
-    console.log("token", token);
+
     if (token) handleGetUser(token);
     setLoading(false);
   }, []);

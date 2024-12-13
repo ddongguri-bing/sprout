@@ -114,7 +114,6 @@ export default function User() {
 
   // 팔로우/팔로잉 기능
   useEffect(() => {
-    console.log(specificUser);
     if (loggedInUser && specificUser) {
       const isFollowing = specificUser.followers.find(
         (fu) => fu.follower === loggedInUser._id
