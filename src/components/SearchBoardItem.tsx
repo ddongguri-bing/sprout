@@ -22,8 +22,8 @@ export default function SearchBoardItem({ post }: { post: any }) {
   return (
     <BoardItem
       key={post._id}
-      postContent={post.title}
-      postImages={post.image ? [post.image] : []}
+      postContent={JSON.parse(post.title).text}
+      postImages={JSON.parse(post.title).images}
       likesCount={post.likes.length}
       commentCount={post.comments.length}
       author={{
