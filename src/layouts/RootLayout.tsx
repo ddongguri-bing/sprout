@@ -3,6 +3,7 @@ import { useTheme } from "../stores/themeStore";
 import { useAuthStore } from "../stores/authStore";
 import { getAuthUser } from "../api/auth";
 import { useCookies } from "react-cookie";
+import Loading from "../components/common/Loading";
 
 export default function RootLayout({
   children,
@@ -39,7 +40,7 @@ export default function RootLayout({
     setLoading(false);
   }, []);
 
-  if (loading) return <>Loading...</>;
+  if (loading) return <Loading />;
 
   return <>{children}</>;
 }
