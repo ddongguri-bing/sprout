@@ -30,6 +30,7 @@ export default function RootLayout({
         document.cookie = `token=`;
       }
     };
+    console.log("token", token);
     if (token) handleGetUser(token);
     setLoading(false);
   }, []);
