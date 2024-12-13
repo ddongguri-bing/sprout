@@ -11,6 +11,7 @@ import images from "../constants/images";
 
 import axios from "axios";
 import { useTriggerStore } from "../stores/triggerStore";
+import Loading from "../components/common/Loading";
 
 export default function BoardEditor() {
   const navigate = useNavigate();
@@ -160,7 +161,7 @@ export default function BoardEditor() {
     };
   }, []);
 
-  if (uploading) return <h1>loading</h1>;
+  if (uploading) return <Loading />;
 
   return (
     <>
@@ -199,13 +200,11 @@ export default function BoardEditor() {
                     return (
                       <div
                         key={i}
-                        className="h-[450px] rounded-[8px] overflow-hidden relative"
-                      >
+                        className="h-[450px] rounded-[8px] overflow-hidden relative">
                         <button
                           type="button"
                           onClick={() => handleDeleteImg(i)}
-                          className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]"
-                        >
+                          className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]">
                           <img
                             src={images.Close}
                             alt="close icon"
