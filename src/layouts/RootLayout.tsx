@@ -27,6 +27,7 @@ export default function RootLayout({
         const user = await getAuthUser(`Bearer ${token}`);
         console.log(user);
         login(token, user);
+        document.cookie = `token=${token} path=/; max-age=10800; secure`;
       } catch (err) {
         logout();
         document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/`;
