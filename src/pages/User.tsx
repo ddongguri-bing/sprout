@@ -14,6 +14,7 @@ interface PostType {
   _id: string;
   channel: string;
   image: string;
+  title: string;
 }
 
 interface SpecificUserType {
