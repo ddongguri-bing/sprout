@@ -74,10 +74,10 @@ export default function BoardEditor() {
         formData.append("image", file);
 
         const response = await axios.post(
-          "https://api.imgbb.com/1/upload",
+          `${import.meta.env.VITE_IMAGE_UPLOAD_URL}`,
           formData,
           {
-            params: { key: "0c0f6d1bcb5d12d221c85cb8f40cff60" },
+            params: { key: `${import.meta.env.VITE_IMAGE_UPLOAD_KEY}` },
             headers: { "Content-Type": "multipart/form-data" },
           }
         );
