@@ -3,12 +3,12 @@ import Button from "../components/common/Button";
 import { getSpecificUser } from "../api/users";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { getAuthUser } from "../api/auth";
 import Avata from "../components/common/Avata";
 import { deleteFollowDelete, postFollowCreate } from "../api/follow";
 import { postNotification } from "../api/notification";
 import { useModal } from "../stores/modalStore";
 import images from "../constants/images";
+import { useAuthStore } from "../stores/authStore";
 
 interface PostType {
   _id: string;
@@ -27,12 +27,6 @@ interface SpecificUserType {
   image?: string;
 }
 
-interface LoggedInUserType {
-  _id: string;
-  followers: string[];
-  following: any[];
-}
-
 export default function User() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -40,9 +34,7 @@ export default function User() {
   const [specificUser, setSpecificUser] = useState<SpecificUserType | null>(
     null
   );
-  const [loggedInUser, setLoggedInUser] = useState<LoggedInUserType | null>(
-    null
-  );
+  const loggedInUser = useAuthStore((state) => state.user);
 
   // 팔로우/팔로잉 기능
   const [followerCount, setFollowerCount] = useState(0);
@@ -65,10 +57,8 @@ export default function User() {
 
   const handleFollow = async () => {
     // 로그인된 유저 정보가 없음 || 팔로우 대상의 정보가 없음 || 이미 팔로우 상태
-    if (!loggedInUser) {
-      handleFollowModal();
-    }
-    if (!loggedInUser || !specificUser || isFollow) return;
+    if (!loggedInUser) return handleFollowModal();
+    if (!specificUser || isFollow) return;
     if (specificUser.followers.includes(loggedInUser._id))
       return console.log("이미 팔로잉 중입니다");
 
@@ -105,10 +95,9 @@ export default function User() {
   // 특정 유저 불러오기
   const fetchSpecificUser = async () => {
     try {
-      if (id) {
-        const user = await getSpecificUser(id);
-        setSpecificUser(user);
-      }
+      if (!id) return;
+      const user = await getSpecificUser(id);
+      setSpecificUser(user);
     } catch (error) {
       console.error(error);
     }
@@ -116,18 +105,6 @@ export default function User() {
 
   useEffect(() => {
     fetchSpecificUser();
-
-    // 현재 로그인한 유저 정보 가져오기
-    const token = document.cookie.match(/token=([^ ]+)/)?.[1];
-    const checkLoggedInUser = async (token: string) => {
-      try {
-        const loggedInUser = await getAuthUser(`Bearer ${token}`);
-        setLoggedInUser(loggedInUser);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    if (token) checkLoggedInUser(token);
   }, [id]);
 
   // 팔로우/팔로잉 기능

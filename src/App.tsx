@@ -17,7 +17,7 @@ import { useAuthStore } from "./stores/authStore";
 
 export default function App() {
   const modalOpen = useModal((state) => state.modalOpen);
-  const isLogIn = useAuthStore((state) => state.token);
+  const isLogIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
     <>

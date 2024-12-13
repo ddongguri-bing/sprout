@@ -105,7 +105,7 @@ export default function UserEdit() {
     await postLogOut();
     setOpen(false);
     logout();
-    document.cookie = `token=`;
+    document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/`;
     navigate("/");
   };
   const handleLogoutOpen = () => {
@@ -118,10 +118,13 @@ export default function UserEdit() {
   };
 
   //수정 완료 관련
+  const [fetching, setFetching] = useState<boolean>(false);
   const id = useAuthStore((state) => state.user?._id);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (fetching) return;
     try {
+      setFetching(true);
       const [photoBol, pwBol] = await Promise.all([
         handleUploadPhoto(),
         handleUpdatePassword(),
@@ -149,6 +152,7 @@ export default function UserEdit() {
     } catch (error) {
       console.error("버튼 클릭 이벤트 실패:", error);
     } finally {
+      setFetching(false);
       setTrigger();
     }
   };
@@ -232,7 +236,7 @@ export default function UserEdit() {
             size={"sm"}
             theme="sub"
           />
-          <Button type="submit" text={"완료"} size={"sm"} />
+          <Button type="submit" text={"완료"} size={"sm"} disabled={fetching} />
         </div>
       </form>
       <div className="w-full max-w-[777px] mx-auto flex items-end mb-[30px] justify-between gap-5">
