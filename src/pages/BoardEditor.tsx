@@ -189,8 +189,7 @@ export default function BoardEditor() {
                         <button
                           type="button"
                           onClick={() => handleDeleteImg(i)}
-                          className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]"
-                        >
+                          className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]">
                           <img
                             src={images.Close}
                             alt="close icon"
