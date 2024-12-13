@@ -4,8 +4,11 @@ import SearchBar from "../search/SearchBar";
 import ThemeToggle from "../common/ThemeToggle";
 import { useEffect, useState } from "react";
 import { ChannelItem, getChannels } from "../../api/channel";
+import { useTriggerStore } from "../../stores/triggerStore";
+import { twMerge } from "tailwind-merge";
 
 export default function Header() {
+  const targetLink = useTriggerStore((state) => state.targetLink);
   const [menus, setMenus] = useState<ChannelItem[]>([]);
   useEffect(() => {
     const handleGetMenus = async () => {
@@ -36,9 +39,12 @@ export default function Header() {
               <NavLink
                 to={`/board/${menu.name}?id=${menu._id}`}
                 className={({ isActive }) =>
-                  isActive
-                    ? "font-bold text-main"
-                    : "text-black dark:text-white hover:text-main dark:hover:text-main transition-all"
+                  twMerge(
+                    isActive
+                      ? "font-bold text-main"
+                      : "text-black dark:text-white hover:text-main dark:hover:text-main transition-all",
+                    targetLink === menu.name && "font-bold text-main"
+                  )
                 }
               >
                 {menu.name}

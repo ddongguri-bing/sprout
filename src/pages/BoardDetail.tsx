@@ -9,6 +9,7 @@ import { deletePost } from "../api/posting";
 import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import { useAuthStore } from "../stores/authStore";
+import { useTriggerStore } from "../stores/triggerStore";
 
 export default function BoardDetail() {
   const { postId, id } = useParams();
@@ -32,17 +33,19 @@ export default function BoardDetail() {
   };
 
   const auth = useAuthStore((state) => state.user);
-
+  const setTargetLink = useTriggerStore((state) => state.setTargetLink);
   useEffect(() => {
     const fetchPostData = async () => {
-      if (postId) {
-        const postData = await getPostById(postId);
-        postData;
-        setPost(postData);
-      }
+      if (!postId) return;
+      const postData = await getPostById(postId);
+      setTargetLink(postData.channel.name);
+      setPost(postData);
     };
 
     fetchPostData();
+    return () => {
+      setTargetLink(null);
+    };
   }, [postId]);
 
   if (!post) return <div>Loading...</div>;
@@ -69,7 +72,7 @@ export default function BoardDetail() {
                   onClick={handleDeletePost}
                 />
                 <Button
-                  to={`/board/${id}/${postId}/update`}
+                  to={`/board/${id}/${postId}/update?name=${post.channel.name}`}
                   size="sm"
                   text="수정"
                 />

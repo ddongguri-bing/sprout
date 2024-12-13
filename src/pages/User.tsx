@@ -164,39 +164,55 @@ export default function User() {
               <div className="flex flex-col gap-[20px]">
                 <div className="flex gap-[30px]">
                   <div className="flex items-center gap-[10px]">
-                    <span className="font-bold">팔로우</span>{" "}
-                    <span className="text-gray dark:text-whiteDark">
+                    <span>팔로워</span>{" "}
+                    <span className="text-gray dark:text-whiteDark font-semibold">
                       {followerCount}
                     </span>
                   </div>
                   <div className="flex items-center gap-[10px]">
-                    <span className="font-bold">팔로잉</span>{" "}
-                    <span className="text-gray dark:text-whiteDark">
+                    <span>팔로잉</span>{" "}
+                    <span className="text-gray dark:text-whiteDark font-semibold">
                       {specificUser.following.length}
                     </span>
                   </div>
                   <div className="flex items-center gap-[10px]">
-                    <span className="font-bold">포스트</span>{" "}
-                    <span className="text-gray dark:text-whiteDark">
+                    <span>포스트</span>{" "}
+                    <span className="text-gray dark:text-whiteDark font-semibold">
                       {specificUser.posts.length}
                     </span>
                   </div>
                 </div>
                 {/* id가 내 id이면 프로필 수정 버튼 / 아니면 팔로잉 버튼 */}
                 {loggedInUser?._id === specificUser._id ? (
-                  <Button
-                    to={`/user/edit`}
-                    text={"프로필 수정"}
-                    size={"md"}
-                    className="max-w-[188px]"
-                  />
+                  <div className="flex gap-[30px] items-center">
+                    <Button
+                      to={`/user/edit`}
+                      text={"프로필 수정"}
+                      size={"md"}
+                      className="max-w-[188px]"
+                    />
+                    <button>
+                      <img
+                        className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
+                        src={images.MessageBoxBtn}
+                      />
+                    </button>
+                  </div>
                 ) : (
-                  <Button
-                    text={isFollow ? "팔로우 끊기" : "팔로우"}
-                    size={"md"}
-                    className="max-w-[188px]"
-                    onClick={isFollow ? handleUnfollow : handleFollow}
-                  />
+                  <div className="flex gap-[30px] items-center">
+                    <Button
+                      text={isFollow ? "팔로우 끊기" : "팔로우"}
+                      size={"md"}
+                      className="max-w-[188px]"
+                      onClick={isFollow ? handleUnfollow : handleFollow}
+                    />
+                    <button>
+                      <img
+                        className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
+                        src={images.MessageSendBtn}
+                      />
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
