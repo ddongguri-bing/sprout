@@ -21,7 +21,14 @@ interface SpecificUserType {
   _id: string;
   fullName: string;
   email: string;
-  followers: string[];
+  followers: {
+    _id: string;
+    user: string;
+    follower: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }[];
   following: string[];
   posts: PostType[];
   image?: string;
@@ -59,8 +66,6 @@ export default function User() {
     // 로그인된 유저 정보가 없음 || 팔로우 대상의 정보가 없음 || 이미 팔로우 상태
     if (!loggedInUser) return handleFollowModal();
     if (!specificUser || isFollow) return;
-    if (specificUser.followers.includes(loggedInUser._id))
-      return console.log("이미 팔로잉 중입니다");
 
     try {
       const response = await postFollowCreate(specificUser._id);
@@ -109,8 +114,11 @@ export default function User() {
 
   // 팔로우/팔로잉 기능
   useEffect(() => {
+    console.log(specificUser);
     if (loggedInUser && specificUser) {
-      const isFollowing = loggedInUser.following.find((fu) => fu.user === id);
+      const isFollowing = specificUser.followers.find(
+        (fu) => fu.follower === loggedInUser._id
+      );
       if (isFollowing) {
         setIsFollow(!!isFollowing);
         setFollowId(isFollowing._id);

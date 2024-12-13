@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useAuthStore } from "../stores/authStore";
+import { useCookies } from "react-cookie";
 
 export const axiosInstance = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}`,
@@ -22,7 +23,8 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 && !retry) {
       retry = true; // 1번만시도
       try {
-        const token = document.cookie.match(/token=([^ ]+)/)?.[1];
+        const [cookies] = useCookies(["token"]);
+        const { token } = cookies;
         const { data } = await axiosInstance.get("/auth-user", {
           headers: { Authorization: `Bearer ${token}` },
         });
