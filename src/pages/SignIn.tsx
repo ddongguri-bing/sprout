@@ -4,6 +4,7 @@ import Input from "../components/common/Input";
 import { useAuthStore } from "../stores/authStore";
 import { postSignIn } from "../api/auth";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ export default function SignIn() {
 
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
+  const [_, setCookie] = useCookies(["token"]);
 
   const handleLogin = async () => {
     try {
@@ -21,7 +23,7 @@ export default function SignIn() {
       });
       if (data) {
         login(data.token, data.user);
-        document.cookie = `token=${data.token} path=/; max-age=10800; secure`;
+        setCookie("token", data.token);
         navigate("/");
         setFailLogin(false);
       }
