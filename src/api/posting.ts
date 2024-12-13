@@ -7,14 +7,14 @@ export const createPost = async ({
 }: {
   title: string;
   image: File | null;
-  channelId: string;
+  channelId: string|null;
 }) => {
   const formData = new FormData();
   formData.append("title", title);
   if (image) {
     formData.append("image", image);
   }
-  formData.append("channelId", channelId);
+  formData.append("channelId", channelId!);
 
   const { data } = await axiosInstance.post(`/posts/create`, formData, {
     headers: {

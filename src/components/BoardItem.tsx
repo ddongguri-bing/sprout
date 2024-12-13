@@ -9,10 +9,14 @@ import darkLike from "../assets/dark_like.svg";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import Avata from "./Avata";
+
 import like_fill from "../assets/like_fill.svg";
 import { useAuthStore } from "../stores/authStore";
 import { postNotification } from "../api/notification";
 import { useModal } from "../stores/modalStore";
+import { useTheme } from "../stores/themeStore";
+import { twMerge } from "tailwind-merge";
+
 
 const calculateTimeDifference = (sentAt: string | number | Date) => {
   const sentTime = new Date(sentAt).getTime();
@@ -59,6 +63,7 @@ export default function BoardItem({
   postId: string;
   channelId: string;
 }) {
+  const isDark = useTheme((state) => state.isDarkMode);
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
@@ -162,36 +167,39 @@ export default function BoardItem({
           {/* 게시물 내용 */}
           <div className="whitespace-pre-line">{postContent}</div>
           {/* 이미지 */}
-          {postImages.length > 0 && (
-            <>
-              {isDetail ? (
-                <a href={postImages[0]} data-fancybox="gallery">
-                  <div
-                    className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
-                    style={{ backgroundImage: `url(${postImages[0]})` }}
-                  />
-                </a>
-              ) : (
-                <div
-                  className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
-                  style={{ backgroundImage: `url(${postImages[0]})` }}
-                />
-              )}
-            </>
-          )}
+          <div
+            className={twMerge(
+              "w-full grid gap-[10px]",
+              postImages.length > 1 ? "grid-cols-2" : ""
+            )}
+          >
+            {postImages.length > 0 &&
+              postImages.map((url, i) => (
+                <div key={i}>
+                  {isDetail ? (
+                    <a href={postImages[i]} data-fancybox="gallery">
+                      <div
+                        className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
+                        style={{ backgroundImage: `url(${url})` }}
+                      />
+                    </a>
+                  ) : (
+                    <div
+                      className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
+                      style={{ backgroundImage: `url(${url})` }}
+                    />
+                  )}
+                </div>
+              ))}
+          </div>
           {/* 하단 컨텐츠 */}
           <div className="flex justify-between mt-[10px] text-sm px-[5px]">
             <div className="flex items-center gap-[30px]">
               <button className="flex items-center gap-[10px]">
                 <img
-                  src={darkComment}
+                  src={isDark ? darkComment : CommentSvg}
                   alt="comment icon"
                   className="dark:block hidden"
-                />
-                <img
-                  src={CommentSvg}
-                  alt="comment icon"
-                  className="dark:hidden block"
                 />
                 {commentsCount}
               </button>
@@ -207,11 +215,7 @@ export default function BoardItem({
                   alt="like icon"
                   className="dark:block hidden"
                 />
-                <img
-                  src={likeId ? like_fill : Like}
-                  alt="like icon"
-                  className="dark:hidden block"
-                />
+                <img src={likeId ? like_fill : Like} alt="like icon" />
                 {likeCount}
               </button>
             </div>

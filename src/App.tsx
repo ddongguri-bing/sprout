@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate, Outlet, Route, Routes } from "react-router";
 import Main from "./pages/Main";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
@@ -25,12 +25,14 @@ export default function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Main />} />
           <Route path="board/:id" element={<Board />} />
-          <Route path="board/:id/create" element={<BoardEditor />} />
           <Route path="board/:id/:postId" element={<BoardDetail />} />
-          <Route path="board/:id/:postId/update" element={<BoardEditor />} />
           <Route path="search/:query" element={<Search />} />
           <Route path="user/:id" element={<User />} />
-          <Route path="user/edit" element={<UserEdit />} />
+          <Route element={isLogIn ? <Outlet /> : <Navigate to="/" replace />}>
+            <Route path="board/:id/create" element={<BoardEditor />} />
+            <Route path="board/:id/:postId/update" element={<BoardEditor />} />
+            <Route path="user/edit" element={<UserEdit />} />
+          </Route>
         </Route>
         <Route
           path="auth"
