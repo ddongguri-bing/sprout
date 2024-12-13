@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../stores/themeStore";
 import { useAuthStore } from "../stores/authStore";
 import { getAuthUser } from "../api/auth";
-import { CookiesProvider, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 
 export default function RootLayout({
   children,
@@ -41,9 +41,5 @@ export default function RootLayout({
 
   if (loading) return <>Loading...</>;
 
-  return (
-    <CookiesProvider defaultSetOptions={{ path: "/" }}>
-      {children}
-    </CookiesProvider>
-  );
+  return <>{children}</>;
 }
