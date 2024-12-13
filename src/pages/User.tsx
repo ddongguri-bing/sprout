@@ -9,6 +9,8 @@ import { postNotification } from "../api/notification";
 import { useModal } from "../stores/modalStore";
 import images from "../constants/images";
 import { useAuthStore } from "../stores/authStore";
+import SendMessage from "../components/user/SendMessage";
+import ChatMessage from "../components/user/ChatMessage";
 
 interface PostType {
   _id: string;
@@ -50,7 +52,7 @@ export default function User() {
   const setOpen = useModal((state) => state.setModalOpen);
 
   // 로그인 전 팔로우 버튼 누르면 모달
-  const handleFollowModal = () => {
+  const handleOpenModal = () => {
     setOpen(true, {
       message: "로그인 후 팔로우 해주세요!",
       btnText: "확인",
@@ -64,7 +66,7 @@ export default function User() {
 
   const handleFollow = async () => {
     // 로그인된 유저 정보가 없음 || 팔로우 대상의 정보가 없음 || 이미 팔로우 상태
-    if (!loggedInUser) return handleFollowModal();
+    if (!loggedInUser) return handleOpenModal();
     if (!specificUser || isFollow) return;
 
     try {
@@ -129,6 +131,15 @@ export default function User() {
     }
   }, [loggedInUser, specificUser]);
 
+  //* Message */
+  const [msgOpen, setMsgOpen] = useState<boolean>(false);
+  const [type, setType] = useState<"SEND" | "CHAT">("SEND");
+  const handleClickMsg = (type: "SEND" | "CHAT") => {
+    if (!loggedInUser) return handleOpenModal();
+    setMsgOpen((prev) => !prev);
+    setType(type);
+  };
+
   if (!specificUser) {
     return (
       <div className="font-bold text-[30px] text-main flex flex-col items-center justify-center h-full">
@@ -136,6 +147,18 @@ export default function User() {
       </div>
     );
   }
+  const isMyPage = loggedInUser?._id === specificUser._id;
+  const followBtnTxt = isMyPage
+    ? "프로필 수정"
+    : isFollow
+    ? "팔로우 끊기"
+    : "팔로우";
+
+  const handleClickFollow = isMyPage
+    ? undefined
+    : isFollow
+    ? handleUnfollow
+    : handleFollow;
 
   return (
     <>
@@ -183,43 +206,38 @@ export default function User() {
                   </div>
                 </div>
                 {/* id가 내 id이면 프로필 수정 버튼 / 아니면 팔로잉 버튼 */}
-                {loggedInUser?._id === specificUser._id ? (
-                  <div className="flex gap-[30px] items-center">
-                    <Button
-                      to={`/user/edit`}
-                      text={"프로필 수정"}
-                      size={"md"}
-                      className="max-w-[188px]"
+                <div className="flex gap-[30px] items-center">
+                  <Button
+                    to={isMyPage ? `/user/edit` : undefined}
+                    text={followBtnTxt}
+                    size={"md"}
+                    className="max-w-[188px]"
+                    onClick={handleClickFollow}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}
+                  >
+                    <img
+                      className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
+                      src={
+                        isMyPage ? images.MessageBoxBtn : images.MessageSendBtn
+                      }
                     />
-                    <button>
-                      <img
-                        className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
-                        src={images.MessageBoxBtn}
-                      />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex gap-[30px] items-center">
-                    <Button
-                      text={isFollow ? "팔로우 끊기" : "팔로우"}
-                      size={"md"}
-                      className="max-w-[188px]"
-                      onClick={isFollow ? handleUnfollow : handleFollow}
-                    />
-                    <button>
-                      <img
-                        className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
-                        src={images.MessageSendBtn}
-                      />
-                    </button>
-                  </div>
-                )}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
           <BoardGrid posts={specificUser.posts} />
         </div>
       </div>
+      {msgOpen && (
+        <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 flex items-center justify-center z-[9999]">
+          {type === "SEND" && <SendMessage onClose={() => setMsgOpen(false)} />}
+          {type === "CHAT" && <ChatMessage onClose={() => setMsgOpen(false)} />}
+        </div>
+      )}
     </>
   );
 }
