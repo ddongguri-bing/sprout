@@ -1,5 +1,8 @@
 import { Link } from "react-router";
 import images from "../../constants/images";
+import { useState } from "react";
+import BoardImageSkeleton from "../common/skeleton/BoardImageSkeleton";
+import { twMerge } from "tailwind-merge";
 interface PostType {
   _id: string;
   channel: string;
@@ -12,6 +15,12 @@ interface BoardGridItemProps {
 }
 
 export default function BoardGridItem({ post }: BoardGridItemProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
   return (
     <Link
       to={`/board/${post.channel}/${post._id}`}
@@ -24,10 +33,17 @@ export default function BoardGridItem({ post }: BoardGridItemProps) {
           <span>포스트를 눌러</span> 작성한 글을 확인해보세요
         </div>
       ) : (
-        <img
-          src={JSON.parse(post.title).images[0]}
-          className="w-full h-full object-cover"
-        />
+        <>
+          {!imageLoaded && <BoardImageSkeleton />}
+          <img
+            src={JSON.parse(post.title).images[0]}
+            className={twMerge(
+              "w-full h-full object-cover ",
+              imageLoaded ? "opacity-100" : "opacity-0"
+            )}
+            onLoad={handleImageLoad}
+          />
+        </>
       )}
     </Link>
   );

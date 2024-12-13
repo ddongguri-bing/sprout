@@ -89,6 +89,30 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
     }
   };
 
+  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(
+    new Array(postImages.length).fill(false)
+  );
+
+  useEffect(() => {
+    const loadImages = () => {
+      postImages.forEach((url: string, index: number) => {
+        if (!imagesLoaded[index]) {
+          const img = new Image();
+          img.src = url;
+          img.onload = () => {
+            setImagesLoaded((prevState) => {
+              const updated = [...prevState]; // 기존 상태를 복사
+              updated[index] = true; // 해당 인덱스의 값을 true로 설정
+              return updated; // 새로운 상태를 반환
+            });
+          };
+        }
+      });
+    };
+
+    loadImages();
+  }, [postImages]); // postImages가 변경될 때마다 다시 실행
+
   const mainContents = (
     <div className="w-full max-w-[777px] flex flex-col items-start gap-5">
       <div
@@ -125,14 +149,34 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                   {isDetail ? (
                     <a href={postImages[i]} data-fancybox="gallery">
                       <div
-                        className={twMerge("w-full bg-whiteDark rounded-[8px] bg-cover bg-center", postImages.length > 2 ? "h-[300px]" : "h-[450px]")}
-                        style={{ backgroundImage: `url(${url})` }}
+                        className={twMerge(
+                          "w-full bg-whiteDark rounded-[8px] bg-cover bg-center",
+                          postImages.length > 2 ? "h-[300px]" : "h-[450px]",
+                          imagesLoaded[i]
+                            ? "opacity-100"
+                            : "opacity-0 animate-pulse"
+                        )}
+                        style={{
+                          backgroundImage: imagesLoaded[i]
+                            ? `url(${url})`
+                            : undefined,
+                        }}
                       />
                     </a>
                   ) : (
                     <div
-                      className={twMerge("w-full bg-whiteDark rounded-[8px] bg-cover bg-center", postImages.length > 2 ? "h-[300px]" : "h-[450px]")}
-                      style={{ backgroundImage: `url(${url})` }}
+                      className={twMerge(
+                        "w-full bg-whiteDark rounded-[8px] bg-cover bg-center",
+                        postImages.length > 2 ? "h-[300px]" : "h-[450px]",
+                        imagesLoaded[i]
+                          ? "opacity-100"
+                          : "opacity-0 animate-pulse"
+                      )}
+                      style={{
+                        backgroundImage: imagesLoaded[i]
+                          ? `url(${url})`
+                          : undefined,
+                      }}
                     />
                   )}
                 </div>
