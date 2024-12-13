@@ -11,6 +11,7 @@ import images from "../constants/images";
 import { useAuthStore } from "../stores/authStore";
 import SendMessage from "../components/user/SendMessage";
 import ChatMessage from "../components/user/ChatMessage";
+import Loading from "../components/common/Loading";
 
 interface PostType {
   _id: string;
@@ -140,13 +141,7 @@ export default function User() {
     setType(type);
   };
 
-  if (!specificUser) {
-    return (
-      <div className="font-bold text-[30px] text-main flex flex-col items-center justify-center h-full">
-        Loading...
-      </div>
-    );
-  }
+  if (!specificUser) return <Loading />;
   const isMyPage = loggedInUser?._id === specificUser._id;
   const followBtnTxt = isMyPage
     ? "프로필 수정"
@@ -159,7 +154,6 @@ export default function User() {
     : isFollow
     ? handleUnfollow
     : handleFollow;
-
   return (
     <>
       <div className="h-[100px] px-[30px] z-[9] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
