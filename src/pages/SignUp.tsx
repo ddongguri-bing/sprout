@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Button from "../components/Button";
-import Input from "../components/Input";
+import Button from "../components/common/Button";
+import Input from "../components/common/Input";
 import { useNavigate } from "react-router";
 import { postSignUp } from "../api/auth";
 
@@ -81,6 +81,7 @@ export default function SignUp() {
     <form className="w-full max-w-[494px] flex flex-col gap-[30px]">
       <div>
         <Input
+          theme="auth"
           className="h-[76px]"
           type="text"
           name="email"
@@ -93,6 +94,7 @@ export default function SignUp() {
         )}
       </div>
       <Input
+        theme="auth"
         className="h-[76px]"
         type="text"
         name="fullName"
@@ -102,6 +104,7 @@ export default function SignUp() {
       />
       <div>
         <Input
+          theme="auth"
           className="h-[76px]"
           type="password"
           name="password"
@@ -115,6 +118,7 @@ export default function SignUp() {
       </div>
       <div>
         <Input
+          theme="auth"
           className="h-[76px]"
           type="password"
           name="password-confirm"

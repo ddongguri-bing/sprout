@@ -21,15 +21,18 @@ export default function RootLayout({
       document.documentElement.classList.add("dark"); // 처음 페이지 로드 시 'dark' 클래스를 추가
     }
     const token = document.cookie.match(/token=([^ ]+)/)?.[1];
+
     const handleGetUser = async (token: string) => {
       try {
         const user = await getAuthUser(`Bearer ${token}`);
+        console.log(user);
         login(token, user);
       } catch (err) {
         logout();
-        document.cookie = `token=`;
+        document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/`;
       }
     };
+    console.log("token", token);
     if (token) handleGetUser(token);
     setLoading(false);
   }, []);

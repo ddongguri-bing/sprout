@@ -9,8 +9,7 @@ type ModalOpts = {
 interface ModalType {
   modalOpen: boolean;
   modalOpts: ModalOpts;
-  setModalOpen: (open: boolean) => void;
-  setModalOpts: (opts: ModalOpts) => void;
+  setModalOpen: (open: boolean, opts?: ModalOpts) => void;
 }
 
 export const useModal = create<ModalType>((set) => ({
@@ -22,7 +21,9 @@ export const useModal = create<ModalType>((set) => ({
     onClick: () => console.log("클릭"),
     isOneBtn: false,
   },
-  setModalOpen: (open: boolean) => set(() => ({ modalOpen: open })),
-  setModalOpts: (opts: ModalOpts) =>
-    set(() => ({ modalOpts: { isOneBtn: false, ...opts } })),
+  setModalOpen: (open, opts) =>
+    set((state) => ({
+      modalOpen: open,
+      modalOpts: opts ? { isOneBtn: false, ...opts } : state.modalOpts,
+    })),
 }));

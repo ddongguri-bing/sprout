@@ -12,12 +12,12 @@ import User from "./pages/User";
 import BoardEditor from "./pages/BoardEditor";
 import UserEdit from "./pages/UserEdit";
 import { useModal } from "./stores/modalStore";
-import Modal from "./components/Modal";
+import Modal from "./components/common/Modal";
 import { useAuthStore } from "./stores/authStore";
 
 export default function App() {
   const modalOpen = useModal((state) => state.modalOpen);
-  const isLogIn = useAuthStore((state) => state.token);
+  const isLogIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
     <>

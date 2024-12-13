@@ -9,7 +9,14 @@ export interface User {
   likes: [];
   comments: [];
   followers: [];
-  following: [];
+  following: {
+    _id: string;
+    user: string;
+    follower: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }[];
   notifications: [];
   messages: [];
   _id: string;

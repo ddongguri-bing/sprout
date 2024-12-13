@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { getUsers } from "../api/users";
-import Close from "../assets/close.svg";
-import Search from "../assets/search.svg";
-import UserItem from "./UserItem";
-import useDebounce from "../hooks/useDebounce";
-import { getSearchUsers } from "../api/search";
+import { getUsers } from "../../api/users";
+import images from "../../constants/images";
+import UserItem from "../user/UserItem";
+import useDebounce from "../../hooks/useDebounce";
+import { getSearchUsers } from "../../api/search";
 import { useLocation } from "react-router";
-import UserItemSkeleton from "./UserItemSkeleton";
+import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
 
 export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
   const [value, setValue] = useState<string>("");
@@ -41,12 +40,16 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
       <article className="w-[calc(100%-32px)] max-w-[600px] bg-white dark:bg-grayDark pt-5 pb-[30px] rounded-[8px] flex flex-col px-[44px]">
         <div className="flex justify-end mb-5">
           <button onClick={toggleOpen}>
-            <img className="dark:invert" src={Close} alt="close icon" />
+            <img className="dark:invert" src={images.Close} alt="close icon" />
           </button>
         </div>
         <form className="relative mb-5">
           <label htmlFor="search" className="absolute top-[18px] left-[15px]">
-            <img src={Search} alt="search icon" className="w-[18px] h-[18px]" />
+            <img
+              src={images.Search}
+              alt="search icon"
+              className="w-[18px] h-[18px]"
+            />
           </label>
           <input
             id="search"

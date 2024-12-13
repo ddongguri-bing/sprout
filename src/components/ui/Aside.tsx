@@ -1,12 +1,12 @@
-import BeforeUserBox from "./BeforeUserBox";
-import UserItem from "./UserItem";
-import AfterUserBox from "./AfterUserBox";
-import Button from "./Button";
-import { useAuthStore } from "../stores/authStore";
+import BeforeUserBox from "../user/BeforeUserBox";
+import UserItem from "../user/UserItem";
+import AfterUserBox from "../user/AfterUserBox";
+import Button from "../common/Button";
+import { useAuthStore } from "../../stores/authStore";
 import { useEffect, useState } from "react";
-import { getUsers } from "../api/users";
-import UserItemSkeleton from "./UserItemSkeleton";
-import { useTriggerStore } from "../stores/triggerStore";
+import { getUsers } from "../../api/users";
+import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
+import { useTriggerStore } from "../../stores/triggerStore";
 
 interface Props {
   toggleOpen: () => void;
@@ -20,6 +20,7 @@ export default function Aside({ toggleOpen }: Props) {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<any[]>([]);
+
   useEffect(() => {
     const handleGetUsers = async () => {
       try {

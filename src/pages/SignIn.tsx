@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import Button from "../components/Button";
-import Input from "../components/Input";
+import Button from "../components/common/Button";
+import Input from "../components/common/Input";
 import { useAuthStore } from "../stores/authStore";
 import { postSignIn } from "../api/auth";
 import { useState } from "react";
@@ -21,7 +21,6 @@ export default function SignIn() {
       });
       if (data) {
         login(data.token, data.user);
-        // 토큰 유효기간 3시간 설정해 쿠키에 저장 (토큰 유효시간 갱신 처리 아직)
         document.cookie = `token=${data.token} path=/; max-age=10800; secure`;
         navigate("/");
         setFailLogin(false);
@@ -35,6 +34,7 @@ export default function SignIn() {
   return (
     <form className="w-full max-w-[494px] flex flex-col gap-[30px]">
       <Input
+        theme="auth"
         className="h-[76px]"
         type="text"
         name="email"
@@ -44,6 +44,7 @@ export default function SignIn() {
       />
       <div>
         <Input
+          theme="auth"
           className="h-[76px]"
           type="password"
           name="password"

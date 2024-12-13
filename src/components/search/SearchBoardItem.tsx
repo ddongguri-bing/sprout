@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getSpecificUser } from "../api/users";
-import BoardItem from "./BoardItem";
-import BoardItemSkeleton from "./BoardItemSkeleton";
+import { getSpecificUser } from "../../api/users";
+import BoardItem from "../board/BoardItem";
+import BoardItemSkeleton from "../common/skeleton/BoardItemSkeleton";
 
 export default function SearchBoardItem({ post }: { post: any }) {
   const [author, setAuthor] = useState<{
@@ -22,18 +22,8 @@ export default function SearchBoardItem({ post }: { post: any }) {
   return (
     <BoardItem
       key={post._id}
-      postContent={JSON.parse(post.title).text}
-      postImages={JSON.parse(post.title).images}
-      likesCount={post.likes.length}
-      commentCount={post.comments.length}
-      author={{
-        username: author.fullName,
-        email: author.email,
-        userId: author._id,
-        image: author.image,
-      }}
-      createdAt={post.createdAt}
-      postId={post._id}
+      isDetail={false}
+      post={{ ...post, author }}
       channelId={post.channel}
     />
   );

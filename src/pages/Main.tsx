@@ -1,8 +1,4 @@
-import Landing1 from "../assets/landing1.svg";
-import Landing2 from "../assets/landing2.svg";
-import Landing3 from "../assets/landing3.svg";
-import Landing4 from "../assets/landing4.svg";
-
+import { landingImages } from "../constants/images";
 export default function main() {
   return (
     <div className="w-full text-black dark:text-white text-[14px] flex flex-col flex-1 justify-center items-center py-[30px]">
@@ -20,7 +16,7 @@ export default function main() {
               함께하세요
             </p>
           </div>
-          <img src={Landing1} />
+          <img src={landingImages[0]} />
         </article>
         <div className="w-full px-[35px] pt-5 flex flex-col gap-[50px] items-center">
           <div className="flex flex-row-reverse gap-[50px] items-center">
@@ -32,7 +28,7 @@ export default function main() {
                 몸도 마음도 건강하게, 더 나은 하루를 만들어가요
               </p>
             </div>
-            <img src={Landing2} />
+            <img src={landingImages[1]} />
           </div>
           <div className="flex gap-[50px] items-center">
             <div className="">
@@ -44,7 +40,7 @@ export default function main() {
                 <br /> 당신의 이야기를 공유하세요
               </p>
             </div>
-            <img src={Landing3} />
+            <img src={landingImages[2]} />
           </div>
           <div className="flex flex-row-reverse gap-[50px] items-center">
             <div className="flex flex-col">
@@ -55,7 +51,7 @@ export default function main() {
                 맛있는 한 끼, 요리로 소통하는 즐거움을 발견하세요
               </p>
             </div>
-            <img src={Landing4} />
+            <img src={landingImages[3]} />
           </div>
         </div>
       </div>

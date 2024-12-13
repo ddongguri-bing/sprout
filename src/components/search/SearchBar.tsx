@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
-import Search from "../assets/search.svg";
 import { useLocation, useNavigate } from "react-router";
-import useDebounce from "../hooks/useDebounce";
+import useDebounce from "../../hooks/useDebounce";
+import images from "../../constants/images";
 export default function SearchBar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -24,7 +24,7 @@ export default function SearchBar() {
   return (
     <form onSubmit={handleSubmit} className="relative mb-[30px]">
       <label htmlFor="search" className="absolute top-[15px] left-[15px]">
-        <img src={Search} alt="search icon" />
+        <img src={images.Search} alt="search icon" />
       </label>
       <input
         id="search"
