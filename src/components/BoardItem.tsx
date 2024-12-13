@@ -178,13 +178,13 @@ export default function BoardItem({
                   {isDetail ? (
                     <a href={postImages[i]} data-fancybox="gallery">
                       <div
-                        className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
+                        className={twMerge("w-full bg-whiteDark rounded-[8px] bg-cover bg-center", postImages.length > 2 ? "h-[300px]" : "h-[450px]")}
                         style={{ backgroundImage: `url(${url})` }}
                       />
                     </a>
                   ) : (
                     <div
-                      className="w-full h-[450px] bg-whiteDark rounded-[8px] bg-cover bg-center"
+                      className={twMerge("w-full bg-whiteDark rounded-[8px] bg-cover bg-center", postImages.length > 2 ? "h-[300px]" : "h-[450px]")}
                       style={{ backgroundImage: `url(${url})` }}
                     />
                   )}
