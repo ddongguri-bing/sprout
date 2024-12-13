@@ -3,16 +3,19 @@ import Button from "../components/common/Button";
 import DraftEditor from "../components/board/DraftEditor";
 import "draft-js/dist/Draft.css";
 import { createPost, updatePost } from "../api/posting";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useSearchParams } from "react-router";
 import { getPostById } from "../api/board";
 import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import images from "../constants/images";
 
 import axios from "axios";
+import { useTriggerStore } from "../stores/triggerStore";
 
 export default function BoardEditor() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const channelName = searchParams.get("name");
 
   const modalOpen = useModal((state) => state.modalOpen);
   const setModalOpen = useModal((state) => state.setModalOpen);
@@ -146,9 +149,15 @@ export default function BoardEditor() {
     setImageUrl((prev) => prev.filter((_, index) => index !== indexToDelete));
   };
 
+  const setTargetLink = useTriggerStore((state) => state.setTargetLink);
+
   useEffect(() => {
+    if (channelName) setTargetLink(channelName);
     //update라면 현재 포스트 내용 불러오기
     if (currentPostId) getCurrentPost();
+    return () => {
+      setTargetLink(null);
+    };
   }, []);
 
   if (uploading) return <h1>loading</h1>;
