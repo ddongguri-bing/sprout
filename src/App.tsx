@@ -14,6 +14,7 @@ import UserEdit from "./pages/UserEdit";
 import { useModal } from "./stores/modalStore";
 import Modal from "./components/common/Modal";
 import { useAuthStore } from "./stores/authStore";
+import Admin from "./pages/Admin";
 
 export default function App() {
   const modalOpen = useModal((state) => state.modalOpen);
@@ -23,6 +24,8 @@ export default function App() {
     <>
       <Routes>
         <Route element={<MainLayout />}>
+          {/* Admin 페이지 라우팅은 추후 지정 */}
+          <Route path="/admin" element={<Admin />} />
           <Route path="/" element={<Main />} />
           <Route path="board/:id" element={<Board />} />
           <Route path="board/:id/:postId" element={<BoardDetail />} />
@@ -36,8 +39,7 @@ export default function App() {
         </Route>
         <Route
           path="auth"
-          element={isLogIn ? <Navigate to="/" replace /> : <AuthLayout />}
-        >
+          element={isLogIn ? <Navigate to="/" replace /> : <AuthLayout />}>
           <Route path="signIn" element={<SignIn />} />
           <Route path="signUp" element={<SignUp />} />
         </Route>
