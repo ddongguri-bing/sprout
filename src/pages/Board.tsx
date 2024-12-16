@@ -6,7 +6,7 @@ import { PostItem } from "../api/board";
 import BoardItem from "../components/board/BoardItem";
 import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
-import Loading from "../components/common/Loading";
+import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
 
 export default function Board() {
   const { search } = useLocation();
@@ -40,7 +40,27 @@ export default function Board() {
     fetchPostsAndChannel();
   }, [channelId]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading)
+    return (
+      <div className="pb-[30px] flex flex-col ">
+        <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
+          <h2 className="text-xl font-bold">{channelName}</h2>
+          {/* 채널 이름 표시 */}
+          {isLoggedIn && (
+            <Button
+              to={`/board/${channelId}/create?name=${channelName}`}
+              text="포스트 작성"
+              size={"sm"}
+            />
+          )}
+        </div>
+        {Array(4)
+          .fill(0)
+          .map((_, idx) => (
+            <BoardItemSkeleton key={`board-skelton-${idx}`} />
+          ))}
+      </div>
+    );
 
   return (
     <div className="pb-[30px] flex flex-col ">
