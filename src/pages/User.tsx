@@ -255,7 +255,7 @@ export default function User() {
               <div className="flex flex-col gap-[20px]">
                 <div className="flex gap-[30px]">
                   <div
-                    className="flex items-center gap-[10px]"
+                    className="flex items-center gap-[10px] cursor-pointer"
                     onClick={() => {
                       setFollowListType("followers");
                       toggleFollowList();
@@ -267,7 +267,7 @@ export default function User() {
                     </span>
                   </div>
                   <div
-                    className="flex items-center gap-[10px]"
+                    className="flex items-center gap-[10px] cursor-pointer"
                     onClick={() => {
                       setFollowListType("following");
                       toggleFollowList();
