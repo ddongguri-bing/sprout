@@ -1,54 +1,66 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import images from "../../constants/images";
 import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
 import ChatItem from "./ChatItem";
 import TextareaAutosize from "react-textarea-autosize";
 import { useAuthStore } from "../../stores/authStore";
 import { twMerge } from "tailwind-merge";
-import { getChatList, postMessage } from "../../api/message";
+import { getChatList, postMessage, getMessageList } from "../../api/message";
 
 interface ChatMessage {
   onClose: () => void;
-  users: {
-    _id: string;
-    fullName: string;
-    image?: string;
-    message: string;
-  }[];
-  loading: boolean;
 }
 
-export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
+export default function ChatMessage({ onClose }: ChatMessage) {
   const itemHeight = 50;
   const maxItems = 10;
   const containerHeight = maxItems * itemHeight;
 
-  const [modalContentType, setModalContentType] = useState<"LIST" | "CHAT">(
-    "LIST"
-  );
+  const loggedInUser = useAuthStore((state) => state.user);
+
+  const [loading, setLoading] = useState<boolean>(true);
+
   const [currentUser, setCurrentUser] = useState<{
     fullName: string;
     _id: string;
   } | null>(null);
 
-  // 특정 유저와의 채팅 목록 모달 열기
-  const handleOpenModal = (user: { fullName: string; _id: string }) => {
-    if (!user._id) {
-      console.error("user id가 없습니다");
-      return;
+  // 채팅 목록 가져오기
+  const [list, setList] = useState<
+    {
+      message: string;
+      receiver: { fullName: string; _id: string; image?: string };
+      sender: { fullName: string; _id: string; image?: string };
+    }[]
+  >([]);
+  const handleGetChatList = async () => {
+    setLoading(true);
+    try {
+      const { data } = await getMessageList();
+      setList(data.filter((item) => item.receiver._id !== item.sender._id));
+    } catch (err) {
+      console.error(`메시지 수신 실패` + err);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    handleGetChatList();
+  }, []);
+
+  // 특정 유저와의 채팅 목록 모달 열기
+  const handleSelectChat = (user: { fullName: string; _id: string }) => {
+    if (!user._id) return console.error("user id가 없습니다");
     setCurrentUser(user);
-    setModalContentType("CHAT");
     handleChatList(user._id);
   };
 
   // 특정 유저와의 채팅 목록 모달 닫기
   const handleCloseModal = () => {
-    setModalContentType("LIST");
     setCurrentUser(null);
+    setMessages([]);
   };
-
-  const loggedInUser = useAuthStore((state) => state.user);
 
   const [messages, setMessages] = useState<
     {
@@ -65,59 +77,42 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
   const handleChatList = async (userId?: string) => {
     if (!loggedInUser) return;
     if (!userId) return;
-    loading = true;
     try {
       const { data } = await getChatList({ id: userId });
-      const filterMessages = data.filter(
-        (user: any) =>
-          (user.sender._id === userId &&
-            user.receiver._id === loggedInUser._id) ||
-          (user.sender._id === loggedInUser._id && user.receiver._id === userId)
-      );
-      const fetchedMessages = filterMessages.map((user: any) => ({
-        message: user.message,
-        messageId: user._id,
-        senderId: user.sender._id,
-        receiverId: user.receiver._id,
-        isReceived: user.receiver._id === loggedInUser._id,
-      }));
+      const filterMessages = data
+        .map((chat: any) => ({
+          message: chat.message,
+          messageId: chat._id,
+          senderId: chat.sender._id,
+          receiverId: chat.receiver._id,
+          isReceived: chat.receiver._id === loggedInUser._id,
+        }))
+        .reverse();
 
-      setMessages(fetchedMessages);
-      console.log(fetchedMessages);
+      setMessages(filterMessages);
     } catch (error) {
       console.error("messages를 불러오지 못함:", error);
     } finally {
-      loading = false;
     }
   };
 
   //채팅 방에서 메시지 보내기
   const handleSendMessage = async () => {
     if (!value.trim() || !loggedInUser || !currentUser) return;
-
     try {
       const { data } = await postMessage({
         message: value,
         receiver: currentUser._id,
       });
       setMessages((prev) => [
-        ...prev.filter(
-          (msg) =>
-            msg.senderId === currentUser._id ||
-            msg.receiverId === currentUser._id
-        ),
-        ...(data.sender._id === currentUser?._id ||
-        data.receiver._id === currentUser?._id
-          ? [
-              {
-                message: data.message,
-                messageId: data._id,
-                senderId: data.sender._id,
-                receiverId: data.receiver._id,
-                isReceived: data.receiver._id === loggedInUser._id,
-              },
-            ]
-          : []),
+        {
+          message: data.message,
+          messageId: data._id,
+          senderId: data.sender._id,
+          receiverId: data.receiver._id,
+          isReceived: data.receiver._id === loggedInUser._id,
+        },
+        ...prev,
       ]);
       setValue("");
     } catch (error) {
@@ -140,11 +135,9 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
     <article className="w-[calc(100%-32px)] max-w-[600px] bg-white dark:bg-grayDark pt-5 pb-[30px] rounded-[8px] flex flex-col px-[44px]">
       <div className="flex justify-between items-center mb-5">
         <h2 className="text-xl font-bold">
-          {modalContentType === "CHAT" ? currentUser?.fullName : "대화 목록"}
+          {currentUser ? currentUser.fullName : "대화 목록"}
         </h2>
-        <button
-          onClick={modalContentType === "CHAT" ? handleCloseModal : onClose}
-        >
+        <button onClick={currentUser ? handleCloseModal : onClose}>
           <img className="dark:invert" src={images.Close} alt="close icon" />
         </button>
       </div>
@@ -153,7 +146,7 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
         className=" overflow-y-auto scroll"
         style={{ height: `${containerHeight}px` }}
       >
-        {modalContentType === "LIST" ? (
+        {!currentUser ? (
           loading ? (
             <div className="w-full text-lg font-bold h-full flex flex-col gap-5">
               {Array(maxItems)
@@ -162,16 +155,22 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
                   <UserItemSkeleton key={`receive-message-${idx}`} />
                 ))}
             </div>
-          ) : users.length > 0 ? (
+          ) : list.length > 0 ? (
             <ul className="flex flex-col gap-5">
-              {users.map((user, idx) => (
-                <ChatItem
-                  key={idx}
-                  user={user}
-                  msg={{ message: user.message }}
-                  onOpen={() => handleOpenModal(user)}
-                />
-              ))}
+              {list.map((item, idx) => {
+                const reciver =
+                  item.receiver._id === loggedInUser!._id
+                    ? item.sender
+                    : item.receiver;
+                return (
+                  <ChatItem
+                    key={idx}
+                    user={reciver}
+                    msg={item.message}
+                    onOpen={() => handleSelectChat(reciver)}
+                  />
+                );
+              })}
             </ul>
           ) : (
             <div className="h-full flex items-center justify-center text-sm text-gray dark:text-whiteDark">
@@ -181,7 +180,7 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
         ) : (
           // 채팅 상세보기
           <div className="flex flex-col h-full gap-5">
-            <div className="flex-1 overflow-y-auto flex flex-col gap-5">
+            <div className="flex-1 overflow-y-auto flex flex-col-reverse gap-5 scroll">
               {messages.map((msg) => (
                 <div
                   key={msg.messageId}
@@ -207,9 +206,6 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
               className={twMerge(
                 "w-full flex items-start px-5 py-[15px] border border-main rounded-[8px] mt-auto"
               )}
-              style={{
-                marginBottom: "30px",
-              }}
             >
               <TextareaAutosize
                 className="w-full h-6 focus:outline-none  scroll resize-none bg-white dark:bg-black"
