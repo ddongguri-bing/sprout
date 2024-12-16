@@ -20,18 +20,30 @@ export default function App() {
   const modalOpen = useModal((state) => state.modalOpen);
   const isLogIn = useAuthStore((state) => state.isLoggedIn);
 
+  const user = useAuthStore((state) => state.user);
+
   return (
     <>
       <Routes>
         <Route element={<MainLayout />}>
           {/* Admin 페이지 라우팅은 추후 지정 */}
-          <Route path="/admin" element={<Admin />} />
+
           <Route path="/" element={<Main />} />
           <Route path="board/:id" element={<Board />} />
           <Route path="board/:id/:postId" element={<BoardDetail />} />
           <Route path="search/:query" element={<Search />} />
           <Route path="user/:id" element={<User />} />
           <Route element={isLogIn ? <Outlet /> : <Navigate to="/" replace />}>
+            <Route
+              element={
+                user?.role === "SuperAdmin" ? (
+                  <Outlet />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }>
+              <Route path="/admin" element={<Admin />} />
+            </Route>
             <Route path="board/:id/create" element={<BoardEditor />} />
             <Route path="board/:id/:postId/update" element={<BoardEditor />} />
             <Route path="user/edit" element={<UserEdit />} />
