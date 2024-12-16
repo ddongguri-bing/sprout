@@ -36,7 +36,8 @@ interface AuthStore {
   isLoggedIn: boolean;
   token: Token;
   user: User | null;
-  login: (token: Token, user: User) => void;
+  isSocial: boolean;
+  login: (token: Token, user: User, isSocial?: boolean) => void;
   logout: () => void;
 }
 
@@ -46,8 +47,16 @@ export const useAuthStore = create(
       isLoggedIn: false,
       token: null,
       user: null,
-      login: (token, user) => set({ isLoggedIn: true, token, user }),
-      logout: () => set({ isLoggedIn: false, token: null, user: null }),
+      isSocial: false,
+      login: (token, user, isSocial) =>
+        set((state) => ({
+          isLoggedIn: true,
+          token,
+          user,
+          isSocial: isSocial || state.isSocial,
+        })),
+      logout: () =>
+        set({ isLoggedIn: false, token: null, user: null, isSocial: false }),
     }),
     {
       name: "food-storage", // name of the item in the storage (must be unique)

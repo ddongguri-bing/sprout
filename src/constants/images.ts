@@ -56,3 +56,9 @@ export const landingImages = [Landing1, Landing2, Landing3, Landing4];
 import Notfound from "../assets/not_found.svg";
 import NotfoundIn from "../assets/not_found_i.svg";
 export const notFoundImages = [Notfound, NotfoundIn];
+
+//** Social icons */
+import KakaoIcon from "../assets/kakao.svg";
+import NaverIcon from "../assets/naver.svg";
+import GoogleIcon from "../assets/google.svg";
+export const socialIcons = [KakaoIcon, NaverIcon, GoogleIcon];
