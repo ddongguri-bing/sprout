@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
-import { NotiType } from "../../api/notification";
-import { Link } from "react-router";
+import { NotiType, putNotificationSeen } from "../../api/notification";
+import { useNavigate } from "react-router";
 
 export default function NotiItem({
   active,
@@ -31,18 +31,33 @@ export default function NotiItem({
         return `/user/${noti.author._id}`;
     }
   };
+  const navigate = useNavigate();
+  const handleClickItem = async (type: "comment" | "like" | "follow") => {
+    if (active) await putNotificationSeen({ id: noti._id });
+    navigate(handleLink(type));
+  };
 
   return (
     <li>
-      <Link
-        to={handleLink(type)}
-        className={twMerge(
-          "flex items-center gap-[5px] p-2 rounded-[8px] hover:bg-whiteDark/30 transition-all relative before:block before:w-2 before:h-2 before:rounded-full break-keep",
-          active ? "before:bg-main" : "before:bg-whiteDark"
-        )}
+      <div
+        onClick={() => handleClickItem(type)}
+        className={
+          "flex items-center gap-[5px] p-2 rounded-[8px] hover:bg-whiteDark/30 transition-all relative break-keep cursor-pointer"
+        }
       >
+        <span className="relative flex h-2 w-2">
+          {active && (
+            <span className="absolute inline-flex h-full w-full rounded-full animate-ping bg-main/80 opacity-75" />
+          )}
+          <span
+            className={twMerge(
+              "relative inline-flex rounded-full h-2 w-2",
+              active ? "bg-main" : "bg-whiteDark"
+            )}
+          ></span>
+        </span>
         [{noti.author.fullName}] 님이 {handleGetMessage(type)}
-      </Link>
+      </div>
     </li>
   );
 }

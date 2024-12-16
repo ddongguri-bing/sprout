@@ -86,6 +86,6 @@ export const postNotification = async (body: {
 }) => {
   return (await axiosInstance.post("/notifications/create", body)).data;
 };
-export const putNotificationSeen = async () => {
-  return (await axiosInstance.put("/notifications/seen")).data;
+export const putNotificationSeen = async (body?: { id: string }) => {
+  return (await axiosInstance.put("/notifications/seen", body)).data;
 };
