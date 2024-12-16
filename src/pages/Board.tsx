@@ -1,11 +1,12 @@
 import { useLocation } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getChannels, ChannelItem } from "../api/channel";
-import { getPostsByChannel } from "../api/board";
+import { getPostsByChannelWithPagination } from "../api/board";
 import { PostItem } from "../api/board";
 import BoardItem from "../components/board/BoardItem";
 import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
+// import Loading from "../components/common/Loading";
 import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
 
 export default function Board() {
@@ -17,15 +18,17 @@ export default function Board() {
   const [channelName, setChannelName] = useState<string | null>(null);
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
   const [isLoading, setIsLoading] = useState(false);
+  const [hasMorePosts, setHasMorePosts] = useState(true); // 더 이상 가져올 게시물이 있는지 확인
+  const [offset, setOffset] = useState(0);
+  const limit = 6;
 
+  const lastItemRef = useRef<HTMLDivElement | null>(null);
+
+  // 채널 데이터를 가져오는 useEffect
   useEffect(() => {
-    const fetchPostsAndChannel = async () => {
-      setIsLoading(true);
+    const fetchChannelData = async () => {
       if (channelId) {
-        const postsData = await getPostsByChannel(channelId);
-        setPosts(postsData);
         const channelData = await getChannels();
         const selectedChannel = channelData.find(
           (channel: ChannelItem) => channel._id === channelId
@@ -34,39 +37,79 @@ export default function Board() {
           setChannelName(selectedChannel.name);
         }
       }
-      setIsLoading(false);
     };
 
-    fetchPostsAndChannel();
+    fetchChannelData();
   }, [channelId]);
 
-  if (isLoading)
-    return (
-      <div className="pb-[30px] flex flex-col ">
-        <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
-          <h2 className="text-xl font-bold">{channelName}</h2>
-          {/* 채널 이름 표시 */}
-          {isLoggedIn && (
-            <Button
-              to={`/board/${channelId}/create?name=${channelName}`}
-              text="포스트 작성"
-              size={"sm"}
-            />
-          )}
-        </div>
-        {Array(4)
-          .fill(0)
-          .map((_, idx) => (
-            <BoardItemSkeleton key={`board-skelton-${idx}`} />
-          ))}
-      </div>
+  useEffect(() => {
+    if (channelId) {
+      setPosts([]); // 기존 게시글 초기화
+      setOffset(0); // offset 초기화
+      setHasMorePosts(true); // 더 이상 가져올 게시물이 있는지 상태 초기화
+    }
+  }, [channelId]);
+
+  // 더 많은 데이터를 로드하는 함수
+  const loadMoreItems = async () => {
+    if (isLoading || !hasMorePosts || !channelId) return;
+    try {
+      setIsLoading(true);
+      if (channelId) {
+        const postData = await getPostsByChannelWithPagination(
+          channelId,
+          offset,
+          limit
+        );
+
+        // 기존 게시글과 중복되지 않는 게시글만 추가하기
+        const newPosts = postData.filter(
+          (newPost:PostItem) =>
+            !posts.some((existingPost) => existingPost._id === newPost._id)
+        );
+
+        setPosts((prev) => [...prev, ...newPosts]);
+        setOffset((prev) => prev + limit);
+
+        if (postData.length < limit) {
+          setHasMorePosts(false);
+        }
+      }
+    } catch (error) {
+      console.error("채널 로딩 오류", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // IntersectionObserver 설정
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          loadMoreItems(); // 마지막 아이템이 보이면 추가 데이터를 로드
+        }
+      },
+      {
+        rootMargin: "680px", // 마지막 아이템이 화면에 680px 정도 가깝게 보이면 로드 시작
+      }
     );
 
+    if (lastItemRef.current) {
+      observer.observe(lastItemRef.current); // 마지막 아이템을 관찰
+    }
+
+    return () => {
+      if (lastItemRef.current) {
+        observer.unobserve(lastItemRef.current); // 컴포넌트가 unmount되거나 다른 조건이 발생할 때 옵저버를 해제
+      }
+    };
+  }, [lastItemRef.current, offset]);
+
   return (
-    <div className="pb-[30px] flex flex-col ">
+    <div className="pb-[30px] flex flex-col">
       <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
         <h2 className="text-xl font-bold">{channelName}</h2>
-        {/* 채널 이름 표시 */}
         {isLoggedIn && (
           <Button
             to={`/board/${channelId}/create?name=${channelName}`}
@@ -75,7 +118,7 @@ export default function Board() {
           />
         )}
       </div>
-      {posts.length === 0 && (
+      {posts.length === 0 && !isLoading && (
         <div className="flex justify-center mt-10">
           아직 게시글이 없어요. 첫 글을 작성해보세요! 🌱
         </div>
@@ -88,6 +131,8 @@ export default function Board() {
           channelId={channelId!}
         />
       ))}
+      {isLoading && <BoardItemSkeleton />}
+      <div ref={lastItemRef}></div>
     </div>
   );
 }
