@@ -3,14 +3,33 @@ import { axiosInstance } from ".";
 
 export type postMessage = {
   message: string;
+  createdAt: string;
+  _id: string;
   receiver: {
     fullName: string;
-    createdAt: string;
+    _id: string;
+  };
+  sender: {
+    fullName: string;
     _id: string;
   };
 };
 
-export type getMessage = {
+export type getMessageList = {
+  message: string;
+  createdAt: string;
+  _id: string;
+  sender: {
+    _id: string;
+    fullName: string;
+  };
+  receiver: {
+    _id: string;
+    fullName: string;
+  };
+}[];
+
+export type getChatList = {
   message: string;
   createdAt: string;
   sender: {
@@ -34,10 +53,26 @@ export const postMessage = async (body: {
   }
 };
 
-export const getMessage = async (): Promise<AxiosResponse<getMessage>> => {
+export const getMessageList = async (): Promise<
+  AxiosResponse<getMessageList>
+> => {
   try {
     return await axiosInstance.get("/messages/conversations");
   } catch (error) {
     throw new Error(`메시지 수신 실패! ${error}`);
+  }
+};
+
+export const getChatList = async ({
+  id,
+}: {
+  id: string;
+}): Promise<AxiosResponse<getChatList>> => {
+  try {
+    return await axiosInstance.get(`/messages`, {
+      params: { userId: id },
+    });
+  } catch (error) {
+    throw new Error(`채팅창 불러오기 실패! ${error}`);
   }
 };

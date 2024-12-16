@@ -13,7 +13,7 @@ import FollowList from "../components/user/FollowList";
 import SendMessage from "../components/user/SendMessage";
 import ChatMessage from "../components/user/ChatMessage";
 import Loading from "../components/common/Loading";
-import { getMessage, postMessage } from "../api/message";
+import { getMessageList, postMessage } from "../api/message";
 
 interface PostType {
   _id: string;
@@ -265,23 +265,22 @@ export default function User() {
     if (!loggedInUser) return handleOpenMsgModal();
     setLoadingChatList(true);
     try {
-      const { data } = await getMessage();
-      const userMsg = data.filter(
-        (msg) => msg.receiver._id === loggedInUser._id
-      );
-      const uniqueUsers = userMsg.filter(
-        (msg, index, self) =>
-          self.findIndex((m) => m.sender._id === msg.sender._id) === index
-      );
+      const { data } = await getMessageList();
 
-      setResponse(
-        uniqueUsers.map((msg) => ({
-          message: msg.message,
-          createdAt: msg.createdAt,
-          fullName: msg.sender.fullName,
-          _id: msg.sender._id,
-        }))
-      );
+      const msgList = data.map((item) => {
+        const otherUser =
+          item.sender._id === loggedInUser._id
+            ? item.receiver.fullName
+            : item.sender.fullName;
+        return {
+          message: item.message,
+          createdAt: item.createdAt,
+          fullName: otherUser,
+          _id: item.sender._id,
+        };
+      });
+
+      setResponse(msgList);
     } catch (error) {
       console.error(`메시지 수신 실패` + error);
     } finally {
@@ -409,7 +408,7 @@ export default function User() {
                 setMsgOpen(false);
                 handleSendMsg();
               }}
-              receiver={specificUser.fullName}
+              receiver={specificUser._id}
             />
           )}
           {type === "CHAT" && (
