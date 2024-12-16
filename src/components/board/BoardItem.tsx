@@ -151,7 +151,9 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                       <div
                         className={twMerge(
                           "w-full bg-whiteDark rounded-[8px] bg-cover bg-center",
-                          postImages.length > 2 ? "h-[300px]" : "h-[450px]",
+                          postImages.length === 1 && "aspect-[688/450] min-h-[150px]",
+                          postImages.length === 2 && "aspect-[399/450] min-h-[150px]",
+                          postImages.length > 2 && "aspect-[399/300] min-h-[100px]",
                           imagesLoaded[i]
                             ? "opacity-100"
                             : "opacity-0 animate-pulse"
@@ -167,7 +169,9 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                     <div
                       className={twMerge(
                         "w-full bg-whiteDark rounded-[8px] bg-cover bg-center",
-                        postImages.length > 2 ? "h-[300px]" : "h-[450px]",
+                        postImages.length === 1 && "aspect-[688/450] min-h-[150px]",
+                        postImages.length === 2 && "aspect-[399/450] min-h-[150px]",
+                        postImages.length > 2 && "aspect-[399/300] min-h-[100px]",
                         imagesLoaded[i]
                           ? "opacity-100"
                           : "opacity-0 animate-pulse"
