@@ -7,7 +7,7 @@ export default function ChatItem({
   onOpen,
 }: {
   user: any;
-  msg: { message: string | undefined };
+  msg: string;
   onOpen: () => void;
 }) {
   const onlineUsers = useUserStore((state) => state.onlineUsers);
@@ -16,7 +16,7 @@ export default function ChatItem({
   return (
     <>
       <li
-        className={`w-full${msg?.message ? "cursor-pointer" : ""}`}
+        className={`w-full cursor-pointer ${msg ? "cursor-pointer" : ""}`}
         onClick={onOpen}
       >
         <div className="flex gap-[10px] items-center p-2 rounded-[8px] transition-all hover:bg-whiteDark/30">
@@ -33,7 +33,7 @@ export default function ChatItem({
             <h3 className="font-bold line-clamp-1 text-black dark:text-white">
               {user.fullName}
             </h3>
-            <p className={"text-gray dark:text-whiteDark"}>{msg?.message}</p>
+            <p className={"text-gray dark:text-whiteDark"}>{msg}</p>
           </div>
         </div>
       </li>
