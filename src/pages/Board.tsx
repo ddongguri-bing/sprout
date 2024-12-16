@@ -1,14 +1,13 @@
 import { useLocation } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { getChannels, ChannelItem } from "../api/channel";
-import {
-  getPostsByChannelWithPagination,
-} from "../api/board";
+import { getPostsByChannelWithPagination } from "../api/board";
 import { PostItem } from "../api/board";
 import BoardItem from "../components/board/BoardItem";
 import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
-// import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
+// import Loading from "../components/common/Loading";
+import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
 
 export default function Board() {
   const { search } = useLocation();
@@ -19,11 +18,8 @@ export default function Board() {
   const [channelName, setChannelName] = useState<string | null>(null);
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [hasMorePosts, setHasMorePosts] = useState(true); // 더 이상 가져올 게시물이 있는지 확인
-
   const [offset, setOffset] = useState(0);
   const limit = 6;
 
@@ -65,7 +61,14 @@ export default function Board() {
           offset,
           limit
         );
-        setPosts((prev) => [...prev, ...postData]);
+
+        // 기존 게시글과 중복되지 않는 게시글만 추가하기
+        const newPosts = postData.filter(
+          (newPost:PostItem) =>
+            !posts.some((existingPost) => existingPost._id === newPost._id)
+        );
+
+        setPosts((prev) => [...prev, ...newPosts]);
         setOffset((prev) => prev + limit);
 
         if (postData.length < limit) {
@@ -88,7 +91,7 @@ export default function Board() {
         }
       },
       {
-        rootMargin: "680px", // 마지막 아이템이 화면에 100px 정도 가깝게 보이면 로드 시작
+        rootMargin: "680px", // 마지막 아이템이 화면에 680px 정도 가깝게 보이면 로드 시작
       }
     );
 
@@ -103,33 +106,10 @@ export default function Board() {
     };
   }, [lastItemRef.current, offset]);
 
-  // if (isLoading)
-  //   return (
-  //     <div className="pb-[30px] flex flex-col ">
-  //       <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
-  //         <h2 className="text-xl font-bold">{channelName}</h2>
-  //         {/* 채널 이름 표시 */}
-  //         {isLoggedIn && (
-  //           <Button
-  //             to={`/board/${channelId}/create?name=${channelName}`}
-  //             text="포스트 작성"
-  //             size={"sm"}
-  //           />
-  //         )}
-  //       </div>
-  //       {Array(4)
-  //         .fill(0)
-  //         .map((_, idx) => (
-  //           <BoardItemSkeleton key={`board-skelton-${idx}`} />
-  //         ))}
-  //     </div>
-  //   );
-
   return (
-    <div className="pb-[30px] flex flex-col ">
+    <div className="pb-[30px] flex flex-col">
       <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
         <h2 className="text-xl font-bold">{channelName}</h2>
-        {/* 채널 이름 표시 */}
         {isLoggedIn && (
           <Button
             to={`/board/${channelId}/create?name=${channelName}`}
@@ -138,7 +118,7 @@ export default function Board() {
           />
         )}
       </div>
-      {posts.length === 0 && (
+      {posts.length === 0 && !isLoading && (
         <div className="flex justify-center mt-10">
           아직 게시글이 없어요. 첫 글을 작성해보세요! 🌱
         </div>
@@ -151,6 +131,7 @@ export default function Board() {
           channelId={channelId!}
         />
       ))}
+      {isLoading && <BoardItemSkeleton />}
       <div ref={lastItemRef}></div>
     </div>
   );
