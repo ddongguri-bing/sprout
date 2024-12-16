@@ -46,8 +46,7 @@ export default function App() {
           </Route>
           <Route
             path="auth"
-            element={isLogIn ? <Navigate to="/" replace /> : <AuthLayout />}
-          >
+            element={isLogIn ? <Navigate to="/" replace /> : <AuthLayout />}>
             <Route path="signIn" element={<SignIn />} />
             <Route path="signUp" element={<SignUp />} />
           </Route>
