@@ -27,3 +27,11 @@ export const postChannelCreate = async (body: {
 }) => {
   return (await axiosInstance.post(`/channels/create`, body)).data;
 };
+
+export const deleteCannelDelete = async (channelId: string) => {
+  return (
+    await axiosInstance.delete(`/channels/delete`, {
+      data: { id: channelId },
+    })
+  ).data;
+};
