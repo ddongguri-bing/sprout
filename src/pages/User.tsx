@@ -13,6 +13,7 @@ import FollowList from "../components/user/FollowList";
 import SendMessage from "../components/user/SendMessage";
 import ChatMessage from "../components/user/ChatMessage";
 import Loading from "../components/common/Loading";
+import { getMessage, postMessage } from "../api/message";
 
 interface PostType {
   _id: string;
@@ -21,7 +22,7 @@ interface PostType {
   title: string;
 }
 
-interface SpecificUserType {
+export interface SpecificUserType {
   _id: string;
   fullName: string;
   email: string;
@@ -207,12 +208,84 @@ export default function User() {
   }, [location]);
 
   //* Message */
+  const [loadingChatList, setLoadingChatList] = useState(false);
   const [msgOpen, setMsgOpen] = useState<boolean>(false);
   const [type, setType] = useState<"SEND" | "CHAT">("SEND");
   const handleClickMsg = (type: "SEND" | "CHAT") => {
     if (!loggedInUser) return handleOpenModal();
     setMsgOpen((prev) => !prev);
     setType(type);
+
+    if (type === "CHAT") {
+      handleReceiveMsg();
+    }
+  };
+
+  //handleOpenModal 문구를 "로그인 후 이용해주세요"로 통일하고 하나로 써도 될 듯
+  const handleOpenMsgModal = () => {
+    setOpen(true, {
+      message: "로그인 후 메시지를 보내세요!",
+      btnText: "확인",
+      btnColor: "main",
+      onClick: () => {
+        setOpen(false);
+        navigate("/auth/signIn");
+      },
+    });
+  };
+
+  const [msgContent, setMsgContent] = useState<string>("");
+  const [response, setResponse] = useState<
+    {
+      message: string;
+      createdAt: string;
+      fullName: string;
+      _id: string;
+    }[]
+  >([]);
+
+  const handleSendMsg = async () => {
+    if (!loggedInUser) return handleOpenMsgModal();
+    if (!specificUser) return;
+
+    try {
+      const { data } = await postMessage({
+        message: msgContent,
+        receiver: specificUser._id,
+      });
+      setMsgContent("");
+      return data;
+    } catch (error) {
+      console.error(`메시지 전송 실패` + error);
+    }
+  };
+
+  const handleReceiveMsg = async () => {
+    if (!loggedInUser) return handleOpenMsgModal();
+    setLoadingChatList(true);
+    try {
+      const { data } = await getMessage();
+      const userMsg = data.filter(
+        (msg) => msg.receiver._id === loggedInUser._id
+      );
+      const uniqueUsers = userMsg.filter(
+        (msg, index, self) =>
+          self.findIndex((m) => m.sender._id === msg.sender._id) === index
+      );
+
+      setResponse(
+        uniqueUsers.map((msg) => ({
+          message: msg.message,
+          createdAt: msg.createdAt,
+          fullName: msg.sender.fullName,
+          _id: msg.sender._id,
+        }))
+      );
+    } catch (error) {
+      console.error(`메시지 수신 실패` + error);
+    } finally {
+      setLoadingChatList(false);
+    }
   };
 
   if (!specificUser) return <Loading />;
@@ -324,8 +397,27 @@ export default function User() {
       )}
       {msgOpen && (
         <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 flex items-center justify-center z-[9999]">
-          {type === "SEND" && <SendMessage onClose={() => setMsgOpen(false)} />}
-          {type === "CHAT" && <ChatMessage onClose={() => setMsgOpen(false)} />}
+          {type === "SEND" && (
+            <SendMessage
+              onClose={() => {
+                setMsgOpen(false);
+              }}
+              msgValue={msgContent}
+              onMsgChange={setMsgContent}
+              onSend={() => {
+                setMsgOpen(false);
+                handleSendMsg();
+              }}
+              receiver={specificUser.fullName}
+            />
+          )}
+          {type === "CHAT" && (
+            <ChatMessage
+              onClose={() => setMsgOpen(false)}
+              users={response}
+              loading={loadingChatList}
+            />
+          )}
         </div>
       )}
     </>

@@ -4,12 +4,9 @@ import { useAuthStore } from "../stores/authStore";
 import { getAuthUser } from "../api/auth";
 import { useCookies } from "react-cookie";
 import Loading from "../components/common/Loading";
+import { Outlet } from "react-router";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout() {
   const [loading, setLoading] = useState<boolean>(true);
   // 다크모드 고정
   const setIsDarkMode = useTheme((state) => state.setIsDarkMode);
@@ -24,11 +21,9 @@ export default function RootLayout({
       document.documentElement.classList.add("dark"); // 처음 페이지 로드 시 'dark' 클래스를 추가
     }
     const { token } = cookies;
-
     const handleGetUser = async (token: string) => {
       try {
         const user = await getAuthUser(`Bearer ${token}`);
-
         login(token, user);
       } catch (err) {
         logout();
@@ -42,5 +37,5 @@ export default function RootLayout({
 
   if (loading) return <Loading />;
 
-  return <>{children}</>;
+  return <Outlet />;
 }
