@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import { ChannelItem, getChannels } from "../../api/channel";
 import { useTriggerStore } from "../../stores/triggerStore";
 import { twMerge } from "tailwind-merge";
+import { useAuthStore } from "../../stores/authStore";
 
 export default function Header() {
+  const user = useAuthStore((state) => state.user);
   const targetLink = useTriggerStore((state) => state.targetLink);
   const [menus, setMenus] = useState<ChannelItem[]>([]);
   useEffect(() => {
@@ -31,9 +33,20 @@ export default function Header() {
         </Link>
       </h1>
       <SearchBar />
-      <h2 className="font-bold mb-[20px]">게시판 목록</h2>
-      <nav className="flex-1 flex-grow max-h-[calc(100vh-296px)] scroll overflow-y-auto">
-        <ul className="flex flex-col gap-5">
+      <div className="flex items-center gap-[10px] mb-[20px]">
+        <h2 className="font-bold">게시판 목록</h2>
+        {user && user.role === "SuperAdmin" && (
+          <Link to={"/admin"}>
+            <img
+              className="dark:invert"
+              src={images.Setting}
+              alt="setting icon"
+            />
+          </Link>
+        )}
+      </div>
+      <nav className="w-full flex-1 flex-grow max-h-[calc(100vh-296px)] scroll overflow-y-auto">
+        <ul className="w-full flex flex-col gap-5">
           {menus.map((menu) => (
             <li key={menu._id}>
               <NavLink
