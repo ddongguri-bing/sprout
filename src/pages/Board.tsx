@@ -6,6 +6,7 @@ import { PostItem } from "../api/board";
 import BoardItem from "../components/board/BoardItem";
 import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
+import Loading from "../components/common/Loading";
 
 export default function Board() {
   const { search } = useLocation();
@@ -17,8 +18,11 @@ export default function Board() {
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     const fetchPostsAndChannel = async () => {
+      setIsLoading(true);
       if (channelId) {
         const postsData = await getPostsByChannel(channelId);
         setPosts(postsData);
@@ -30,10 +34,13 @@ export default function Board() {
           setChannelName(selectedChannel.name);
         }
       }
+      setIsLoading(false);
     };
 
     fetchPostsAndChannel();
   }, [channelId]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="pb-[30px] flex flex-col ">
@@ -48,6 +55,11 @@ export default function Board() {
           />
         )}
       </div>
+      {posts.length === 0 && (
+        <div className="flex justify-center">
+          아직 게시글이 없어요. 첫 글을 작성해보세요! 🌱
+        </div>
+      )}
       {posts.map((post) => (
         <BoardItem
           key={post._id}

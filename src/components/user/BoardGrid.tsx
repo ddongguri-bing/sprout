@@ -19,7 +19,7 @@ export default function BoardGrid({ posts }: BoardGridProps) {
       </div>
     );
   return (
-    <div className="py-[10px] border-t border-whiteDark dark:border-gray">
+    <div className="py-[10px] border-t border-whiteDark dark:border-gray grid grid-cols-3 gap-2">
       {posts.map((post) => (
         <BoardGridItem key={post._id} post={post} />
       ))}

@@ -261,8 +261,8 @@ export default function User() {
                       toggleFollowList();
                     }}
                   >
-                    <span className="font-bold">팔로우</span>{" "}
-                    <span className="text-gray dark:text-whiteDark">
+                    <span className="">팔로우</span>{" "}
+                    <span className="text-gray dark:text-whiteDark font-bold">
                       {followerCount}
                     </span>
                   </div>
@@ -273,14 +273,14 @@ export default function User() {
                       toggleFollowList();
                     }}
                   >
-                    <span className="font-bold">팔로잉</span>{" "}
-                    <span className="text-gray dark:text-whiteDark">
+                    <span className="">팔로잉</span>{" "}
+                    <span className="text-gray dark:text-whiteDark font-bold">
                       {specificUser.following.length}
                     </span>
                   </div>
                   <div className="flex items-center gap-[10px]">
                     <span>포스트</span>{" "}
-                    <span className="text-gray dark:text-whiteDark font-semibold">
+                    <span className="text-gray dark:text-whiteDark font-bold ">
                       {specificUser.posts.length}
                     </span>
                   </div>
@@ -294,6 +294,7 @@ export default function User() {
                     size={"md"}
                     className="max-w-[188px]"
                     onClick={handleClickFollow}
+                    theme={followBtnTxt === "팔로우 끊기" ? "sub" : "main"}
                   />
                   <button
                     type="button"

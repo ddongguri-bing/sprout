@@ -36,12 +36,17 @@ export default function BoardEditor() {
 
   //현재 포스트 가져오기
   const getCurrentPost = async () => {
-    const currentPost = await getPostById(currentPostId);
-    const parsedData = JSON.parse(currentPost.title);
-    setEditorText(parsedData.text);
-    if (parsedData.images && parsedData.images.length) {
-      setImageUrl(parsedData.images);
-      setPreview(parsedData.images);
+    try {
+      const currentPost = await getPostById(currentPostId);
+      const parsedData = JSON.parse(currentPost.title);
+      setEditorText(parsedData.text);
+      if (parsedData.images && parsedData.images.length) {
+        setImageUrl(parsedData.images);
+        setPreview(parsedData.images);
+      }
+    } catch (error) {
+      console.error("Error fetching post:", error);
+      alert("포스트를 불러오는 중 문제가 발생했습니다.");
     }
   };
 
@@ -154,6 +159,13 @@ export default function BoardEditor() {
     };
   }, []);
 
+  //메모리 누수를 방지하기위해 URL 객체 해제
+  useEffect(() => {
+    return () => {
+      preview.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [preview]);
+
   if (uploading) return <Loading />;
 
   return (
@@ -175,41 +187,41 @@ export default function BoardEditor() {
         <div className="w-full max-w-[777px] flex flex-col items-start gap-5 mx-auto px-[15px]">
           <DraftEditor getEditorText={getEditorText} editorText={editorText} />
           <div className="w-full grid grid-cols-2 gap-[10px]">
-            {
-              <>
-                {preview.length > 0 &&
-                  preview.map((url, i) => {
-                    return (
-                      <div
-                        key={i}
-                        className={twMerge(
-                          "h-[450px] rounded-[8px] overflow-hidden relative",
-                        )}
-                      >
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteImg(i)}
-                          className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]">
-                          <img
-                            src={images.Close}
-                            alt="close icon"
-                            className="invert"
-                          />
-                        </button>
-                        <img
-                          src={url}
-                          alt={`image${i}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    );
-                  })}
-              </>
-            }
+            {preview.length > 0 &&
+              preview.map((url, i) => {
+                return (
+                  <div
+                    key={i}
+                    className={twMerge(
+                      "rounded-[8px] overflow-hidden relative",
+                      "aspect-[399/300] min-h-[100px]"
+                    )}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteImg(i)}
+                      className="absolute top-[10px] right-[10px] bg-gray w-10 h-10 flex justify-center items-center rounded-[8px]"
+                    >
+                      <img
+                        src={images.Close}
+                        alt="close icon"
+                        className="invert"
+                      />
+                    </button>
+                    <img
+                      src={url}
+                      alt={`image${i}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                );
+              })}
+            {/* 이미지 미리보기 */}
             {preview.length < 4 && (
               <label
                 className={twMerge(
-                  "bg-whiteDark flex items-center justify-center rounded-[8px] cursor-pointer h-[450px]",
+                  "bg-whiteDark flex items-center justify-center rounded-[8px] cursor-pointer",
+                   "aspect-[399/300] min-h-[100px]"
                 )}
               >
                 <input

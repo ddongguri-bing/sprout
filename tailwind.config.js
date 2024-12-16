@@ -16,6 +16,11 @@ export default {
         hoverGray: "#414141",
         hoverRed: "#D92B2B",
       },
+      aspectRatio: {
+        "688/450": "688 / 450",
+        "339/450": "339 / 450",
+        "339/300": "339 / 300"
+      },
     },
   },
   plugins: [],
