@@ -76,7 +76,7 @@ export default function Board() {
         )}
       </div>
       {posts.length === 0 && (
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-10">
           아직 게시글이 없어요. 첫 글을 작성해보세요! 🌱
         </div>
       )}

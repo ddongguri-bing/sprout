@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import images from "../../constants/images";
 import Comments from "./Comments";
 import { useState, useEffect } from "react";
@@ -63,7 +63,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
     };
 
     fetchPostData();
-    Fancybox.bind('[data-fancybox="gallery"]');
+    Fancybox.bind(`[data-fancybox="gallery-${postId}"]`);
   }, [postId, user]);
 
   const handleLikeClick = async () => {
@@ -147,29 +147,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
             {postImages.length > 0 &&
               postImages.map((url: string, i: number) => (
                 <div key={i}>
-                  {isDetail ? (
-                    <a href={postImages[i]} data-fancybox="gallery">
-                      <div
-                        className={twMerge(
-                          "w-full bg-whiteDark rounded-[8px] bg-cover bg-center",
-                          postImages.length === 1 &&
-                            "aspect-[688/450] min-h-[150px]",
-                          postImages.length === 2 &&
-                            "aspect-[399/450] min-h-[150px]",
-                          postImages.length > 2 &&
-                            "aspect-[399/300] min-h-[100px]",
-                          imagesLoaded[i]
-                            ? "opacity-100"
-                            : "opacity-0 animate-pulse"
-                        )}
-                        style={{
-                          backgroundImage: imagesLoaded[i]
-                            ? `url(${url})`
-                            : undefined,
-                        }}
-                      />
-                    </a>
-                  ) : (
+                  <a href={postImages[i]} data-fancybox={`gallery-${postId}`}>
                     <div
                       className={twMerge(
                         "w-full bg-whiteDark rounded-[8px] bg-cover bg-center",
@@ -189,7 +167,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                           : undefined,
                       }}
                     />
-                  )}
+                  </a>
                 </div>
               ))}
           </div>
@@ -251,11 +229,17 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
     );
 
   return (
-    <Link
-      to={`/board/${channelId}/${postId}`}
-      className="p-[30px] border-b border-whiteDark dark:border-gray flex flex-col items-center transition-all hover:bg-whiteDark/30 dark:hover:bg-grayDark"
+    <div
+      onClick={(e) => {
+        // 클릭 시 페이지 이동을 막고, Fancybox가 열리도록
+        const target = e.target as HTMLElement;
+        if (!target.closest("[data-fancybox]")) {
+          navigate(`/board/${channelId}/${postId}`);
+        }
+      }}
+      className="p-[30px] border-b border-whiteDark dark:border-gray flex flex-col items-center transition-all hover:bg-whiteDark/30 dark:hover:bg-grayDark cursor-pointer"
     >
       {mainContents}
-    </Link>
+    </div>
   );
 }
