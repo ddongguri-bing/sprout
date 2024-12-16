@@ -1,6 +1,5 @@
 import { twMerge } from "tailwind-merge";
 import Delete from "../assets/delete.svg";
-import TextareaAutosize from "react-textarea-autosize";
 import images from "../constants/images";
 import { useEffect, useState } from "react";
 import {
@@ -19,16 +18,16 @@ export default function Admin() {
   const [channels, setChannels] = useState<ChannelType[] | []>([]);
 
   // 입력
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
     setValue(inputValue);
   };
 
   // 엔터 금지(게시판 제목은 한 줄만 입력 가능, 다른 기능은 추후 추가 예정)
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault();
+      // e.preventDefault();
     }
   };
 
@@ -107,19 +106,19 @@ export default function Admin() {
               "w-full max-w-[688px] flex justify-center items-center px-5 py-[15px] border border-main rounded-[8px]"
             )}
             onSubmit={handlePostChannel}>
-            <TextareaAutosize
+            <input
               className="w-full h-6 focus:outline-none scroll resize-none bg-white dark:bg-black"
               onChange={handleChange}
               onKeyDown={handleKeyDown}
               placeholder="댓글을 입력해주세요"
-              value={value}
-            />
-            <button className="mt-[2px] ml-1" type="submit">
-              <img
-                src={value ? images.SendActive : images.Send}
-                alt="send icon"
-              />
-            </button>
+              value={value}>
+              <button className="mt-[2px] ml-1" type="submit">
+                <img
+                  src={value ? images.SendActive : images.Send}
+                  alt="send icon"
+                />
+              </button>
+            </input>
           </form>
         </div>
       </div>
