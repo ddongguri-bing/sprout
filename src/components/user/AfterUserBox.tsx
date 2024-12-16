@@ -17,7 +17,17 @@ export default function AfterUserBox({ user }: { user: User }) {
   useEffect(() => {
     const handleGetNotis = async () => {
       const data = await getNotification();
-      setNotis(data);
+      const now = new Date().getTime(); // 현재 시간
+      const fiveMinutesInMs = 5 * 60 * 1000; // 5분을 밀리초로 변환
+      const filter = data.filter((item) => {
+        if (!item.seen) return true; // seen이 false인 경우 유지
+        if (item.seen) {
+          const updatedAt = new Date(item.updatedAt).getTime();
+          return now - updatedAt <= fiveMinutesInMs; // 5분 이내인지 확인
+        }
+        return false; // 그 외는 필터링
+      });
+      setNotis(filter);
     };
     handleGetNotis();
   }, [trigger]);

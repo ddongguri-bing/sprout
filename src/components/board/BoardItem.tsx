@@ -77,12 +77,13 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
       setLikeCount(updatedPost.likes.length);
       if (!likeId && response) {
         setLikeId(response._id);
-        await postNotification({
-          notificationType: "LIKE",
-          notificationTypeId: response._id,
-          userId: author._id,
-          postId,
-        });
+        if (user && user._id !== author._id)
+          await postNotification({
+            notificationType: "LIKE",
+            notificationTypeId: response._id,
+            userId: author._id,
+            postId,
+          });
       } else setLikeId(null);
     } catch (error) {
       console.error(`좋아요 ${likeId ? "취소" : "추가"} 중 오류 발생:`, error);
