@@ -111,14 +111,13 @@ export default function Admin() {
               onChange={handleChange}
               onKeyDown={handleKeyDown}
               placeholder="댓글을 입력해주세요"
-              value={value}>
-              <button className="mt-[2px] ml-1" type="submit">
-                <img
-                  src={value ? images.SendActive : images.Send}
-                  alt="send icon"
-                />
-              </button>
-            </input>
+              value={value}></input>
+            <button className="mt-[2px] ml-1" type="submit">
+              <img
+                src={value ? images.SendActive : images.Send}
+                alt="send icon"
+              />
+            </button>
           </form>
         </div>
       </div>
