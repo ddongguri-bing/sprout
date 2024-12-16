@@ -13,7 +13,7 @@ import FollowList from "../components/user/FollowList";
 import SendMessage from "../components/user/SendMessage";
 import ChatMessage from "../components/user/ChatMessage";
 import Loading from "../components/common/Loading";
-import { getMessage, postMessage } from "../api/message";
+import { getMessageList, postMessage } from "../api/message";
 
 interface PostType {
   _id: string;
@@ -264,10 +264,13 @@ export default function User() {
     if (!loggedInUser) return handleOpenMsgModal();
     setLoadingChatList(true);
     try {
-      const { data } = await getMessage();
-      const userMsg = data.filter(
-        (msg) => msg.receiver._id === loggedInUser._id
-      );
+      const { data } = await getMessageList();
+      //리스트에 뜰 메시지
+      const userMsg = data.message;
+      //리스트에 뜰 메시지 상대
+      const otherUser =
+        data.sender._id === loggedInUser ? data.receiver._id : data.sender._id;
+
       const uniqueUsers = userMsg.filter(
         (msg, index, self) =>
           self.findIndex((m) => m.sender._id === msg.sender._id) === index
