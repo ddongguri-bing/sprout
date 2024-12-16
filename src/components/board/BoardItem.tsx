@@ -117,7 +117,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
     <div className="w-full max-w-[777px] flex flex-col items-start gap-5">
       <div
         onClick={(e) => {
-          e.preventDefault();
+          e.stopPropagation();
           navigate(`/user/${author._id}`);
         }}
         className="flex gap-[10px] items-center cursor-pointer"
