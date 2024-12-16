@@ -37,7 +37,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
     setLoading(true);
     try {
       const { data } = await getMessageList();
-      setList(data);
+      setList(data.filter((item) => item.receiver._id !== item.sender._id));
     } catch (err) {
       console.error(`메시지 수신 실패` + err);
     } finally {
