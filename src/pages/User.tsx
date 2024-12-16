@@ -265,25 +265,21 @@ export default function User() {
     setLoadingChatList(true);
     try {
       const { data } = await getMessageList();
-      //리스트에 뜰 메시지
-      const userMsg = data.message;
-      //리스트에 뜰 메시지 상대
-      const otherUser =
-        data.sender._id === loggedInUser ? data.receiver._id : data.sender._id;
 
-      const uniqueUsers = userMsg.filter(
-        (msg, index, self) =>
-          self.findIndex((m) => m.sender._id === msg.sender._id) === index
-      );
+      const msgList = data.map((item) => {
+        const otherUser =
+          item.sender._id === loggedInUser._id
+            ? item.receiver.fullName
+            : item.sender.fullName;
+        return {
+          message: item.message,
+          createdAt: item.createdAt,
+          fullName: otherUser,
+          _id: item.sender._id,
+        };
+      });
 
-      setResponse(
-        uniqueUsers.map((msg) => ({
-          message: msg.message,
-          createdAt: msg.createdAt,
-          fullName: msg.sender.fullName,
-          _id: msg.sender._id,
-        }))
-      );
+      setResponse(msgList);
     } catch (error) {
       console.error(`메시지 수신 실패` + error);
     } finally {
@@ -411,7 +407,7 @@ export default function User() {
                 setMsgOpen(false);
                 handleSendMsg();
               }}
-              receiver={specificUser.fullName}
+              receiver={specificUser._id}
             />
           )}
           {type === "CHAT" && (

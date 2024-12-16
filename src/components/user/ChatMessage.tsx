@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import images from "../../constants/images";
 import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
 import ChatItem from "./ChatItem";
 import TextareaAutosize from "react-textarea-autosize";
-import { getMessage } from "../../api/message";
 import { useAuthStore } from "../../stores/authStore";
 import { twMerge } from "tailwind-merge";
+import { getChatList, postMessage } from "../../api/message";
 
 interface ChatMessage {
   onClose: () => void;
   users: {
-    _id?: string;
-    fullName?: string;
+    _id: string;
+    fullName: string;
     image?: string;
-    message?: string;
+    message: string;
   }[];
   loading: boolean;
 }
@@ -27,15 +27,22 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
     "LIST"
   );
   const [currentUser, setCurrentUser] = useState<{
-    fullName?: string;
-    _id?: string;
+    fullName: string;
+    _id: string;
   } | null>(null);
 
-  const handleOpenModal = (user: { fullName?: string; _id?: string }) => {
+  // 특정 유저와의 채팅 목록 모달 열기
+  const handleOpenModal = (user: { fullName: string; _id: string }) => {
+    if (!user._id) {
+      console.error("user id가 없습니다");
+      return;
+    }
     setCurrentUser(user);
     setModalContentType("CHAT");
+    handleChatList(user._id);
   };
 
+  // 특정 유저와의 채팅 목록 모달 닫기
   const handleCloseModal = () => {
     setModalContentType("LIST");
     setCurrentUser(null);
@@ -44,27 +51,47 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
   const loggedInUser = useAuthStore((state) => state.user);
 
   const [messages, setMessages] = useState<
-    { message: string; isReceived: boolean }[]
+    {
+      message: string;
+      messageId: string;
+      senderId: string;
+      receiverId: string;
+      isReceived: boolean;
+    }[]
   >([]);
   const [value, setValue] = useState<string>("");
 
-  const fetchMessages = async () => {
+  // 특정 유저와의 채팅 목록
+  const handleChatList = async (userId?: string) => {
     if (!loggedInUser) return;
+    if (!userId) return;
     loading = true;
     try {
-      const { data } = await getMessage();
-      const fetchedMessages = data.map((user: any) => ({
+      const { data } = await getChatList({ id: userId });
+      const filterMessages = data.filter(
+        (user: any) =>
+          (user.sender._id === userId &&
+            user.receiver._id === loggedInUser._id) ||
+          (user.sender._id === loggedInUser._id && user.receiver._id === userId)
+      );
+      const fetchedMessages = filterMessages.map((user: any) => ({
         message: user.message,
+        messageId: user._id,
+        senderId: user.sender._id,
+        receiverId: user.receiver._id,
         isReceived: user.receiver._id === loggedInUser._id,
       }));
+
       setMessages(fetchedMessages);
+      console.log(fetchedMessages);
     } catch (error) {
-      console.error("Failed to fetch messages:", error);
+      console.error("messages를 불러오지 못함:", error);
     } finally {
       loading = false;
     }
   };
 
+  //채팅 방에서 메시지 보내기
   const handleSendMessage = async () => {
     if (!value.trim() || !loggedInUser || !currentUser) return;
 
@@ -74,8 +101,23 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
         receiver: currentUser._id,
       });
       setMessages((prev) => [
-        ...prev,
-        { message: data.message, isReceived: false },
+        ...prev.filter(
+          (msg) =>
+            msg.senderId === currentUser._id ||
+            msg.receiverId === currentUser._id
+        ),
+        ...(data.sender._id === currentUser?._id ||
+        data.receiver._id === currentUser?._id
+          ? [
+              {
+                message: data.message,
+                messageId: data._id,
+                senderId: data.sender._id,
+                receiverId: data.receiver._id,
+                isReceived: data.receiver._id === loggedInUser._id,
+              },
+            ]
+          : []),
       ]);
       setValue("");
     } catch (error) {
@@ -93,10 +135,6 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
       handleSendMessage();
     }
   };
-
-  useEffect(() => {
-    fetchMessages();
-  }, []);
 
   return (
     <article className="w-[calc(100%-32px)] max-w-[600px] bg-white dark:bg-grayDark pt-5 pb-[30px] rounded-[8px] flex flex-col px-[44px]">
@@ -126,9 +164,9 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
             </div>
           ) : users.length > 0 ? (
             <ul className="flex flex-col gap-5">
-              {users.map((user) => (
+              {users.map((user, idx) => (
                 <ChatItem
-                  key={user._id}
+                  key={idx}
                   user={user}
                   msg={{ message: user.message }}
                   onOpen={() => handleOpenModal(user)}
@@ -142,18 +180,18 @@ export default function ChatMessage({ onClose, users, loading }: ChatMessage) {
           )
         ) : (
           // 채팅 상세보기
-          <div className="flex flex-col gap-5">
-            <div className="flex-1 overflow-y-auto">
-              {messages.map((msg, idx) => (
+          <div className="flex flex-col h-full gap-5">
+            <div className="flex-1 overflow-y-auto flex flex-col gap-5">
+              {messages.map((msg) => (
                 <div
-                  key={idx}
+                  key={msg.messageId}
                   className={`flex ${
                     msg.isReceived ? "justify-start" : "justify-end"
                   }`}
                 >
                   <div
                     className={`${msg.isReceived ? "ml-[30px]" : "mr-[30px]"} ${
-                      msg.isReceived ? "bg-whiteDark" : "bg-main text-white"
+                      msg.isReceived ? "bg-whiteDark" : "bg-main"
                     } min-h-[50px] max-w-[342px] rounded-[8px] p-3`}
                   >
                     {msg.message}
