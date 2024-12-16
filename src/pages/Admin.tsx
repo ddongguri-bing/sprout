@@ -7,6 +7,8 @@ import {
   getChannels,
   postChannelCreate,
 } from "../api/channel";
+import { useModal } from "../stores/modalStore";
+import { Navigate, useNavigate } from "react-router";
 
 interface ChannelType {
   name: string;
@@ -16,19 +18,15 @@ interface ChannelType {
 export default function Admin() {
   const [value, setValue] = useState<string>("");
   const [channels, setChannels] = useState<ChannelType[] | []>([]);
+  const navigate = useNavigate();
+  const modalOpen = useModal((state) => state.modalOpen);
+  const setModalOpen = useModal((state) => state.setModalOpen);
 
   // 입력
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
     setValue(inputValue);
-  };
-
-  // 엔터 금지(게시판 제목은 한 줄만 입력 가능, 다른 기능은 추후 추가 예정)
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      // e.preventDefault();
-    }
   };
 
   // 채널 목록 호출
@@ -53,7 +51,15 @@ export default function Admin() {
         name: value,
       });
       setValue("");
-      fetchGetChannel();
+      setModalOpen(true, {
+        message: "채널을 생성하시겠습니까?",
+        btnText: "확인",
+        btnColor: "main",
+        onClick: () => {
+          setModalOpen(false);
+          fetchGetChannel();
+        },
+      });
     } catch (error) {
       console.error(`채널 생성 실패 ${error}`);
     }
@@ -63,7 +69,15 @@ export default function Admin() {
   const handleDeleteChannel = async (channelId: string) => {
     try {
       await deleteCannelDelete(channelId);
-      fetchGetChannel();
+      setModalOpen(true, {
+        message: "채널을 삭제하시겠습니까?",
+        btnText: "확인",
+        btnColor: "main",
+        onClick: () => {
+          setModalOpen(false);
+          fetchGetChannel();
+        },
+      });
     } catch (error) {
       console.error(`채널 삭제 실패 ${error}`);
     }
@@ -109,7 +123,6 @@ export default function Admin() {
             <input
               className="w-full h-6 focus:outline-none scroll resize-none bg-white dark:bg-black"
               onChange={handleChange}
-              onKeyDown={handleKeyDown}
               placeholder="댓글을 입력해주세요"
               value={value}></input>
             <button className="mt-[2px] ml-1" type="submit">
