@@ -140,12 +140,13 @@ export default function User() {
       setFollowerCount((prev) => prev + 1);
       setFollowId(response._id);
       setIsFollow(true);
-      await postNotification({
-        notificationType: "FOLLOW",
-        notificationTypeId: response._id,
-        userId: specificUser._id,
-        postId: loggedInUser._id,
-      });
+      if (loggedInUser._id !== specificUser._id)
+        await postNotification({
+          notificationType: "FOLLOW",
+          notificationTypeId: response._id,
+          userId: specificUser._id,
+          postId: loggedInUser._id,
+        });
     } catch (error) {
       console.error(`팔로우 실패` + error);
     }

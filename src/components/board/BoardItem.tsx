@@ -77,12 +77,13 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
       setLikeCount(updatedPost.likes.length);
       if (!likeId && response) {
         setLikeId(response._id);
-        await postNotification({
-          notificationType: "LIKE",
-          notificationTypeId: response._id,
-          userId: author._id,
-          postId,
-        });
+        if (user && user._id !== author._id)
+          await postNotification({
+            notificationType: "LIKE",
+            notificationTypeId: response._id,
+            userId: author._id,
+            postId,
+          });
       } else setLikeId(null);
     } catch (error) {
       console.error(`좋아요 ${likeId ? "취소" : "추가"} 중 오류 발생:`, error);
@@ -151,9 +152,12 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                       <div
                         className={twMerge(
                           "w-full bg-whiteDark rounded-[8px] bg-cover bg-center",
-                          postImages.length === 1 && "aspect-[688/450] min-h-[150px]",
-                          postImages.length === 2 && "aspect-[399/450] min-h-[150px]",
-                          postImages.length > 2 && "aspect-[399/300] min-h-[100px]",
+                          postImages.length === 1 &&
+                            "aspect-[688/450] min-h-[150px]",
+                          postImages.length === 2 &&
+                            "aspect-[399/450] min-h-[150px]",
+                          postImages.length > 2 &&
+                            "aspect-[399/300] min-h-[100px]",
                           imagesLoaded[i]
                             ? "opacity-100"
                             : "opacity-0 animate-pulse"
@@ -169,9 +173,12 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                     <div
                       className={twMerge(
                         "w-full bg-whiteDark rounded-[8px] bg-cover bg-center",
-                        postImages.length === 1 && "aspect-[688/450] min-h-[150px]",
-                        postImages.length === 2 && "aspect-[399/450] min-h-[150px]",
-                        postImages.length > 2 && "aspect-[399/300] min-h-[100px]",
+                        postImages.length === 1 &&
+                          "aspect-[688/450] min-h-[150px]",
+                        postImages.length === 2 &&
+                          "aspect-[399/450] min-h-[150px]",
+                        postImages.length > 2 &&
+                          "aspect-[399/300] min-h-[100px]",
                         imagesLoaded[i]
                           ? "opacity-100"
                           : "opacity-0 animate-pulse"

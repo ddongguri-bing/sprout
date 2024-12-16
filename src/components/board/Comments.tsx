@@ -23,6 +23,7 @@ export default function Comments({
   const [value, setValue] = useState<string>("");
   const [commentList, setCommentList] = useState<Comment[]>(comments);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user = useAuthStore((state) => state.user);
   const setOpen = useModal((state) => state.setModalOpen);
   const isModalOpen = useModal((state) => state.modalOpen);
   const navigate = useNavigate();
@@ -90,12 +91,13 @@ export default function Comments({
     try {
       const newComment = await createComment(postId, value);
       if (!newComment) return;
-      await postNotification({
-        notificationType: "COMMENT",
-        notificationTypeId: newComment._id,
-        userId,
-        postId,
-      });
+      if (user && user._id !== userId)
+        await postNotification({
+          notificationType: "COMMENT",
+          notificationTypeId: newComment._id,
+          userId,
+          postId,
+        });
       setCommentList((prev) => [...prev, newComment]);
       updateCommentCount(commentList.length + 1);
       setValue("");
