@@ -9,7 +9,7 @@ export default function SearchBar() {
   const debouncedValue = useDebounce(value);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    navigate(`/search/${value}`);
+    if (value) navigate(`/search/${value.trim()}`);
   };
 
   useEffect(() => {
