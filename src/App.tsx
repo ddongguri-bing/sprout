@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router";
-// import Main from "./pages/Main";
+import Main from "./pages/Main";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import SignIn from "./pages/SignIn";
@@ -17,7 +17,6 @@ import { useAuthStore } from "./stores/authStore";
 import Admin from "./pages/Admin";
 import PrivateLayout from "./layouts/PrivateLayout";
 import RootLayout from "./layouts/RootLayout";
-import Main2 from "./pages/Main2";
 
 export default function App() {
   const modalOpen = useModal((state) => state.modalOpen);
@@ -28,7 +27,7 @@ export default function App() {
       <Routes>
         <Route element={<RootLayout />}>
           <Route element={<MainLayout />}>
-            <Route path="/" element={<Main2 />} />
+            <Route path="/" element={<Main />} />
             <Route path="board/:id" element={<Board />} />
             <Route path="board/:id/:postId" element={<BoardDetail />} />
             <Route path="search/:query" element={<Search />} />
