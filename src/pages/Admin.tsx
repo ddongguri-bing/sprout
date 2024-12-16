@@ -8,7 +8,6 @@ import {
   postChannelCreate,
 } from "../api/channel";
 import { useModal } from "../stores/modalStore";
-import { Navigate, useNavigate } from "react-router";
 
 interface ChannelType {
   name: string;
@@ -18,8 +17,6 @@ interface ChannelType {
 export default function Admin() {
   const [value, setValue] = useState<string>("");
   const [channels, setChannels] = useState<ChannelType[] | []>([]);
-  const navigate = useNavigate();
-  const modalOpen = useModal((state) => state.modalOpen);
   const setModalOpen = useModal((state) => state.setModalOpen);
 
   // 입력
