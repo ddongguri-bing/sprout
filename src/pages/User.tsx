@@ -408,7 +408,7 @@ export default function User() {
                 setMsgOpen(false);
                 handleSendMsg();
               }}
-              receiver={specificUser._id}
+              receiver={specificUser.fullName}
             />
           )}
           {type === "CHAT" && (
