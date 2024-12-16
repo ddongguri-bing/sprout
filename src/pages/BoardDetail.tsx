@@ -10,10 +10,11 @@ import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import { useAuthStore } from "../stores/authStore";
 import { useTriggerStore } from "../stores/triggerStore";
-import Loading from "../components/common/Loading";
+import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
 
 export default function BoardDetail() {
   const { postId, id } = useParams();
+  const [loading, setLoading] = useState<boolean>(true);
   const [post, setPost] = useState<PostItem | null>(null);
   const navigate = useNavigate();
 
@@ -38,9 +39,17 @@ export default function BoardDetail() {
   useEffect(() => {
     const fetchPostData = async () => {
       if (!postId) return;
-      const postData = await getPostById(postId);
-      setTargetLink(postData.channel.name);
-      setPost(postData);
+      try {
+        const postData = await getPostById(postId);
+        setTargetLink(postData.channel.name);
+        setPost(postData);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
+      }
     };
 
     fetchPostData();
@@ -49,7 +58,21 @@ export default function BoardDetail() {
     };
   }, [postId]);
 
-  if (!post) return <Loading />;
+  if (loading || !post)
+    return (
+      <div className="pb-[30px] flex flex-col relative">
+        <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
+          <button onClick={() => navigate(-1)} className="">
+            <img
+              className="dark:invert dark:hover:fill-white"
+              src={images.Back}
+              alt="back icon"
+            />
+          </button>
+        </div>{" "}
+        <BoardItemSkeleton />
+      </div>
+    );
 
   return (
     <>
