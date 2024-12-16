@@ -52,7 +52,9 @@ export default function Board() {
 
   // 더 많은 데이터를 로드하는 함수
   const loadMoreItems = async () => {
+    // 로딩 중이거나 더 이상 게시물이 없으면 추가로 로딩하지 않도록 처리
     if (isLoading || !hasMorePosts || !channelId) return;
+
     try {
       setIsLoading(true);
       if (channelId) {
@@ -62,31 +64,40 @@ export default function Board() {
           limit
         );
 
-        // 기존 게시글과 중복되지 않는 게시글만 추가하기
-        const newPosts = postData.filter(
-          (newPost:PostItem) =>
-            !posts.some((existingPost) => existingPost._id === newPost._id)
-        );
+        // 기존 게시글과 중복되지 않는 게시글만 필터링
+        const existingIds = new Set(posts.map((post) => post._id)); // 기존 게시물 ID를 Set에 저장
 
-        setPosts((prev) => [...prev, ...newPosts]);
-        setOffset((prev) => prev + limit);
+        const newPosts = postData.filter((newPost: PostItem) => {
+          // 새로운 게시물 ID가 Set에 없다면 필터링하여 추가
+          if (!existingIds.has(newPost._id)) {
+            existingIds.add(newPost._id); // 새로운 게시물 ID를 Set에 추가
+            return true;
+          }
+          return false;
+        });
 
+        // 중복을 제외한 새 게시글만 상태에 추가
+        if (newPosts.length > 0) {
+          setPosts((prev) => [...prev, ...newPosts]);
+          setOffset((prev) => prev + newPosts.length);
+        }
+
+        // 가져온 데이터가 limit보다 적으면 더 이상 가져올 데이터가 없다고 설정
         if (postData.length < limit) {
           setHasMorePosts(false);
         }
       }
     } catch (error) {
-      console.error("채널 로딩 오류", error);
+      console.error("게시글 로딩 오류", error);
     } finally {
       setIsLoading(false);
     }
   };
-
   // IntersectionObserver 설정
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !isLoading && hasMorePosts) {
           loadMoreItems(); // 마지막 아이템이 보이면 추가 데이터를 로드
         }
       },
@@ -104,7 +115,7 @@ export default function Board() {
         observer.unobserve(lastItemRef.current); // 컴포넌트가 unmount되거나 다른 조건이 발생할 때 옵저버를 해제
       }
     };
-  }, [lastItemRef.current, offset]);
+  }, [isLoading, hasMorePosts, offset]); // 상태 변화 시 observer를 새로 설정
 
   return (
     <div className="pb-[30px] flex flex-col">
