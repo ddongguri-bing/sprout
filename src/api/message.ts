@@ -1,9 +1,32 @@
+import { AxiosResponse } from "axios";
 import { axiosInstance } from ".";
+
+export type postMessage = {
+  message: string;
+  receiver: {
+    fullName: string;
+    createdAt: string;
+    _id: string;
+  };
+};
+
+export type getMessage = {
+  message: string;
+  createdAt: string;
+  sender: {
+    _id: string;
+    fullName: string;
+  };
+  receiver: {
+    _id: string;
+    fullName: string;
+  };
+}[];
 
 export const postMessage = async (body: {
   message: string;
-  reciever: string;
-}) => {
+  receiver: string;
+}): Promise<AxiosResponse<postMessage>> => {
   try {
     return await axiosInstance.post("/messages/create", body);
   } catch (error) {
@@ -11,7 +34,7 @@ export const postMessage = async (body: {
   }
 };
 
-export const getMessage = async () => {
+export const getMessage = async (): Promise<AxiosResponse<getMessage>> => {
   try {
     return await axiosInstance.get("/messages/conversations");
   } catch (error) {
