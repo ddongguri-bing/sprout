@@ -34,9 +34,9 @@ export default function Input(props: InputProps) {
 
   const getPasswordToggleImage = () => {
     if (showPassword) {
-      return isDark ? images.darkEye : images.eye;
-    } else {
       return isDark ? images.darkEyeOff : images.eyeOff;
+    } else {
+      return isDark ? images.darkEye : images.eye;
     }
   };
 
