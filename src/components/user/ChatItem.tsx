@@ -1,6 +1,7 @@
 import Avata from "../common/Avata";
 import { useUserStore } from "../../stores/userStore";
 import calculateTimeDifference from "../../utils/calculateTimeDifference";
+import { useAuthStore } from "../../stores/authStore";
 
 export default function ChatItem({
   user,
@@ -8,15 +9,18 @@ export default function ChatItem({
   onOpen,
   createdAt,
   seen,
+  lastMsg,
 }: {
   user: any;
   msg: string;
   onOpen: () => void;
   createdAt: string;
   seen: boolean;
+  lastMsg: string;
 }) {
   const onlineUsers = useUserStore((state) => state.onlineUsers);
   const isOnline = !!onlineUsers.find((ou) => ou._id === user._id);
+  const loggedInUser = useAuthStore((state) => state.user);
   return (
     <>
       <li
@@ -45,7 +49,7 @@ export default function ChatItem({
           </div>
         </div>
         <div>
-          {!seen && (
+          {!seen && lastMsg === loggedInUser!._id && (
             <p className="text-main text-xs absolute bottom-[22px] right-[12px]">
               읽지 않음
             </p>
