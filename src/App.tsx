@@ -17,6 +17,8 @@ import { useAuthStore } from "./stores/authStore";
 import Admin from "./pages/Admin";
 import PrivateLayout from "./layouts/PrivateLayout";
 import RootLayout from "./layouts/RootLayout";
+import KakaoRedirect from "./pages/KakakoRedirect";
+import NaverRedirect from "./pages/NaverRedirect";
 
 export default function App() {
   const modalOpen = useModal((state) => state.modalOpen);
@@ -50,6 +52,10 @@ export default function App() {
           >
             <Route path="signIn" element={<SignIn />} />
             <Route path="signUp" element={<SignUp />} />
+            <Route path="oauth">
+              <Route path="kakao" element={<KakaoRedirect />} />
+              <Route path="naver" element={<NaverRedirect />} />
+            </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
