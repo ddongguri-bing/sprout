@@ -11,6 +11,7 @@ import { useModal } from "../stores/modalStore";
 import { useAuthStore } from "../stores/authStore";
 import { useTriggerStore } from "../stores/triggerStore";
 import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
+import NotFound from "./NotFound";
 
 export default function BoardDetail() {
   const { postId, id } = useParams();
@@ -58,7 +59,9 @@ export default function BoardDetail() {
     };
   }, [postId]);
 
-  if (loading || !post)
+  console.log(post);
+
+  if (loading)
     return (
       <div className="pb-[30px] flex flex-col relative">
         <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
@@ -73,6 +76,8 @@ export default function BoardDetail() {
         <BoardItemSkeleton />
       </div>
     );
+
+  if (!post) return <NotFound />;
 
   return (
     <>
