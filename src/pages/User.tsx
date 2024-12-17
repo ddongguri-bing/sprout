@@ -13,6 +13,7 @@ import FollowList from "../components/user/FollowList";
 import SendMessage from "../components/user/SendMessage";
 import ChatMessage from "../components/user/ChatMessage";
 import Loading from "../components/common/Loading";
+import { Fancybox } from "@fancyapps/ui";
 
 interface PostType {
   _id: string;
@@ -240,6 +241,17 @@ export default function User() {
     : isFollow
     ? handleUnfollow
     : handleFollow;
+
+  const handleProfileClick = () => {
+    if (specificUser?.image) {
+      Fancybox.show([
+        {
+          src: specificUser.image,
+          type: "image",
+        },
+      ]);
+    }
+  };
   return (
     <>
       <div className="h-[100px] px-[30px] z-[9] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
@@ -254,7 +266,11 @@ export default function User() {
       <div className="py-[70px] px-[50px] text-black dark:text-white flex flex-col items-center">
         <div className="w-full max-w-[826px]">
           <div className="flex mb-[30px] items-end gap-[30px]">
-            <Avata profile={specificUser.image} size={"lg"} />
+            <Avata
+              profile={specificUser?.image}
+              size="lg"
+              onClick={handleProfileClick}
+            />
             <div className="flex flex-col gap-[50px]">
               <div className="flex flex-col gap-[10px]">
                 <h2 className="text-[22px] font-bold">

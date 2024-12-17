@@ -19,6 +19,7 @@ export type postMessage = {
 export type getMessageList = {
   message: string;
   createdAt: string;
+  seen: boolean;
   _id: string;
   sender: {
     _id: string;
@@ -43,16 +44,6 @@ export type getChatList = {
     fullName: string;
   };
 }[];
-
-// export type putUpdateSeen = {
-//   _id: string;
-//   message: string;
-//   sender: string;
-//   receiver: string;
-//   seen: true;
-//   createdAt: string;
-//   updatedAt: string;
-// }[];
 
 export const postMessage = async (body: {
   message: string;

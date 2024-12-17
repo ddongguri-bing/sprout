@@ -3,12 +3,15 @@ import { useTheme } from "../../stores/themeStore";
 import images from "../../constants/images";
 import { useState } from "react";
 import BoardImageSkeleton from "./skeleton/BoardImageSkeleton";
+
 export default function Avata({
   profile,
   size,
+  onClick,
 }: {
   profile?: string;
   size: "sm" | "md" | "lg";
+  onClick?: () => void;
 }) {
   const isDark = useTheme((state) => state.isDarkMode);
   const BOX_BASE_STYLE =
@@ -26,8 +29,9 @@ export default function Avata({
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
+
   return (
-    <div className={twMerge(BOX_BASE_STYLE, BOX_SIZE)}>
+    <div className={twMerge(BOX_BASE_STYLE, BOX_SIZE)} onClick={onClick}>
       {profile ? (
         <>
           {!imageLoaded && <BoardImageSkeleton />}
@@ -36,7 +40,7 @@ export default function Avata({
             alt="profile image"
             className={twMerge(
               IMG_BASE_STYLE,
-              imageLoaded ? "opacity-100" : "opacity-0"
+              imageLoaded ? "opacity-100 cursor-pointer" : "opacity-0"
             )}
             onLoad={handleImageLoad}
           />
