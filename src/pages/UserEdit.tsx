@@ -186,16 +186,27 @@ export default function UserEdit() {
           </span>
         </label>
         <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="">이메일</label>
-          <Input theme="setting" type={"text"} value={email || ""} disabled />
+          <label htmlFor="" className="w-[100px]">
+            이메일
+          </label>
+          <Input
+            theme="setting"
+            type={"text"}
+            value={email || ""}
+            disabled
+            className="w-[500px]"
+          />
         </div>
         <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="">이름</label>
+          <label htmlFor="" className="w-[100px]">
+            이름
+          </label>
           <Input
             theme="setting"
             type={"text"}
             value={fullName || ""}
             disabled
+            className="w-[500px]"
           />
         </div>
         {!isSocial && (
