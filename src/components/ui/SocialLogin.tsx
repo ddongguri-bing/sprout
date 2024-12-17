@@ -8,10 +8,14 @@ import { useAuthStore } from "../../stores/authStore";
 import axios from "axios";
 
 const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
-const KAKAO_REDIRECT_URI = `http://localhost:5173/auth/oauth/kakao`;
+const KAKAO_REDIRECT_URI = `${
+  import.meta.env.VITE_PUBLIC_URL
+}/auth/oauth/kakao`;
 const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 const NAVER_REST_API_KEY = import.meta.env.VITE_NAVER_REST_API_KEY;
-const NAVER_REDIRECT_URI = `http://localhost:5173/auth/oauth/naver`;
+const NAVER_REDIRECT_URI = `${
+  import.meta.env.VITE_PUBLIC_URL
+}/auth/oauth/naver`;
 
 const { naver }: any = window;
 

@@ -6,7 +6,9 @@ import { useNavigate } from "react-router";
 import { useAuthStore } from "../stores/authStore";
 import { useCookies } from "react-cookie";
 const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
-const KAKAO_REDIRECT_URI = `http://localhost:5173/auth/oauth/kakao`;
+const KAKAO_REDIRECT_URI = `${
+  import.meta.env.VITE_PUBLIC_URL
+}/auth/oauth/kakao`;
 
 export default function KakaoRedirect() {
   const navigate = useNavigate();
