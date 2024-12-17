@@ -44,16 +44,6 @@ export type getChatList = {
   };
 }[];
 
-// export type putUpdateSeen = {
-//   _id: string;
-//   message: string;
-//   sender: string;
-//   receiver: string;
-//   seen: true;
-//   createdAt: string;
-//   updatedAt: string;
-// }[];
-
 export const postMessage = async (body: {
   message: string;
   receiver: string;
