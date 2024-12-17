@@ -32,6 +32,7 @@ export default function UserEdit() {
 
   const handleUploadPhoto = async () => {
     if (!selectedFile) return false;
+    if (!isValidUpdatePassword() || !isConfirmUpdatePassword()) return false;
     try {
       const data = await postUploadPhoto({
         isCover: false,
@@ -52,6 +53,12 @@ export default function UserEdit() {
       return false;
     }
   };
+
+  const isImageChanged = () => {
+    if (photoUrl) return true;
+    return false;
+  };
+
   //변경 못하는 정보 반영하기(내 이메일, 이름)
   const email = useAuthStore((state) => state.user?.email);
   const fullName = useAuthStore((state) => state.user?.fullName);
@@ -66,6 +73,9 @@ export default function UserEdit() {
 
   // 비밀번호조건(대소문자+숫자 8자리 이상) 만족
   const isValidUpdatePassword = () => {
+    const imageChanged = isImageChanged();
+    if (imageChanged && !updatePassword) return true;
+
     const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     const isValidPw = passwordRegExp.test(updatePassword);
     setUpdatePasswordError(isValidPw ? "" : "올바른 비밀번호가 아닙니다");
