@@ -42,6 +42,16 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
   const [commentsCount, setCommentsCount] = useState(comments.length);
   const postImages = JSON.parse(post.title).images;
 
+  const [likeClicked, setLikeClicked] = useState(false);
+  const [prevLikeCount, setPrevLikeCount] = useState(likeCount);
+  useEffect(() => {
+    if (likeCount > prevLikeCount) {
+      setLikeClicked(true);
+      setTimeout(() => setLikeClicked(false), 100);
+    }
+    setPrevLikeCount(likeCount);
+  }, [likeCount]);
+
   const updateCommentCount = (newCount: number) => {
     setCommentsCount(newCount);
   };
@@ -221,18 +231,25 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                   e.stopPropagation();
                   handleLikeClick();
                 }}
-                className="flex items-center gap-[10px]"
+                className="flex items-center gap-[10px] group "
               >
-                <img
-                  src={likeId ? images.like_fill : images.darkLike}
-                  alt="like icon"
-                  className="dark:block hidden"
-                />
-                <img
-                  src={likeId ? images.like_fill : images.Like}
-                  alt="like icon"
-                  className="dark:hidden block"
-                />
+                <div
+                  className={twMerge(
+                    "rounded-full p-2 transition duration-100",
+                    likeClicked ? "scale-125" : "scale-100"
+                  )}
+                >
+                  <img
+                    src={likeId ? images.like_fill : images.darkLike}
+                    alt="like icon dark"
+                    className="dark:block hidden"
+                  />
+                  <img
+                    src={likeId ? images.like_fill : images.Like}
+                    alt="like icon"
+                    className="dark:hidden block"
+                  />
+                </div>
                 {likeCount}
               </button>
               <button
@@ -240,7 +257,10 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                   e.stopPropagation();
                   shareKakao();
                 }}
-                className="flex items-center gap-[15px] "
+                className={twMerge(
+                  "flex items-center gap-[15px] p-2 rounded-full transition-all duration-200",
+                  isDark ? "hover:bg-gray" : "hover:bg-whiteDark"
+                )}
               >
                 <img
                   src={isDark ? images.darkShare : images.share}
