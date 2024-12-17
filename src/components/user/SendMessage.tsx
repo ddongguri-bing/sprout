@@ -35,7 +35,11 @@ export default function SendMessage({
 
   return (
     <form
-      onSubmit={handleSendMsg}
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSendMsg(e);
+        onClose();
+      }}
       className="w-[calc(100%-32px)] max-w-[425px] h-[230px] p-5  bg-white dark:bg-grayDark rounded-[8px] flex flex-col items-center justify-center"
     >
       <div className="font-bold mb-[30px] bg-white dark:bg-grayDark text-black dark:text-white w-full h-full border border-whiteDark dark:border-gray p-[10px] rounded-[8px]">
@@ -55,7 +59,7 @@ export default function SendMessage({
           size={"sm"}
           theme="sub"
         />
-        <Button type="submit" text={"전송"} size={"sm"} onClick={onClose} />
+        <Button type="submit" text={"전송"} size={"sm"} />
       </div>
     </form>
   );
