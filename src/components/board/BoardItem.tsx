@@ -15,7 +15,7 @@ import { twMerge } from "tailwind-merge";
 import calculateTimeDifference from "../../utils/calculateTimeDifference";
 
 const { Kakao } = window;
-
+const KAKAO_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
 interface Props {
   isDetail?: boolean;
   post: PostItem;
@@ -25,10 +25,9 @@ interface Props {
 export default function BoardItem({ isDetail, post, channelId }: Props) {
   useEffect(() => {
     if (!Kakao.isInitialized()) {
-      Kakao.init(`${import.meta.env.VITE_KAKAO_REST_API_KEY}`);
+      Kakao.init(KAKAO_JAVASCRIPT_KEY);
       console.log("Kakao SDK Initialized:", Kakao.isInitialized());
     }
-
   }, []);
 
   const { createdAt, likes, comments, _id: postId, author } = post;
