@@ -60,7 +60,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
     try {
       const { data } = await getChatList({ id: userId });
       const unReadMessages = data.some(
-        (chat: any) => chat.sender._id === userId && !chat.seen
+        (chat: any) => chat.receiver._id === userId && !chat.seen
       );
 
       if (unReadMessages) {
@@ -71,6 +71,19 @@ export default function ChatMessage({ onClose }: ChatMessage) {
       console.error("읽음 처리 실패", error);
     }
   };
+
+  useEffect(() => {
+    const updateSeenAndFetchChat = async () => {
+      try {
+        await handleUpdateSeen(currentUser?._id);
+        await handleChatList(currentUser?._id);
+      } catch (error) {
+        console.error("updateSeenAndFetchChat 실패:", error);
+      }
+    };
+
+    updateSeenAndFetchChat();
+  }, [currentUser]);
 
   // 특정 유저와의 채팅 목록 모달 열기
   const handleSelectChat = (user: { fullName: string; _id: string }) => {
@@ -159,7 +172,6 @@ export default function ChatMessage({ onClose }: ChatMessage) {
         ...prev,
       ]);
       setValue("");
-      console.log(data);
     } catch (error) {
       console.error("메시지 전송 실패", error);
     }
@@ -212,10 +224,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
                     key={idx}
                     user={reciever}
                     msg={item.message}
-                    onOpen={() => {
-                      handleSelectChat(reciever);
-                      handleUpdateSeen(reciever._id);
-                    }}
+                    onOpen={() => handleSelectChat(reciever)}
                     createdAt={item.createdAt}
                   />
                 );
@@ -255,7 +264,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
                     </div>
                     <div className="relative flex">
                       {!msg.seen && !msg.isReceived && (
-                        <p className="text-main text-xs absolute right-0 top-0">
+                        <p className="text-main text-xs absolute right-0 -top-4">
                           1
                         </p>
                       )}
