@@ -72,7 +72,7 @@ export default function KakaoRedirect() {
     };
     setTimeout(() => {
       handleSignIn();
-    }, 1500);
+    }, 1300);
   }, [user]);
   return <Loading />;
 }

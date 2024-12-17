@@ -64,7 +64,7 @@ export default function NaverRedirect() {
     };
     setTimeout(() => {
       handleSignIn();
-    }, 1500);
+    }, 1300);
   }, [user]);
   return <Loading />;
 }
