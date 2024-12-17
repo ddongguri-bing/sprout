@@ -44,16 +44,6 @@ export type getChatList = {
   };
 }[];
 
-// export type putUpdateSeen = {
-//   _id: string;
-//   message: string;
-//   sender: string;
-//   receiver: string;
-//   seen: true;
-//   createdAt: string;
-//   updatedAt: string;
-// }[];
-
 export const postMessage = async (body: {
   message: string;
   receiver: string;
@@ -78,7 +68,7 @@ export const getMessageList = async (): Promise<
 export const getChatList = async ({
   id,
 }: {
-  id: string | undefined;
+  id: string;
 }): Promise<AxiosResponse<getChatList>> => {
   try {
     return await axiosInstance.get(`/messages`, {
@@ -90,6 +80,8 @@ export const getChatList = async ({
 };
 
 //대화상대의 id를 입력하면 대화상대와 나눈 메시지의 seen이 true로 바뀜
-export const putUpdateSeen = async (sender: { sender: string | undefined }) => {
-  return await axiosInstance.put("/messages/update-seen", sender);
+export const putUpdateSeen = async (sender: string) => {
+  return await axiosInstance.put("/messages/update-seen", {
+    sender,
+  });
 };

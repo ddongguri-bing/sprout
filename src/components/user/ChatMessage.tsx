@@ -56,15 +56,11 @@ export default function ChatMessage({ onClose }: ChatMessage) {
   }, []);
 
   // 대화목록 가져올 때 상대방이 sender인 메시지만 seen true 처리
-  const handleUpdateSeen = async (userId: string | undefined) => {
+  const handleUpdateSeen = async (userId: string) => {
     try {
-      const { data } = await getChatList({ id: userId });
-      const unReadMessages = data.some(
-        (chat: any) => chat.receiver._id === userId && !chat.seen
-      );
-
+      const unReadMessages = messages.find((chat: any) => !chat.seen);
       if (unReadMessages) {
-        await putUpdateSeen({ sender: userId });
+        await putUpdateSeen(userId);
         console.log("상대방이 보낸 메시지 읽음 처리 완료");
       }
     } catch (error) {
@@ -72,20 +68,8 @@ export default function ChatMessage({ onClose }: ChatMessage) {
     }
   };
 
-  useEffect(() => {
-    const updateSeenAndFetchChat = async () => {
-      try {
-        await handleUpdateSeen(currentUser?._id);
-        await handleChatList(currentUser?._id);
-      } catch (error) {
-        console.error("updateSeenAndFetchChat 실패:", error);
-      }
-    };
-    updateSeenAndFetchChat();
-  }, [currentUser]);
-
   // 특정 유저와의 채팅 목록 모달 열기
-  const handleSelectChat = (user: { fullName: string; _id: string }) => {
+  const handleSelectChat = async (user: { fullName: string; _id: string }) => {
     if (!user._id) return console.error("user id가 없습니다");
     setCurrentUser(user);
     handleChatList(user._id);
@@ -112,7 +96,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
   const [value, setValue] = useState<string>("");
 
   // 특정 유저와의 채팅 목록
-  const handleChatList = async (userId?: string) => {
+  const handleChatList = async (userId: string) => {
     if (!loggedInUser) return;
     if (!userId) return;
     try {
@@ -139,7 +123,6 @@ export default function ChatMessage({ onClose }: ChatMessage) {
       setMessages(filterMessages);
     } catch (error) {
       console.error("messages를 불러오지 못함:", error);
-    } finally {
     }
   };
 
@@ -186,6 +169,10 @@ export default function ChatMessage({ onClose }: ChatMessage) {
       handleSendMessage();
     }
   };
+
+  useEffect(() => {
+    if (currentUser) handleUpdateSeen(currentUser._id);
+  }, [messages, currentUser]);
 
   return (
     <article className="w-[calc(100%-32px)] max-w-[600px] bg-white dark:bg-grayDark pt-5 pb-[30px] rounded-[8px] flex flex-col px-[44px]">

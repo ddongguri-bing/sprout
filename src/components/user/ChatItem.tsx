@@ -18,12 +18,14 @@ export default function ChatItem({
   return (
     <>
       <li
-        className={`w-full cursor-pointer flex justify-between ${
-          msg ? "cursor-pointer" : ""
+        className={`w-full cursor-pointer flex justify-between relative ${
+          msg
+            ? "cursor-pointer rounded-[8px] transition-all hover:bg-whiteDark/30"
+            : ""
         }`}
         onClick={onOpen}
       >
-        <div className="flex gap-[10px] items-center p-2 rounded-[8px] transition-all hover:bg-whiteDark/30">
+        <div className="flex gap-[10px] items-center p-2">
           <div className="relative">
             <Avata profile={user.image} size={"sm"} />
             {isOnline && (
@@ -40,8 +42,8 @@ export default function ChatItem({
             <p className={"text-gray dark:text-whiteDark"}>{msg}</p>
           </div>
         </div>
-        <div className="relative w-[60px] h-[50px]">
-          <p className="text-gray text-xs absolute bottom-0 right-0 dark:text-whiteDark">
+        <div>
+          <p className="text-gray text-xs absolute bottom-[5px] right-[12px] dark:text-whiteDark">
             {calculateTimeDifference(createdAt)}
           </p>
         </div>

@@ -131,16 +131,16 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
         // description: "des",
         imageUrl: postImages[0],
         link: {
-          mobileWebUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
-          webUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+          mobileWebUrl: `http://myip:5173/board/${channelId}/${postId}`,
+          webUrl: `http://localhost:5173/board/${channelId}/${postId}`,
         },
       },
       buttons: [
         {
           title: "웹으로 이동",
           link: {
-            mobileWebUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
-            webUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+            mobileWebUrl: `http://myip:5173/board/${channelId}/${postId}`,
+            webUrl: `http://localhost:5173/board/${channelId}/${postId}`,
           },
         },
       ],
@@ -218,6 +218,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
               <button
                 onClick={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   handleLikeClick();
                 }}
                 className="flex items-center gap-[10px]"
@@ -239,13 +240,17 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                   e.stopPropagation();
                   shareKakao();
                 }}
+                className="flex items-center gap-[15px] "
               >
-                공유
+                <img
+                  src={isDark ? images.darkShare : images.share}
+                  alt="share icon"
+                />
               </button>
             </div>
             <div className="text-gray dark:text-whiteDark relative group">
               {calculateTimeDifference(createdAt)}
-              <div className="hidden group-hover:block absolute w-[156px] text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10bg-black bg-black text-white dark:bg-whiteDark dark:text-black">
+              <div className="hidden group-hover:block absolute text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10 bg-black text-white whitespace-nowrap dark:bg-whiteDark dark:text-black">
                 {exactDate}
               </div>
             </div>
