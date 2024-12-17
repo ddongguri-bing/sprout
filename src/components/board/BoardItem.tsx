@@ -131,16 +131,16 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
         // description: "des",
         imageUrl: postImages[0],
         link: {
-          mobileWebUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
-          webUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+          mobileWebUrl: `http://myip:5173/board/${channelId}/${postId}`,
+          webUrl: `http://localhost:5173/board/${channelId}/${postId}`,
         },
       },
       buttons: [
         {
           title: "웹으로 이동",
           link: {
-            mobileWebUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
-            webUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+            mobileWebUrl: `http://myip:5173/board/${channelId}/${postId}`,
+            webUrl: `http://localhost:5173/board/${channelId}/${postId}`,
           },
         },
       ],
@@ -218,6 +218,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
               <button
                 onClick={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   handleLikeClick();
                 }}
                 className="flex items-center gap-[10px]"
