@@ -5,6 +5,7 @@ export type postMessage = {
   message: string;
   createdAt: string;
   _id: string;
+  seen: boolean;
   receiver: {
     fullName: string;
     _id: string;
@@ -32,6 +33,7 @@ export type getMessageList = {
 export type getChatList = {
   message: string;
   createdAt: string;
+  seen: boolean;
   sender: {
     _id: string;
     fullName: string;
@@ -41,6 +43,16 @@ export type getChatList = {
     fullName: string;
   };
 }[];
+
+// export type putUpdateSeen = {
+//   _id: string;
+//   message: string;
+//   sender: string;
+//   receiver: string;
+//   seen: true;
+//   createdAt: string;
+//   updatedAt: string;
+// }[];
 
 export const postMessage = async (body: {
   message: string;
@@ -66,7 +78,7 @@ export const getMessageList = async (): Promise<
 export const getChatList = async ({
   id,
 }: {
-  id: string;
+  id: string | undefined;
 }): Promise<AxiosResponse<getChatList>> => {
   try {
     return await axiosInstance.get(`/messages`, {
@@ -75,4 +87,11 @@ export const getChatList = async ({
   } catch (error) {
     throw new Error(`채팅창 불러오기 실패! ${error}`);
   }
+};
+
+//대화상대의 id를 입력하면 대화상대와 나눈 메시지의 seen이 true로 바뀜
+export const putUpdateSeen = async (sender: { sender: string | undefined }) => {
+  return await axiosInstance.put("/messages/update-seen", {
+    sender,
+  });
 };
