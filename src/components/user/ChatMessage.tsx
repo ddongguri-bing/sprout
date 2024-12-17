@@ -219,6 +219,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
                     onOpen={() => handleSelectChat(reciever)}
                     createdAt={item.createdAt}
                     seen={item.seen}
+                    lastMsg={item.receiver._id}
                   />
                 );
               })}
