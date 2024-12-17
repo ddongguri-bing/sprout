@@ -5,7 +5,12 @@ import ChatItem from "./ChatItem";
 import TextareaAutosize from "react-textarea-autosize";
 import { useAuthStore } from "../../stores/authStore";
 import { twMerge } from "tailwind-merge";
-import { getChatList, postMessage, getMessageList } from "../../api/message";
+import {
+  getChatList,
+  postMessage,
+  getMessageList,
+  putUpdateSeen,
+} from "../../api/message";
 
 interface ChatMessage {
   onClose: () => void;
@@ -29,6 +34,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
   const [list, setList] = useState<
     {
       message: string;
+      createdAt: string;
       receiver: { fullName: string; _id: string; image?: string };
       sender: { fullName: string; _id: string; image?: string };
     }[]
@@ -49,6 +55,36 @@ export default function ChatMessage({ onClose }: ChatMessage) {
     handleGetChatList();
   }, []);
 
+  // 대화목록 가져올 때 상대방이 sender인 메시지만 seen true 처리
+  const handleUpdateSeen = async (userId: string | undefined) => {
+    try {
+      const { data } = await getChatList({ id: userId });
+      const unReadMessages = data.some(
+        (chat: any) => chat.receiver._id === userId && !chat.seen
+      );
+
+      if (unReadMessages) {
+        await putUpdateSeen({ sender: userId });
+        console.log("상대방이 보낸 메시지 읽음 처리 완료");
+      }
+    } catch (error) {
+      console.error("읽음 처리 실패", error);
+    }
+  };
+
+  useEffect(() => {
+    const updateSeenAndFetchChat = async () => {
+      try {
+        await handleUpdateSeen(currentUser?._id);
+        await handleChatList(currentUser?._id);
+      } catch (error) {
+        console.error("updateSeenAndFetchChat 실패:", error);
+      }
+    };
+
+    updateSeenAndFetchChat();
+  }, [currentUser]);
+
   // 특정 유저와의 채팅 목록 모달 열기
   const handleSelectChat = (user: { fullName: string; _id: string }) => {
     if (!user._id) return console.error("user id가 없습니다");
@@ -68,6 +104,9 @@ export default function ChatMessage({ onClose }: ChatMessage) {
       messageId: string;
       senderId: string;
       receiverId: string;
+      createdAt: string;
+      chatTime: string;
+      seen: boolean;
       isReceived: boolean;
     }[]
   >([]);
@@ -85,6 +124,15 @@ export default function ChatMessage({ onClose }: ChatMessage) {
           messageId: chat._id,
           senderId: chat.sender._id,
           receiverId: chat.receiver._id,
+          createdAt: chat.createdAt,
+          chatTime: `${new Date(chat.createdAt)
+            .getHours()
+            .toString()
+            .padStart(2, "0")}:${new Date(chat.createdAt)
+            .getMinutes()
+            .toString()
+            .padStart(2, "0")}`,
+          seen: chat.seen,
           isReceived: chat.receiver._id === loggedInUser._id,
         }))
         .reverse();
@@ -110,6 +158,15 @@ export default function ChatMessage({ onClose }: ChatMessage) {
           messageId: data._id,
           senderId: data.sender._id,
           receiverId: data.receiver._id,
+          createdAt: data.createdAt,
+          chatTime: `${new Date(data.createdAt)
+            .getHours()
+            .toString()
+            .padStart(2, "0")}:${new Date(data.createdAt)
+            .getMinutes()
+            .toString()
+            .padStart(2, "0")}`,
+          seen: false,
           isReceived: data.receiver._id === loggedInUser._id,
         },
         ...prev,
@@ -158,16 +215,17 @@ export default function ChatMessage({ onClose }: ChatMessage) {
           ) : list.length > 0 ? (
             <ul className="flex flex-col gap-5">
               {list.map((item, idx) => {
-                const reciver =
+                const reciever =
                   item.receiver._id === loggedInUser!._id
                     ? item.sender
                     : item.receiver;
                 return (
                   <ChatItem
                     key={idx}
-                    user={reciver}
+                    user={reciever}
                     msg={item.message}
-                    onOpen={() => handleSelectChat(reciver)}
+                    onOpen={() => handleSelectChat(reciever)}
+                    createdAt={item.createdAt}
                   />
                 );
               })}
@@ -180,7 +238,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
         ) : (
           // 채팅 상세보기
           <div className="flex flex-col h-full gap-5">
-            <div className="flex-1 overflow-y-auto flex flex-col-reverse gap-5 scroll">
+            <div className="flex-1 overflow-y-auto flex flex-col-reverse gap-5 scroll text-sm">
               {messages.map((msg) => (
                 <div
                   key={msg.messageId}
@@ -189,11 +247,31 @@ export default function ChatMessage({ onClose }: ChatMessage) {
                   }`}
                 >
                   <div
-                    className={`${msg.isReceived ? "ml-[30px]" : "mr-[30px]"} ${
-                      msg.isReceived ? "bg-whiteDark" : "bg-main"
-                    } min-h-[50px] max-w-[342px] rounded-[8px] p-3`}
+                    className={`flex items-end gap-[10px] ${
+                      msg.isReceived ? "flex-row" : "flex-row-reverse"
+                    }`}
                   >
-                    {msg.message}
+                    <div
+                      className={`${
+                        msg.isReceived ? "ml-[30px]" : "mr-[30px]"
+                      } ${
+                        msg.isReceived
+                          ? "bg-whiteDark dark:bg-gray dark:text-white"
+                          : "bg-main dark:text-black"
+                      } min-h-[50px] max-w-[342px] flex items-center rounded-[8px] p-3`}
+                    >
+                      {msg.message}
+                    </div>
+                    <div className="relative flex">
+                      {!msg.seen && !msg.isReceived && (
+                        <p className="text-main text-xs absolute right-0 -top-4">
+                          1
+                        </p>
+                      )}
+                      <p className="text-gray text-xs dark:text-whiteDark">
+                        {msg.chatTime}
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -208,7 +286,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
               )}
             >
               <TextareaAutosize
-                className="w-full h-6 focus:outline-none  scroll resize-none bg-white dark:bg-black"
+                className="w-full h-6 focus:outline-none  scroll resize-none bg-white dark:bg-grayDark dark:placeholder:bg-grayDark"
                 onChange={(e) => setValue(e.target.value)}
                 onKeyDown={handleKeyDown}
                 value={value}
