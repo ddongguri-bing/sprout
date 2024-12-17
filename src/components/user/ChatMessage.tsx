@@ -55,43 +55,28 @@ export default function ChatMessage({ onClose }: ChatMessage) {
     handleGetChatList();
   }, []);
 
-  // 특정 유저와의 채팅 목록 모달 열기
-  const handleSelectChat = async (user: { fullName: string; _id: string }) => {
-    if (!user._id) return console.error("user id가 없습니다");
+  // 대화목록 가져올 때 상대방이 sender인 메시지만 seen true 처리
+  const handleUpdateSeen = async (userId: string | undefined) => {
     try {
-      setCurrentUser(user);
-      await handleChatList(user._id);
-
-      const unReadMessages = messages.filter(
-        (msg) => msg.senderId === user._id && !msg.seen
+      const { data } = await getChatList({ id: userId });
+      const unReadMessages = data.some(
+        (chat: any) => chat.sender._id === userId && !chat.seen
       );
-      if (unReadMessages.length > 0) {
-        // 각 메시지에 대해 읽음 처리 API 호출
-        for (const msg of unReadMessages) {
-          await putUpdateSeen({
-            _id: msg.messageId,
-            message: msg.message,
-            sender: msg.senderId,
-            receiver: msg.receiverId,
-            seen: msg.seen,
-            createdAt: msg.createdAt,
-            updatedAt: new Date().toISOString(),
-          });
-        }
 
-        setMessages((prev) =>
-          prev.map((msg) =>
-            unReadMessages.some(
-              (unReadMsg) => unReadMsg.messageId === msg.messageId
-            )
-              ? { ...msg, seen: true }
-              : msg
-          )
-        );
+      if (unReadMessages) {
+        await putUpdateSeen({ sender: userId });
+        console.log("상대방이 보낸 메시지 읽음 처리 완료");
       }
     } catch (error) {
-      console.error("메시지 읽음 처리 실패", error);
+      console.error("읽음 처리 실패", error);
     }
+  };
+
+  // 특정 유저와의 채팅 목록 모달 열기
+  const handleSelectChat = (user: { fullName: string; _id: string }) => {
+    if (!user._id) return console.error("user id가 없습니다");
+    setCurrentUser(user);
+    handleChatList(user._id);
   };
 
   // 특정 유저와의 채팅 목록 모달 닫기
@@ -227,7 +212,10 @@ export default function ChatMessage({ onClose }: ChatMessage) {
                     key={idx}
                     user={reciever}
                     msg={item.message}
-                    onOpen={() => handleSelectChat(reciever)}
+                    onOpen={() => {
+                      handleSelectChat(reciever);
+                      handleUpdateSeen(reciever._id);
+                    }}
                     createdAt={item.createdAt}
                   />
                 );
@@ -271,7 +259,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
                           1
                         </p>
                       )}
-                      <p className="text-gray text-xs dark:text-whiteDark mt-">
+                      <p className="text-gray text-xs dark:text-whiteDark">
                         {msg.chatTime}
                       </p>
                     </div>
