@@ -37,6 +37,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
       createdAt: string;
       receiver: { fullName: string; _id: string; image?: string };
       sender: { fullName: string; _id: string; image?: string };
+      seen: boolean;
     }[]
   >([]);
   const handleGetChatList = async () => {
@@ -62,6 +63,11 @@ export default function ChatMessage({ onClose }: ChatMessage) {
       if (unReadMessages) {
         await putUpdateSeen(userId);
         console.log("상대방이 보낸 메시지 읽음 처리 완료");
+      }
+      const unReadMsgTitle = list.find((chat: any) => !chat.seen);
+      if (unReadMsgTitle) {
+        await putUpdateSeen(userId);
+        console.log("메시지 타이틀 읽음 처리 완료");
       }
     } catch (error) {
       console.error("읽음 처리 실패", error);
@@ -212,6 +218,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
                     msg={item.message}
                     onOpen={() => handleSelectChat(reciever)}
                     createdAt={item.createdAt}
+                    seen={item.seen}
                   />
                 );
               })}

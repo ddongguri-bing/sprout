@@ -19,6 +19,7 @@ export type postMessage = {
 export type getMessageList = {
   message: string;
   createdAt: string;
+  seen: boolean;
   _id: string;
   sender: {
     _id: string;
