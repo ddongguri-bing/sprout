@@ -249,7 +249,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
             </div>
             <div className="text-gray dark:text-whiteDark relative group">
               {calculateTimeDifference(createdAt)}
-              <div className="hidden group-hover:block absolute w-[156px] text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10bg-black bg-black text-white dark:bg-whiteDark dark:text-black">
+              <div className="hidden group-hover:block absolute text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10 bg-black text-white whitespace-nowrap dark:bg-whiteDark dark:text-black">
                 {exactDate}
               </div>
             </div>
