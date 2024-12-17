@@ -120,7 +120,7 @@ export default function Admin() {
             <input
               className="w-full h-6 focus:outline-none scroll resize-none bg-white dark:bg-black"
               onChange={handleChange}
-              placeholder="댓글을 입력해주세요"
+              placeholder="생성할 채널 이름을 입력해주세요"
               value={value}></input>
             <button className="mt-[2px] ml-1" type="submit">
               <img
