@@ -25,9 +25,10 @@ interface Props {
 export default function BoardItem({ isDetail, post, channelId }: Props) {
   useEffect(() => {
     if (!Kakao.isInitialized()) {
-      Kakao.init("6f0721fda16720f1f3354826dc25aaf9");
+      Kakao.init(`${import.meta.env.VITE_KAKAO_REST_API_KEY}`);
       console.log("Kakao SDK Initialized:", Kakao.isInitialized());
     }
+
   }, []);
 
   const { createdAt, likes, comments, _id: postId, author } = post;
@@ -131,16 +132,16 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
         // description: "des",
         imageUrl: postImages[0],
         link: {
-          mobileWebUrl: `http://192.168.45.25:5173/board/${channelId}/${postId}`,
-          webUrl: `http://192.168.45.25:5173/board/${channelId}/${postId}`,
+          mobileWebUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+          webUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
         },
       },
       buttons: [
         {
           title: "웹으로 이동",
           link: {
-            mobileWebUrl: `http://192.168.45.25:5173/board/${channelId}/${postId}`,
-            webUrl: `http://192.168.45.25:5173/board/${channelId}/${postId}`,
+            mobileWebUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+            webUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
           },
         },
       ],
