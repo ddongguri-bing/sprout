@@ -22,6 +22,8 @@ import eye from "../assets/eye.svg";
 import eyeOff from "../assets/eye_off.svg";
 import darkEyeOff from "../assets/dark_eye_off.svg";
 import darkEye from "../assets/dark_eye.svg";
+import share from "../assets/share.svg";
+import darkShare from "../assets/dark_share.svg";
 const images = {
   Logo,
   Profile,
@@ -47,6 +49,8 @@ const images = {
   eyeOff,
   darkEyeOff,
   darkEye,
+  share,
+  darkShare,
 };
 
 export default images;
