@@ -10,6 +10,8 @@ import Avata from "../components/common/Avata";
 import { useTriggerStore } from "../stores/triggerStore";
 import Input from "../components/common/Input";
 import { useCookies } from "react-cookie";
+import { FadeLoader } from "react-spinners";
+
 export default function UserEdit() {
   const setTrigger = useTriggerStore((state) => state.setTrigger);
   const isSocial = useAuthStore((state) => state.isSocial);
@@ -173,6 +175,17 @@ export default function UserEdit() {
 
   return (
     <>
+      {fetching && (
+        <div className="w-full h-full inset-0 bg-black/50 fixed z-[99999] flex justify-center items-center">
+          <FadeLoader
+            color="#91C788"
+            height={25}
+            width={8}
+            radius={10}
+            margin={20}
+          />
+        </div>
+      )}
       <div className="w-full h-[100px] px-[30px] mb-10 sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-[9]">
         <button onClick={() => history.back()} className="">
           <img className="dark:invert" src={images.Back} alt="back icon" />
@@ -180,8 +193,7 @@ export default function UserEdit() {
       </div>
       <form
         className="w-full max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px]"
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         <label className="cursor-pointer relative mb-5">
           <input
             type="file"
@@ -278,8 +290,7 @@ export default function UserEdit() {
         <button
           aria-label="logout button"
           onClick={handleLogoutOpen}
-          className="text-red text-xs font-medium underline flex items-center gap-[10px]"
-        >
+          className="text-red text-xs font-medium underline flex items-center gap-[10px]">
           로그아웃
           <img src={images.Logout} alt="logout icon" />
         </button>
