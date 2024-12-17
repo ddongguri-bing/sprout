@@ -62,7 +62,9 @@ export default function NaverRedirect() {
         navigate("/");
       }
     };
-    handleSignIn();
+    setTimeout(() => {
+      handleSignIn();
+    }, 800);
     // 3. if 프로필 이미지 있으면 변경
     // 할려고 했는데 프로필 이미지 변경 시 File 타입이 필요한데 소셜로그인은 string url 내려줌
   }, [user]);
