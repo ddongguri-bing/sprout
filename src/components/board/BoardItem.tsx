@@ -240,8 +240,12 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                   e.stopPropagation();
                   shareKakao();
                 }}
+                className="flex items-center gap-[15px] "
               >
-                공유
+                <img
+                  src={isDark ? images.darkShare : images.share}
+                  alt="share icon"
+                />
               </button>
             </div>
             <div className="text-gray dark:text-whiteDark relative group">
