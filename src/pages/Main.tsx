@@ -5,7 +5,7 @@ import Reading from "../assets/reading.jpg";
 import Cooking from "../assets/cooking.jpg";
 import { twMerge } from "tailwind-merge";
 
-export default function Main2() {
+export default function Main() {
   const [selectedCategory, setSelectedCategory] = useState("Health");
   const [selectedImg, setSelectedImg] = useState<string>(Health);
 
