@@ -12,6 +12,7 @@ import Input from "../components/common/Input";
 import { useCookies } from "react-cookie";
 export default function UserEdit() {
   const setTrigger = useTriggerStore((state) => state.setTrigger);
+  const isSocial = useAuthStore((state) => state.isSocial);
 
   // 이미지 업로드 관련
   const [photoUrl, setPhotoUrl] = useState("");
@@ -197,41 +198,45 @@ export default function UserEdit() {
             disabled
           />
         </div>
-        <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="">비밀번호</label>
-          <div className="flex flex-col w-[500px]">
-            <Input
-              theme="setting"
-              type={"password"}
-              value={updatePassword}
-              onChange={(e) => setUpdatePassword(e.target.value)}
-              placeholder="변경할 비밀번호를 입력해주세요"
-              className="w-full"
-            />
-            {updatePasswordError && (
-              <p className="text-red text-xs mt-[10px]">
-                {updatePasswordError}
-              </p>
-            )}
-          </div>
-        </div>
-        <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="">비밀번호 확인</label>
-          <div className="flex flex-col w-[500px]">
-            <Input
-              theme="setting"
-              type={"password"}
-              value={confirmUpdatePassword}
-              onChange={(e) => setConfirmUpdatePassword(e.target.value)}
-              placeholder="비밀번호를 확인해주세요"
-            />
-            {confirmUpdatePasswordError && (
-              <p className="text-red text-xs mt-[10px]">
-                {confirmUpdatePasswordError}
-              </p>
-            )}
-          </div>
-        </div>
+        {!isSocial && (
+          <>
+            <div className="w-full flex items-center justify-between gap-5">
+              <label htmlFor="">비밀번호</label>
+              <div className="flex flex-col w-[500px]">
+                <Input
+                  theme="setting"
+                  type={"password"}
+                  value={updatePassword}
+                  onChange={(e) => setUpdatePassword(e.target.value)}
+                  placeholder="변경할 비밀번호를 입력해주세요"
+                  className="w-full"
+                />
+                {updatePasswordError && (
+                  <p className="text-red text-xs mt-[10px]">
+                    {updatePasswordError}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="w-full flex items-center justify-between gap-5">
+              <label htmlFor="">비밀번호 확인</label>
+              <div className="flex flex-col w-[500px]">
+                <Input
+                  theme="setting"
+                  type={"password"}
+                  value={confirmUpdatePassword}
+                  onChange={(e) => setConfirmUpdatePassword(e.target.value)}
+                  placeholder="비밀번호를 확인해주세요"
+                />
+                {confirmUpdatePasswordError && (
+                  <p className="text-red text-xs mt-[10px]">
+                    {confirmUpdatePasswordError}
+                  </p>
+                )}
+              </div>
+            </div>
+          </>
+        )}
         <div className="w-full flex justify-end items-center gap-5">
           <Button
             onClick={() => history.back()}
