@@ -139,7 +139,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
       content: {
         title: JSON.parse(post.title).text,
         // description: "des",
-        imageUrl: postImages[0],
+        imageUrl: postImages[0] || "",
         link: {
           mobileWebUrl: `https://sprout-enis.vercel.app//board/${channelId}/${postId}`,
           webUrl: `https://sprout-enis.vercel.app/board/${channelId}/${postId}`,
