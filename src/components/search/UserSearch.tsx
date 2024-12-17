@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, FormEvent } from "react";
 import { getUsers } from "../../api/users";
 import images from "../../constants/images";
 import UserItem from "../user/UserItem";
@@ -31,6 +31,12 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
     fetchUsers(debouncedValue);
   }, [debouncedValue, fetchUsers]);
 
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log(e);
+    if (value) fetchUsers(value.trim());
+  };
+
   useEffect(() => {
     toggleOpen();
   }, [location]);
@@ -43,7 +49,13 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
             <img className="dark:invert" src={images.Close} alt="close icon" />
           </button>
         </div>
-        <div className="relative mb-5">
+        <form
+          onSubmit={handleSubmit}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") e.preventDefault();
+          }}
+          className="relative mb-5"
+        >
           <label htmlFor="search" className="absolute top-[18px] left-[15px]">
             <img
               src={images.Search}
@@ -59,7 +71,7 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
               setValue(e.target.value);
             }}
           />
-        </div>
+        </form>
         <div className="flex-1 max-h-[450px] scroll overflow-y-auto">
           {loading ? (
             <div className="w-full text-lg font-bold h-[450px] flex flex-col gap-5">

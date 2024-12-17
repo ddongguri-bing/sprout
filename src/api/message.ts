@@ -3,16 +3,38 @@ import { axiosInstance } from ".";
 
 export type postMessage = {
   message: string;
+  createdAt: string;
+  _id: string;
+  seen: boolean;
   receiver: {
     fullName: string;
-    createdAt: string;
+    _id: string;
+  };
+  sender: {
+    fullName: string;
     _id: string;
   };
 };
 
-export type getMessage = {
+export type getMessageList = {
   message: string;
   createdAt: string;
+  seen: boolean;
+  _id: string;
+  sender: {
+    _id: string;
+    fullName: string;
+  };
+  receiver: {
+    _id: string;
+    fullName: string;
+  };
+}[];
+
+export type getChatList = {
+  message: string;
+  createdAt: string;
+  seen: boolean;
   sender: {
     _id: string;
     fullName: string;
@@ -34,10 +56,33 @@ export const postMessage = async (body: {
   }
 };
 
-export const getMessage = async (): Promise<AxiosResponse<getMessage>> => {
+export const getMessageList = async (): Promise<
+  AxiosResponse<getMessageList>
+> => {
   try {
     return await axiosInstance.get("/messages/conversations");
   } catch (error) {
     throw new Error(`메시지 수신 실패! ${error}`);
   }
+};
+
+export const getChatList = async ({
+  id,
+}: {
+  id: string;
+}): Promise<AxiosResponse<getChatList>> => {
+  try {
+    return await axiosInstance.get(`/messages`, {
+      params: { userId: id },
+    });
+  } catch (error) {
+    throw new Error(`채팅창 불러오기 실패! ${error}`);
+  }
+};
+
+//대화상대의 id를 입력하면 대화상대와 나눈 메시지의 seen이 true로 바뀜
+export const putUpdateSeen = async (sender: string) => {
+  return await axiosInstance.put("/messages/update-seen", {
+    sender,
+  });
 };

@@ -42,6 +42,18 @@ export const getPostsByChannel = async (channelId: string) => {
   return (await axiosInstance.get(`/posts/channel/${channelId}`)).data;
 };
 
+export const getPostsByChannelWithPagination = async (
+  channelId: string,
+  offset: number,
+  limit: number
+) => {
+  return (
+    await axiosInstance.get(
+      `/posts/channel/${channelId}?offset=${offset}&limit=${limit}`
+    )
+  ).data;
+};
+
 export const getPostsByAuthor = async (authorId: string) => {
   return (await axiosInstance.get(`/posts/author/${authorId}`)).data;
 };

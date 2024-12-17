@@ -13,7 +13,7 @@ import FollowList from "../components/user/FollowList";
 import SendMessage from "../components/user/SendMessage";
 import ChatMessage from "../components/user/ChatMessage";
 import Loading from "../components/common/Loading";
-import { getMessage, postMessage } from "../api/message";
+import { Fancybox } from "@fancyapps/ui";
 
 interface PostType {
   _id: string;
@@ -203,23 +203,16 @@ export default function User() {
 
   // URL 변경 시 모달 닫기
   useEffect(() => {
-    if (isFollowListOpen) {
-      setFollowListOpen(false);
-    }
+    if (isFollowListOpen) setFollowListOpen(false);
   }, [location]);
 
   //* Message */
-  const [loadingChatList, setLoadingChatList] = useState(false);
   const [msgOpen, setMsgOpen] = useState<boolean>(false);
   const [type, setType] = useState<"SEND" | "CHAT">("SEND");
   const handleClickMsg = (type: "SEND" | "CHAT") => {
     if (!loggedInUser) return handleOpenModal();
     setMsgOpen((prev) => !prev);
     setType(type);
-
-    if (type === "CHAT") {
-      handleReceiveMsg();
-    }
   };
 
   //handleOpenModal 문구를 "로그인 후 이용해주세요"로 통일하고 하나로 써도 될 듯
@@ -235,60 +228,6 @@ export default function User() {
     });
   };
 
-  const [msgContent, setMsgContent] = useState<string>("");
-  const [response, setResponse] = useState<
-    {
-      message: string;
-      createdAt: string;
-      fullName: string;
-      _id: string;
-    }[]
-  >([]);
-
-  const handleSendMsg = async () => {
-    if (!loggedInUser) return handleOpenMsgModal();
-    if (!specificUser) return;
-
-    try {
-      const { data } = await postMessage({
-        message: msgContent,
-        receiver: specificUser._id,
-      });
-      setMsgContent("");
-      return data;
-    } catch (error) {
-      console.error(`메시지 전송 실패` + error);
-    }
-  };
-
-  const handleReceiveMsg = async () => {
-    if (!loggedInUser) return handleOpenMsgModal();
-    setLoadingChatList(true);
-    try {
-      const { data } = await getMessage();
-      const userMsg = data.filter(
-        (msg) => msg.receiver._id === loggedInUser._id
-      );
-      const uniqueUsers = userMsg.filter(
-        (msg, index, self) =>
-          self.findIndex((m) => m.sender._id === msg.sender._id) === index
-      );
-
-      setResponse(
-        uniqueUsers.map((msg) => ({
-          message: msg.message,
-          createdAt: msg.createdAt,
-          fullName: msg.sender.fullName,
-          _id: msg.sender._id,
-        }))
-      );
-    } catch (error) {
-      console.error(`메시지 수신 실패` + error);
-    } finally {
-      setLoadingChatList(false);
-    }
-  };
-
   if (!specificUser) return <Loading />;
   const isMyPage = loggedInUser?._id === specificUser._id;
   const followBtnTxt = isMyPage
@@ -302,6 +241,17 @@ export default function User() {
     : isFollow
     ? handleUnfollow
     : handleFollow;
+
+  const handleProfileClick = () => {
+    if (specificUser?.image) {
+      Fancybox.show([
+        {
+          src: specificUser.image,
+          type: "image",
+        },
+      ]);
+    }
+  };
   return (
     <>
       <div className="h-[100px] px-[30px] z-[9] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
@@ -316,7 +266,11 @@ export default function User() {
       <div className="py-[70px] px-[50px] text-black dark:text-white flex flex-col items-center">
         <div className="w-full max-w-[826px]">
           <div className="flex mb-[30px] items-end gap-[30px]">
-            <Avata profile={specificUser.image} size={"lg"} />
+            <Avata
+              profile={specificUser?.image}
+              size="lg"
+              onClick={handleProfileClick}
+            />
             <div className="flex flex-col gap-[50px]">
               <div className="flex flex-col gap-[10px]">
                 <h2 className="text-[22px] font-bold">
@@ -400,25 +354,12 @@ export default function User() {
         <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 flex items-center justify-center z-[9999]">
           {type === "SEND" && (
             <SendMessage
-              onClose={() => {
-                setMsgOpen(false);
-              }}
-              msgValue={msgContent}
-              onMsgChange={setMsgContent}
-              onSend={() => {
-                setMsgOpen(false);
-                handleSendMsg();
-              }}
-              receiver={specificUser.fullName}
-            />
-          )}
-          {type === "CHAT" && (
-            <ChatMessage
               onClose={() => setMsgOpen(false)}
-              users={response}
-              loading={loadingChatList}
+              receiver={specificUser}
+              checkLogin={handleOpenMsgModal}
             />
           )}
+          {type === "CHAT" && <ChatMessage onClose={() => setMsgOpen(false)} />}
         </div>
       )}
     </>

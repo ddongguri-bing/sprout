@@ -10,8 +10,11 @@ import Avata from "../components/common/Avata";
 import { useTriggerStore } from "../stores/triggerStore";
 import Input from "../components/common/Input";
 import { useCookies } from "react-cookie";
+import { FadeLoader } from "react-spinners";
+
 export default function UserEdit() {
   const setTrigger = useTriggerStore((state) => state.setTrigger);
+  const isSocial = useAuthStore((state) => state.isSocial);
 
   // 이미지 업로드 관련
   const [photoUrl, setPhotoUrl] = useState("");
@@ -31,6 +34,7 @@ export default function UserEdit() {
 
   const handleUploadPhoto = async () => {
     if (!selectedFile) return false;
+    if (!isValidUpdatePassword() || !isConfirmUpdatePassword()) return false;
     try {
       const data = await postUploadPhoto({
         isCover: false,
@@ -51,6 +55,12 @@ export default function UserEdit() {
       return false;
     }
   };
+
+  const isImageChanged = () => {
+    if (photoUrl) return true;
+    return false;
+  };
+
   //변경 못하는 정보 반영하기(내 이메일, 이름)
   const email = useAuthStore((state) => state.user?.email);
   const fullName = useAuthStore((state) => state.user?.fullName);
@@ -65,6 +75,9 @@ export default function UserEdit() {
 
   // 비밀번호조건(대소문자+숫자 8자리 이상) 만족
   const isValidUpdatePassword = () => {
+    const imageChanged = isImageChanged();
+    if (imageChanged && !updatePassword) return true;
+
     const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     const isValidPw = passwordRegExp.test(updatePassword);
     setUpdatePasswordError(isValidPw ? "" : "올바른 비밀번호가 아닙니다");
@@ -91,8 +104,11 @@ export default function UserEdit() {
       const pwValid = isValidUpdatePassword();
       const pwConfirValud = isConfirmUpdatePassword();
       if (!pwValid || !pwConfirValud) return false;
-      await putUpdatePw(updatePassword);
-      return true;
+      if (updatePassword) {
+        await putUpdatePw(updatePassword);
+        return true;
+      }
+      return false;
     } catch (error) {
       console.error("error");
       return false;
@@ -162,6 +178,17 @@ export default function UserEdit() {
 
   return (
     <>
+      {fetching && (
+        <div className="w-full h-full inset-0 bg-black/50 fixed z-[99999] flex justify-center items-center">
+          <FadeLoader
+            color="#91C788"
+            height={25}
+            width={8}
+            radius={10}
+            margin={20}
+          />
+        </div>
+      )}
       <div className="w-full h-[100px] px-[30px] mb-10 sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-[9]">
         <button onClick={() => history.back()} className="">
           <img className="dark:invert" src={images.Back} alt="back icon" />
@@ -185,53 +212,68 @@ export default function UserEdit() {
           </span>
         </label>
         <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="">이메일</label>
-          <Input theme="setting" type={"text"} value={email || ""} disabled />
+          <label htmlFor="" className="w-[100px]">
+            이메일
+          </label>
+          <Input
+            theme="setting"
+            type={"text"}
+            value={email || ""}
+            disabled
+            className="w-[500px]"
+          />
         </div>
         <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="">이름</label>
+          <label htmlFor="" className="w-[100px]">
+            이름
+          </label>
           <Input
             theme="setting"
             type={"text"}
             value={fullName || ""}
             disabled
+            className="w-[500px]"
           />
         </div>
-        <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="">비밀번호</label>
-          <div className="flex flex-col w-[500px]">
-            <Input
-              theme="setting"
-              type={"password"}
-              value={updatePassword}
-              onChange={(e) => setUpdatePassword(e.target.value)}
-              placeholder="변경할 비밀번호를 입력해주세요"
-              className="w-full"
-            />
-            {updatePasswordError && (
-              <p className="text-red text-xs mt-[10px]">
-                {updatePasswordError}
-              </p>
-            )}
-          </div>
-        </div>
-        <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="">비밀번호 확인</label>
-          <div className="flex flex-col w-[500px]">
-            <Input
-              theme="setting"
-              type={"password"}
-              value={confirmUpdatePassword}
-              onChange={(e) => setConfirmUpdatePassword(e.target.value)}
-              placeholder="비밀번호를 확인해주세요"
-            />
-            {confirmUpdatePasswordError && (
-              <p className="text-red text-xs mt-[10px]">
-                {confirmUpdatePasswordError}
-              </p>
-            )}
-          </div>
-        </div>
+        {!isSocial && (
+          <>
+            <div className="w-full flex items-center justify-between gap-5">
+              <label htmlFor="">비밀번호</label>
+              <div className="flex flex-col w-[500px]">
+                <Input
+                  theme="setting"
+                  type={"password"}
+                  value={updatePassword}
+                  onChange={(e) => setUpdatePassword(e.target.value)}
+                  placeholder="변경할 비밀번호를 입력해주세요"
+                  className="w-full"
+                />
+                {updatePasswordError && (
+                  <p className="text-red text-xs mt-[10px]">
+                    {updatePasswordError}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="w-full flex items-center justify-between gap-5">
+              <label htmlFor="">비밀번호 확인</label>
+              <div className="flex flex-col w-[500px]">
+                <Input
+                  theme="setting"
+                  type={"password"}
+                  value={confirmUpdatePassword}
+                  onChange={(e) => setConfirmUpdatePassword(e.target.value)}
+                  placeholder="비밀번호를 확인해주세요"
+                />
+                {confirmUpdatePasswordError && (
+                  <p className="text-red text-xs mt-[10px]">
+                    {confirmUpdatePasswordError}
+                  </p>
+                )}
+              </div>
+            </div>
+          </>
+        )}
         <div className="w-full flex justify-end items-center gap-5">
           <Button
             onClick={() => history.back()}

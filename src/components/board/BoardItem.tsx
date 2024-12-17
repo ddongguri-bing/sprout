@@ -14,6 +14,8 @@ import { useTheme } from "../../stores/themeStore";
 import { twMerge } from "tailwind-merge";
 import calculateTimeDifference from "../../utils/calculateTimeDifference";
 
+const { Kakao } = window;
+const KAKAO_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
 interface Props {
   isDetail?: boolean;
   post: PostItem;
@@ -21,6 +23,13 @@ interface Props {
 }
 
 export default function BoardItem({ isDetail, post, channelId }: Props) {
+  useEffect(() => {
+    if (!Kakao.isInitialized()) {
+      Kakao.init(KAKAO_JAVASCRIPT_KEY);
+      console.log("Kakao SDK Initialized:", Kakao.isInitialized());
+    }
+  }, []);
+
   const { createdAt, likes, comments, _id: postId, author } = post;
   const isDark = useTheme((state) => state.isDarkMode);
   const user = useAuthStore((state) => state.user);
@@ -32,6 +41,16 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [commentsCount, setCommentsCount] = useState(comments.length);
   const postImages = JSON.parse(post.title).images;
+
+  const [likeClicked, setLikeClicked] = useState(false);
+  const [prevLikeCount, setPrevLikeCount] = useState(likeCount);
+  useEffect(() => {
+    if (likeCount > prevLikeCount) {
+      setLikeClicked(true);
+      setTimeout(() => setLikeClicked(false), 100);
+    }
+    setPrevLikeCount(likeCount);
+  }, [likeCount]);
 
   const updateCommentCount = (newCount: number) => {
     setCommentsCount(newCount);
@@ -114,6 +133,30 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
     loadImages();
   }, [postImages]); // postImages가 변경될 때마다 다시 실행
 
+  const shareKakao = () => {
+    Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title: JSON.parse(post.title).text,
+        // description: "des",
+        imageUrl: postImages[0],
+        link: {
+          mobileWebUrl: `https://sprout-enis.vercel.app//board/${channelId}/${postId}`,
+          webUrl: `https://sprout-enis.vercel.app/board/${channelId}/${postId}`,
+        },
+      },
+      buttons: [
+        {
+          title: "웹으로 이동",
+          link: {
+            mobileWebUrl: `https://sprout-enis.vercel.app/board/${channelId}/${postId}`,
+            webUrl: `https://sprout-enis.vercel.app/board/${channelId}/${postId}`,
+          },
+        },
+      ],
+    });
+  };
+
   const mainContents = (
     <div className="w-full max-w-[777px] flex flex-col items-start gap-5">
       <div
@@ -185,26 +228,49 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
               <button
                 onClick={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   handleLikeClick();
                 }}
-                className="flex items-center gap-[10px]"
+                className="flex items-center gap-[10px] group "
+              >
+                <div
+                  className={twMerge(
+                    "rounded-full p-2 transition duration-100",
+                    likeClicked ? "scale-125" : "scale-100"
+                  )}
+                >
+                  <img
+                    src={likeId ? images.like_fill : images.darkLike}
+                    alt="like icon dark"
+                    className="dark:block hidden"
+                  />
+                  <img
+                    src={likeId ? images.like_fill : images.Like}
+                    alt="like icon"
+                    className="dark:hidden block"
+                  />
+                </div>
+                {likeCount}
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  shareKakao();
+                }}
+                className={twMerge(
+                  "flex items-center gap-[15px] p-2 rounded-full transition-all duration-200",
+                  isDark ? "hover:bg-gray" : "hover:bg-whiteDark"
+                )}
               >
                 <img
-                  src={likeId ? images.like_fill : images.darkLike}
-                  alt="like icon"
-                  className="dark:block hidden"
+                  src={isDark ? images.darkShare : images.share}
+                  alt="share icon"
                 />
-                <img
-                  src={likeId ? images.like_fill : images.Like}
-                  alt="like icon"
-                  className="dark:hidden block"
-                />
-                {likeCount}
               </button>
             </div>
             <div className="text-gray dark:text-whiteDark relative group">
               {calculateTimeDifference(createdAt)}
-              <div className="hidden group-hover:block absolute w-[156px] text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10bg-black bg-black text-white dark:bg-whiteDark dark:text-black">
+              <div className="hidden group-hover:block absolute text-xs p-2 rounded-lg -top-[40px] left-1/2 transform -translate-x-1/2 z-10 bg-black text-white whitespace-nowrap dark:bg-whiteDark dark:text-black">
                 {exactDate}
               </div>
             </div>

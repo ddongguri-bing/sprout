@@ -18,7 +18,12 @@ import Camera from "../assets/camera.svg";
 import Logout from "../assets/logout.svg";
 import MessageBoxBtn from "../assets/messageBoxBtn.svg";
 import MessageSendBtn from "../assets/messageSendBtn.svg";
-
+import eye from "../assets/eye.svg";
+import eyeOff from "../assets/eye_off.svg";
+import darkEyeOff from "../assets/dark_eye_off.svg";
+import darkEye from "../assets/dark_eye.svg";
+import share from "../assets/share.svg";
+import darkShare from "../assets/dark_share.svg";
 const images = {
   Logo,
   Profile,
@@ -40,6 +45,12 @@ const images = {
   Logout,
   MessageBoxBtn,
   MessageSendBtn,
+  eye,
+  eyeOff,
+  darkEyeOff,
+  darkEye,
+  share,
+  darkShare,
 };
 
 export default images;
@@ -56,3 +67,9 @@ export const landingImages = [Landing1, Landing2, Landing3, Landing4];
 import Notfound from "../assets/not_found.svg";
 import NotfoundIn from "../assets/not_found_i.svg";
 export const notFoundImages = [Notfound, NotfoundIn];
+
+//** Social icons */
+import KakaoIcon from "../assets/kakao.svg";
+import NaverIcon from "../assets/naver.svg";
+import GoogleIcon from "../assets/google.svg";
+export const socialIcons = [KakaoIcon, NaverIcon, GoogleIcon];

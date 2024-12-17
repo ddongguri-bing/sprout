@@ -1,10 +1,16 @@
-import Spinner from "../../assets/spinner.gif";
+import { FadeLoader } from "react-spinners";
 
 export default function Loading() {
   return (
-    <div className="flex items-top justify-center mt-[100px]">
+    <div className="flex items-top justify-center mt-[100px] bg-white dark:bg-black">
       <div>
-        <img src={Spinner} alt="spinner" />
+        <FadeLoader
+          color="#91C788"
+          height={25}
+          width={8}
+          radius={10}
+          margin={20}
+        />
       </div>
       <div className="ml-[50px]">
         <p className="font-angkor text-[50px] dark:text-white">SPROUT</p>
