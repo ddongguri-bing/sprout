@@ -14,6 +14,8 @@ import { useTheme } from "../../stores/themeStore";
 import { twMerge } from "tailwind-merge";
 import calculateTimeDifference from "../../utils/calculateTimeDifference";
 
+const { Kakao } = window;
+const KAKAO_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
 interface Props {
   isDetail?: boolean;
   post: PostItem;
@@ -21,6 +23,13 @@ interface Props {
 }
 
 export default function BoardItem({ isDetail, post, channelId }: Props) {
+  useEffect(() => {
+    if (!Kakao.isInitialized()) {
+      Kakao.init(KAKAO_JAVASCRIPT_KEY);
+      console.log("Kakao SDK Initialized:", Kakao.isInitialized());
+    }
+  }, []);
+
   const { createdAt, likes, comments, _id: postId, author } = post;
   const isDark = useTheme((state) => state.isDarkMode);
   const user = useAuthStore((state) => state.user);
@@ -114,6 +123,30 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
     loadImages();
   }, [postImages]); // postImages가 변경될 때마다 다시 실행
 
+  const shareKakao = () => {
+    Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title: JSON.parse(post.title).text,
+        // description: "des",
+        imageUrl: postImages[0],
+        link: {
+          mobileWebUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+          webUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+        },
+      },
+      buttons: [
+        {
+          title: "웹으로 이동",
+          link: {
+            mobileWebUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+            webUrl: `http://192.168.45.75:5173/board/${channelId}/${postId}`,
+          },
+        },
+      ],
+    });
+  };
+
   const mainContents = (
     <div className="w-full max-w-[777px] flex flex-col items-start gap-5">
       <div
@@ -200,6 +233,14 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                   className="dark:hidden block"
                 />
                 {likeCount}
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  shareKakao();
+                }}
+              >
+                공유
               </button>
             </div>
             <div className="text-gray dark:text-whiteDark relative group">

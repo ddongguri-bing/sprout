@@ -18,7 +18,10 @@ import Camera from "../assets/camera.svg";
 import Logout from "../assets/logout.svg";
 import MessageBoxBtn from "../assets/messageBoxBtn.svg";
 import MessageSendBtn from "../assets/messageSendBtn.svg";
-
+import eye from "../assets/eye.svg";
+import eyeOff from "../assets/eye_off.svg";
+import darkEyeOff from "../assets/dark_eye_off.svg";
+import darkEye from "../assets/dark_eye.svg";
 const images = {
   Logo,
   Profile,
@@ -40,6 +43,10 @@ const images = {
   Logout,
   MessageBoxBtn,
   MessageSendBtn,
+  eye,
+  eyeOff,
+  darkEyeOff,
+  darkEye,
 };
 
 export default images;

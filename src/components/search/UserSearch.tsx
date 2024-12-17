@@ -33,6 +33,7 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    console.log(e);
     if (value) fetchUsers(value.trim());
   };
 
@@ -48,7 +49,13 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
             <img className="dark:invert" src={images.Close} alt="close icon" />
           </button>
         </div>
-        <form onSubmit={handleSubmit} className="relative mb-5">
+        <form
+          onSubmit={handleSubmit}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") e.preventDefault();
+          }}
+          className="relative mb-5"
+        >
           <label htmlFor="search" className="absolute top-[18px] left-[15px]">
             <img
               src={images.Search}
