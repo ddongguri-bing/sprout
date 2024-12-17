@@ -86,7 +86,9 @@ export default function SocialLogin() {
         navigate("/");
       }
     };
-    handleSignIn();
+    setTimeout(() => {
+      handleSignIn();
+    }, 800);
   }, [user]);
   return (
     <div className="w-full">
