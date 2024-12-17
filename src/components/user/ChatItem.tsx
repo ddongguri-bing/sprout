@@ -7,11 +7,13 @@ export default function ChatItem({
   msg,
   onOpen,
   createdAt,
+  seen,
 }: {
   user: any;
   msg: string;
   onOpen: () => void;
   createdAt: string;
+  seen: boolean;
 }) {
   const onlineUsers = useUserStore((state) => state.onlineUsers);
   const isOnline = !!onlineUsers.find((ou) => ou._id === user._id);
@@ -43,6 +45,11 @@ export default function ChatItem({
           </div>
         </div>
         <div>
+          {!seen && (
+            <p className="text-main text-xs absolute bottom-[22px] right-[12px]">
+              읽지 않음
+            </p>
+          )}
           <p className="text-gray text-xs absolute bottom-[5px] right-[12px] dark:text-whiteDark">
             {calculateTimeDifference(createdAt)}
           </p>
