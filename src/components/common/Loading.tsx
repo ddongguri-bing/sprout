@@ -2,7 +2,7 @@ import { FadeLoader } from "react-spinners";
 
 export default function Loading() {
   return (
-    <div className="flex items-top justify-center mt-[100px]">
+    <div className="flex items-top justify-center mt-[100px] bg-white dark:bg-black">
       <div>
         <FadeLoader
           color="#91C788"

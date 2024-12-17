@@ -104,8 +104,11 @@ export default function UserEdit() {
       const pwValid = isValidUpdatePassword();
       const pwConfirValud = isConfirmUpdatePassword();
       if (!pwValid || !pwConfirValud) return false;
-      await putUpdatePw(updatePassword);
-      return true;
+      if (updatePassword) {
+        await putUpdatePw(updatePassword);
+        return true;
+      }
+      return false;
     } catch (error) {
       console.error("error");
       return false;
@@ -193,7 +196,8 @@ export default function UserEdit() {
       </div>
       <form
         className="w-full max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px]"
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}
+      >
         <label className="cursor-pointer relative mb-5">
           <input
             type="file"
@@ -290,7 +294,8 @@ export default function UserEdit() {
         <button
           aria-label="logout button"
           onClick={handleLogoutOpen}
-          className="text-red text-xs font-medium underline flex items-center gap-[10px]">
+          className="text-red text-xs font-medium underline flex items-center gap-[10px]"
+        >
           로그아웃
           <img src={images.Logout} alt="logout icon" />
         </button>
