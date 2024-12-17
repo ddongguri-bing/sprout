@@ -81,7 +81,6 @@ export default function ChatMessage({ onClose }: ChatMessage) {
         console.error("updateSeenAndFetchChat 실패:", error);
       }
     };
-
     updateSeenAndFetchChat();
   }, [currentUser]);
 

@@ -91,7 +91,5 @@ export const getChatList = async ({
 
 //대화상대의 id를 입력하면 대화상대와 나눈 메시지의 seen이 true로 바뀜
 export const putUpdateSeen = async (sender: { sender: string | undefined }) => {
-  return await axiosInstance.put("/messages/update-seen", {
-    sender,
-  });
+  return await axiosInstance.put("/messages/update-seen", sender);
 };
