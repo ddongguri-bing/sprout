@@ -131,16 +131,16 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
         // description: "des",
         imageUrl: postImages[0],
         link: {
-          mobileWebUrl: `http://myip:5173/board/${channelId}/${postId}`,
-          webUrl: `http://localhost:5173/board/${channelId}/${postId}`,
+          mobileWebUrl: `https://sprout-enis.vercel.app//board/${channelId}/${postId}`,
+          webUrl: `https://sprout-enis.vercel.app/board/${channelId}/${postId}`,
         },
       },
       buttons: [
         {
           title: "웹으로 이동",
           link: {
-            mobileWebUrl: `http://myip:5173/board/${channelId}/${postId}`,
-            webUrl: `http://localhost:5173/board/${channelId}/${postId}`,
+            mobileWebUrl: `https://sprout-enis.vercel.app/board/${channelId}/${postId}`,
+            webUrl: `https://sprout-enis.vercel.app/board/${channelId}/${postId}`,
           },
         },
       ],
