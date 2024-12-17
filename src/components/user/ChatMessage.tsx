@@ -271,7 +271,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
                           1
                         </p>
                       )}
-                      <p className="text-gray text-xs dark:text-whiteDark mt-4">
+                      <p className="text-gray text-xs dark:text-whiteDark mt-">
                         {msg.chatTime}
                       </p>
                     </div>
