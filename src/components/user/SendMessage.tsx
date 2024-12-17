@@ -55,7 +55,7 @@ export default function SendMessage({
           size={"sm"}
           theme="sub"
         />
-        <Button type="submit" text={"전송"} size={"sm"} />
+        <Button type="submit" text={"전송"} size={"sm"} onClick={onClose} />
       </div>
     </form>
   );
