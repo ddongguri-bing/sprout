@@ -1,9 +1,9 @@
 import { Link, NavLink } from "react-router";
-import images from "../../constants/images";
+import images from "../../assets";
 import SearchBar from "../search/SearchBar";
 import ThemeToggle from "../common/ThemeToggle";
 import { useEffect, useState } from "react";
-import { ChannelItem, getChannels } from "../../api/channel";
+import { getChannels } from "../../api/channel";
 import { useTriggerStore } from "../../stores/triggerStore";
 import { twMerge } from "tailwind-merge";
 import { useAuthStore } from "../../stores/authStore";
@@ -12,11 +12,11 @@ export default function Header() {
   const user = useAuthStore((state) => state.user);
   const targetLink = useTriggerStore((state) => state.targetLink);
   const [menus, setMenus] = useState<ChannelItem[]>([]);
+
   useEffect(() => {
     const handleGetMenus = async () => {
       const data = await getChannels();
       const cutoffTime = new Date("2024-12-11T03:10:58.171Z");
-
       const filter = data.filter(
         (menu) => new Date(menu.updatedAt) > cutoffTime
       );

@@ -1,54 +1,10 @@
 import { AxiosResponse } from "axios";
 import { axiosInstance } from ".";
 
-export type postMessage = {
-  message: string;
-  createdAt: string;
-  _id: string;
-  seen: boolean;
-  receiver: {
-    fullName: string;
-    _id: string;
-  };
-  sender: {
-    fullName: string;
-    _id: string;
-  };
-};
-
-export type getMessageList = {
-  message: string;
-  createdAt: string;
-  seen: boolean;
-  _id: string;
-  sender: {
-    _id: string;
-    fullName: string;
-  };
-  receiver: {
-    _id: string;
-    fullName: string;
-  };
-}[];
-
-export type getChatList = {
-  message: string;
-  createdAt: string;
-  seen: boolean;
-  sender: {
-    _id: string;
-    fullName: string;
-  };
-  receiver: {
-    _id: string;
-    fullName: string;
-  };
-}[];
-
 export const postMessage = async (body: {
   message: string;
   receiver: string;
-}): Promise<AxiosResponse<postMessage>> => {
+}): Promise<AxiosResponse<MessageItem>> => {
   try {
     return await axiosInstance.post("/messages/create", body);
   } catch (error) {
@@ -57,7 +13,7 @@ export const postMessage = async (body: {
 };
 
 export const getMessageList = async (): Promise<
-  AxiosResponse<getMessageList>
+  AxiosResponse<MessageItem[]>
 > => {
   try {
     return await axiosInstance.get("/messages/conversations");
@@ -70,7 +26,7 @@ export const getChatList = async ({
   id,
 }: {
   id: string;
-}): Promise<AxiosResponse<getChatList>> => {
+}): Promise<AxiosResponse<MessageItem[]>> => {
   try {
     return await axiosInstance.get(`/messages`, {
       params: { userId: id },

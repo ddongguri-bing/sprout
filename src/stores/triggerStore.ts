@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-interface Trigger {
+interface TriggerStore {
   trigger: boolean;
   setTrigger: (t?: boolean) => void;
   targetLink: string | null;
   setTargetLink: (link: string | null) => void;
 }
 
-export const useTriggerStore = create<Trigger>((set) => ({
+export const useTriggerStore = create<TriggerStore>((set) => ({
   trigger: false,
   setTrigger: (newT) => set((state) => ({ trigger: newT || !state.trigger })),
   targetLink: null,

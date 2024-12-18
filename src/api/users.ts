@@ -11,7 +11,7 @@ export const getOnlineUsers = async () => {
 };
 
 // (특정) 사용자 정보
-export const getSpecificUser = async (id: string) => {
+export const getSpecificUser = async (id: string): Promise<User> => {
   return (await axiosInstance.get(`/users/${id}`)).data;
 };
 

@@ -1,9 +1,9 @@
 import { Link } from "react-router";
-import { Comment } from "../../api/board";
 import Avata from "../common/Avata";
-import images from "../../constants/images";
+import images from "../../assets";
 import { useModal } from "../../stores/modalStore";
 import { useAuthStore } from "../../stores/authStore";
+
 interface CommentItemProps {
   comment: Comment;
   onDeleteComment: (commentId: string) => void;

@@ -1,35 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-export interface User {
-  role: string;
-  emailVerified: boolean;
-  banned: boolean;
-  isOnline: boolean;
-  posts: [];
-  likes: [];
-  comments: [];
-  followers: [];
-  following: {
-    _id: string;
-    user: string;
-    follower: string;
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-  }[];
-  notifications: [];
-  messages: [];
-  _id: string;
-  fullName: string;
-  email: string;
-  password: string;
-  createdAt: string;
-  updatedAt: string;
-  image?: string;
-  __v: number;
-}
-
 type Token = null | string;
 
 interface AuthStore {

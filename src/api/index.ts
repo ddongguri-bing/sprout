@@ -45,5 +45,6 @@ axiosInstance.interceptors.response.use(
         remove("token");
       }
     }
+    return Promise.reject(error);
   }
 );

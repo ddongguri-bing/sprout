@@ -17,7 +17,7 @@ import { useAuthStore } from "./stores/authStore";
 import Admin from "./pages/Admin";
 import PrivateLayout from "./layouts/PrivateLayout";
 import RootLayout from "./layouts/RootLayout";
-import KakaoRedirect from "./pages/KakakoRedirect";
+import KakaoRedirect from "./pages/KakaoRedirect";
 import NaverRedirect from "./pages/NaverRedirect";
 
 export default function App() {
@@ -32,7 +32,7 @@ export default function App() {
             <Route path="/" element={<Main />} />
             <Route path="board/:id" element={<Board />} />
             <Route path="board/:id/:postId" element={<BoardDetail />} />
-            <Route path="search/:query" element={<Search />} />
+            <Route path="search" element={<Search />} />
             <Route path="user/:id" element={<User />} />
             <Route element={<PrivateLayout />}>
               <Route element={<PrivateLayout isAdmin={true} />}>

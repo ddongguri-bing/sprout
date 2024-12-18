@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import images from "../../constants/images";
+import images from "../../assets";
 import { useState, useEffect, useCallback } from "react";
 import {
   NotiType,
@@ -8,7 +8,6 @@ import {
 } from "../../api/notification";
 import NotiItem from "../ui/NotiItem";
 import Avata from "../common/Avata";
-import { User } from "../../stores/authStore";
 import { useTriggerStore } from "../../stores/triggerStore";
 export default function AfterUserBox({ user }: { user: User }) {
   const trigger = useTriggerStore((state) => state.trigger);

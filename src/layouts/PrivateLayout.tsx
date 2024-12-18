@@ -3,11 +3,11 @@ import { useAuthStore } from "../stores/authStore";
 import { useEffect, useState } from "react";
 import Loading from "../components/common/Loading";
 
-type Props = {
+interface PrivateLayoutProps {
   isAdmin?: boolean;
-};
+}
 
-export default function PrivateLayout({ isAdmin }: Props) {
+export default function PrivateLayout({ isAdmin }: PrivateLayoutProps) {
   const navigate = useNavigate();
   const isLogIn = useAuthStore((state) => state.isLoggedIn);
   const user = useAuthStore((state) => state.user);

@@ -7,7 +7,7 @@ import CommentSvg from "../assets/comment.svg";
 import Like from "../assets/like.svg";
 import darkComment from "../assets/dark_comment.svg";
 import darkLike from "../assets/dark_like.svg";
-import like_fill from "../assets/like_fill.svg";
+import LikeFill from "../assets/like_fill.svg";
 import Close from "../assets/close.svg";
 import Send from "../assets/send.svg";
 import SendActive from "../assets/send_active.svg";
@@ -18,12 +18,12 @@ import Camera from "../assets/camera.svg";
 import Logout from "../assets/logout.svg";
 import MessageBoxBtn from "../assets/messageBoxBtn.svg";
 import MessageSendBtn from "../assets/messageSendBtn.svg";
-import eye from "../assets/eye.svg";
-import eyeOff from "../assets/eye_off.svg";
-import darkEyeOff from "../assets/dark_eye_off.svg";
-import darkEye from "../assets/dark_eye.svg";
-import share from "../assets/share.svg";
-import darkShare from "../assets/dark_share.svg";
+import Eye from "../assets/eye.svg";
+import EyeOff from "../assets/eye_off.svg";
+import DarkEyeOff from "../assets/dark_eye_off.svg";
+import DarkEye from "../assets/dark_eye.svg";
+import Share from "../assets/share.svg";
+import DarkShare from "../assets/dark_share.svg";
 const images = {
   Logo,
   Profile,
@@ -34,7 +34,7 @@ const images = {
   Like,
   darkComment,
   darkLike,
-  like_fill,
+  LikeFill,
   Close,
   Search,
   Send,
@@ -45,23 +45,15 @@ const images = {
   Logout,
   MessageBoxBtn,
   MessageSendBtn,
-  eye,
-  eyeOff,
-  darkEyeOff,
-  darkEye,
-  share,
-  darkShare,
+  Eye,
+  EyeOff,
+  DarkEyeOff,
+  DarkEye,
+  Share,
+  DarkShare,
 };
 
 export default images;
-
-//* Landing */
-import Landing1 from "../assets/landing1.svg";
-import Landing2 from "../assets/landing2.svg";
-import Landing3 from "../assets/landing3.svg";
-import Landing4 from "../assets/landing4.svg";
-
-export const landingImages = [Landing1, Landing2, Landing3, Landing4];
 
 //** Not Found */
 import Notfound from "../assets/not_found.svg";

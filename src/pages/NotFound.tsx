@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { notFoundImages } from "../constants/images";
+import { notFoundImages } from "../assets";
 import { useTheme } from "../stores/themeStore";
 export default function NotFound() {
   const isDark = useTheme((state) => state.isDarkMode);

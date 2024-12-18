@@ -1,8 +1,7 @@
 import { useLocation } from "react-router";
 import { useEffect, useRef, useState } from "react";
-import { getChannels, ChannelItem } from "../api/channel";
+import { getChannels } from "../api/channel";
 import { getPostsByChannelWithPagination } from "../api/board";
-import { PostItem } from "../api/board";
 import BoardItem from "../components/board/BoardItem";
 import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";

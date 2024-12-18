@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CommentItem from "./CommentItem";
-import { createComment, deleteComment, Comment } from "../../api/board";
-import images from "../../constants/images";
+import { createComment, deleteComment } from "../../api/board";
+import images from "../../assets";
 import { twMerge } from "tailwind-merge";
 import TextareaAutosize from "react-textarea-autosize";
 import { useAuthStore } from "../../stores/authStore";

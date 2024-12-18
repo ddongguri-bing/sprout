@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import Delete from "../assets/delete.svg";
-import images from "../constants/images";
+import images from "../assets";
 import { useEffect, useState } from "react";
 import {
   deleteCannelDelete,
@@ -9,14 +9,9 @@ import {
 } from "../api/channel";
 import { useModal } from "../stores/modalStore";
 
-interface ChannelType {
-  name: string;
-  posts: string[];
-  _id: string;
-}
 export default function Admin() {
   const [value, setValue] = useState<string>("");
-  const [channels, setChannels] = useState<ChannelType[] | []>([]);
+  const [channels, setChannels] = useState<ChannelItem[] | []>([]);
   const setModalOpen = useModal((state) => state.setModalOpen);
 
   // 입력
@@ -95,7 +90,8 @@ export default function Admin() {
             {channels?.map((channel) => (
               <li
                 key={channel._id}
-                className="flex justify-between items-center w-full">
+                className="flex justify-between items-center w-full"
+              >
                 <div className="flex items-baseline">
                   <p className="font-bold text-[22px]">{channel.name}</p>
                   <p className="ml-[15px] text-gray dark:text-whiteDark">
@@ -104,7 +100,8 @@ export default function Admin() {
                 </div>
                 <button
                   className="text-red underline flex items-center gap-[10px]"
-                  onClick={() => handleDeleteChannel(channel._id)}>
+                  onClick={() => handleDeleteChannel(channel._id)}
+                >
                   삭제하기 <img src={Delete} alt="delete icon" />
                 </button>
               </li>
@@ -116,12 +113,14 @@ export default function Admin() {
             className={twMerge(
               "w-full max-w-[688px] flex justify-center items-center px-5 py-[15px] border border-main rounded-[8px]"
             )}
-            onSubmit={handlePostChannel}>
+            onSubmit={handlePostChannel}
+          >
             <input
               className="w-full h-6 focus:outline-none scroll resize-none bg-white dark:bg-black"
               onChange={handleChange}
               placeholder="생성할 채널 이름을 입력해주세요"
-              value={value}></input>
+              value={value}
+            ></input>
             <button className="mt-[2px] ml-1" type="submit">
               <img
                 src={value ? images.SendActive : images.Send}

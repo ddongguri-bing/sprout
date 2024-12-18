@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router";
-import images from "../../constants/images";
+import images from "../../assets";
 import Comments from "./Comments";
 import { useState, useEffect } from "react";
-import { PostItem, createLike, deleteLike, getPostById } from "../../api/board";
+import { createLike, deleteLike, getPostById } from "../../api/board";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import Avata from "../common/Avata";
@@ -13,21 +13,24 @@ import { useModal } from "../../stores/modalStore";
 import { useTheme } from "../../stores/themeStore";
 import { twMerge } from "tailwind-merge";
 import calculateTimeDifference from "../../utils/calculateTimeDifference";
+import socials from "../../constants";
+import useDebounce from "../../hooks/useDebounce";
 
 const { Kakao } = window;
-const KAKAO_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
-interface Props {
+
+interface BoardItemProps {
   isDetail?: boolean;
-  post: PostItem;
+  post: Omit<PostItem, "channel">;
   channelId: string;
 }
 
-export default function BoardItem({ isDetail, post, channelId }: Props) {
+export default function BoardItem({
+  isDetail,
+  post,
+  channelId,
+}: BoardItemProps) {
   useEffect(() => {
-    if (!Kakao.isInitialized()) {
-      Kakao.init(KAKAO_JAVASCRIPT_KEY);
-      console.log("Kakao SDK Initialized:", Kakao.isInitialized());
-    }
+    if (!Kakao.isInitialized()) Kakao.init(socials.KAKAO_JAVASCRIPT_KEY);
   }, []);
 
   const { createdAt, likes, comments, _id: postId, author } = post;
@@ -35,6 +38,11 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const exactDate = new Date(createdAt).toLocaleString();
+
+  const [likeHandling, setLikeHandling] = useState<boolean>(false);
+  const [isLike, setIsLike] = useState<boolean>(false);
+  const debouncedIsLike = useDebounce(isLike);
+
   const [likeId, setLikeId] = useState<string | null>(null);
   const [likeCount, setLikeCount] = useState(likes.length);
   const setOpen = useModal((state) => state.setModalOpen);
@@ -74,8 +82,13 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
         const currentUserLike = post.likes.find(
           (like: { user: string }) => like.user === user._id
         );
-        if (currentUserLike) setLikeId(currentUserLike._id);
-        else setLikeId(null);
+        if (currentUserLike) {
+          setLikeId(currentUserLike._id);
+          setIsLike(true);
+        } else {
+          setLikeId(null);
+          setIsLike(false);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -85,8 +98,17 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
     Fancybox.bind(`[data-fancybox="gallery-${postId}"]`);
   }, [postId, user]);
 
-  const handleLikeClick = async () => {
+  const handleLikeClick = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
     if (!isLoggedIn) return handleLikeModal();
+    setLikeHandling(true);
+    setIsLike((prev) => !prev);
+    setLikeCount((prev) => (isLike ? prev - 1 : prev + 1));
+  };
+
+  const handleLike = async () => {
     try {
       const response = likeId
         ? await deleteLike(likeId)
@@ -108,6 +130,12 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
       console.error(`좋아요 ${likeId ? "취소" : "추가"} 중 오류 발생:`, error);
     }
   };
+
+  useEffect(() => {
+    if (!likeHandling) return;
+    handleLike();
+    setLikeHandling(false);
+  }, [debouncedIsLike]);
 
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(
     new Array(postImages.length).fill(false)
@@ -234,11 +262,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                 {commentsCount}
               </button>
               <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleLikeClick();
-                }}
+                onClick={handleLikeClick}
                 className="flex items-center gap-[10px] group "
               >
                 <div
@@ -248,12 +272,12 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                   )}
                 >
                   <img
-                    src={likeId ? images.like_fill : images.darkLike}
+                    src={isLike ? images.LikeFill : images.darkLike}
                     alt="like icon dark"
                     className="dark:block hidden"
                   />
                   <img
-                    src={likeId ? images.like_fill : images.Like}
+                    src={isLike ? images.LikeFill : images.Like}
                     alt="like icon"
                     className="dark:hidden block"
                   />
@@ -271,7 +295,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                 )}
               >
                 <img
-                  src={isDark ? images.darkShare : images.share}
+                  src={isDark ? images.DarkShare : images.Share}
                   alt="share icon"
                 />
               </button>

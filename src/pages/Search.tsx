@@ -1,13 +1,15 @@
-import { useParams } from "react-router";
+import { useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import { getSearchPosts } from "../api/search";
 import SearchBoardItem from "../components/search/SearchBoardItem";
 import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
 
 export default function Search() {
-  const { query } = useParams();
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const query = params.get("query");
   const [loading, setLoading] = useState<boolean>(true);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<SearchPostItem[]>([]);
 
   useEffect(() => {
     const handleSearch = async (query?: string) => {
@@ -16,6 +18,7 @@ export default function Search() {
         const data = (await getSearchPosts(query)).filter(
           (post) => post.author
         );
+        console.log(data);
         setPosts(data);
       } catch (err) {
         console.error(err);
@@ -23,7 +26,7 @@ export default function Search() {
         setTimeout(() => setLoading(false), 500);
       }
     };
-    handleSearch(query);
+    if (query) handleSearch(query);
   }, [query]);
 
   return (

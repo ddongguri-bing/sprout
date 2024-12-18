@@ -3,13 +3,8 @@ import { getSpecificUser } from "../../api/users";
 import BoardItem from "../board/BoardItem";
 import BoardItemSkeleton from "../common/skeleton/BoardItemSkeleton";
 
-export default function SearchBoardItem({ post }: { post: any }) {
-  const [author, setAuthor] = useState<{
-    fullName: string;
-    email: string;
-    _id: string;
-    image?: string;
-  } | null>(null);
+export default function SearchBoardItem({ post }: { post: SearchPostItem }) {
+  const [author, setAuthor] = useState<User | null>(null);
 
   useEffect(() => {
     const handleGetAuthor = async () => {

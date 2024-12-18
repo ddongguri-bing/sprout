@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, FormEvent } from "react";
 import { getUsers } from "../../api/users";
-import images from "../../constants/images";
+import images from "../../assets";
 import UserItem from "../user/UserItem";
 import useDebounce from "../../hooks/useDebounce";
 import { getSearchUsers } from "../../api/search";
@@ -10,7 +10,7 @@ import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
 export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
   const [value, setValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   const location = useLocation();
   const debouncedValue = useDebounce(value.trim());
