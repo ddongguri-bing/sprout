@@ -17,10 +17,10 @@ jobs:
           node-version: "20.18.x"
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       - name: Build
-        run: npm run build
+        run: yarn vite build
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
