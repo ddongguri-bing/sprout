@@ -4,7 +4,6 @@ import images from "../../assets";
 import UserItem from "../user/UserItem";
 import useDebounce from "../../hooks/useDebounce";
 import { getSearchUsers } from "../../api/search";
-import { useLocation } from "react-router";
 import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
 
 export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
@@ -12,7 +11,6 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<User[]>([]);
 
-  const location = useLocation();
   const debouncedValue = useDebounce(value.trim());
 
   const fetchUsers = useCallback(async (query?: string) => {
@@ -31,16 +29,12 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
 
   useEffect(() => {
     fetchUsers(debouncedValue as string);
-  }, [debouncedValue, fetchUsers]);
+  }, [debouncedValue]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (value) fetchUsers(value.trim());
   };
-
-  useEffect(() => {
-    toggleOpen();
-  }, [location]);
 
   return (
     <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 flex items-center justify-center z-[9999]">
@@ -87,7 +81,11 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
               {users.length ? (
                 <>
                   {users.map((user) => (
-                    <UserItem key={user._id} user={user} />
+                    <UserItem
+                      key={user._id}
+                      user={user}
+                      onClick={() => toggleOpen()}
+                    />
                   ))}
                 </>
               ) : (

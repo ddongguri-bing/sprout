@@ -3,11 +3,17 @@ import Avata from "../common/Avata";
 import { useUserStore } from "../../stores/userStore";
 import React from "react";
 
-export default React.memo(function UserItem({ user }: { user: User }) {
+export default React.memo(function UserItem({
+  user,
+  onClick,
+}: {
+  user: User;
+  onClick?: () => void;
+}) {
   const onlineUsers = useUserStore((state) => state.onlineUsers);
   const isOnline = !!onlineUsers.find((ou) => ou._id === user._id);
   return (
-    <li className="w-full">
+    <li className="w-full" onClick={onClick}>
       <Link
         to={`/user/${user._id}`}
         className="flex gap-[10px] items-center p-2 rounded-[8px] transition-all hover:bg-whiteDark/30"
