@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import { postLogOut } from "../api/auth";
-import images from "../constants/images";
+import images from "../assets";
 import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
 import { useModal } from "../stores/modalStore";

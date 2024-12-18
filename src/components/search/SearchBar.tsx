@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import useDebounce from "../../hooks/useDebounce";
-import images from "../../constants/images";
+import images from "../../assets";
 export default function SearchBar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();

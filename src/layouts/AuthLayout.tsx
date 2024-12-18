@@ -1,4 +1,4 @@
-import images from "../constants/images";
+import images from "../assets";
 import { Link, Outlet, useLocation } from "react-router";
 
 export default function AuthLayout() {

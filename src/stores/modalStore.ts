@@ -6,13 +6,14 @@ type ModalOpts = {
   onClick?: () => void;
   isOneBtn?: boolean;
 };
-interface ModalType {
+
+interface ModalStore {
   modalOpen: boolean;
   modalOpts: ModalOpts;
   setModalOpen: (open: boolean, opts?: ModalOpts) => void;
 }
 
-export const useModal = create<ModalType>((set) => ({
+export const useModal = create<ModalStore>((set) => ({
   modalOpen: false,
   modalOpts: {
     message: "정말로 포스트를 삭제하시겠습니까?",

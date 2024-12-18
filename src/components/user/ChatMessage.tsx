@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import images from "../../constants/images";
+import images from "../../assets";
 import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
 import ChatItem from "./ChatItem";
 import TextareaAutosize from "react-textarea-autosize";
@@ -12,11 +12,11 @@ import {
   putUpdateSeen,
 } from "../../api/message";
 
-interface ChatMessage {
+interface ChatMessageProps {
   onClose: () => void;
 }
 
-export default function ChatMessage({ onClose }: ChatMessage) {
+export default function ChatMessage({ onClose }: ChatMessageProps) {
   const itemHeight = 50;
   const maxItems = 10;
   const containerHeight = maxItems * itemHeight;
@@ -25,21 +25,10 @@ export default function ChatMessage({ onClose }: ChatMessage) {
 
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [currentUser, setCurrentUser] = useState<{
-    fullName: string;
-    _id: string;
-  } | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   // 채팅 목록 가져오기
-  const [list, setList] = useState<
-    {
-      message: string;
-      createdAt: string;
-      receiver: { fullName: string; _id: string; image?: string };
-      sender: { fullName: string; _id: string; image?: string };
-      seen: boolean;
-    }[]
-  >([]);
+  const [list, setList] = useState<MessageItem[]>([]);
   const handleGetChatList = async () => {
     setLoading(true);
     try {
@@ -59,23 +48,18 @@ export default function ChatMessage({ onClose }: ChatMessage) {
   // 대화목록 가져올 때 상대방이 sender인 메시지만 seen true 처리
   const handleUpdateSeen = async (userId: string) => {
     try {
-      const unReadMessages = messages.find((chat: any) => !chat.seen);
-      if (unReadMessages) {
-        await putUpdateSeen(userId);
-        console.log("상대방이 보낸 메시지 읽음 처리 완료");
-      }
-      const unReadMsgTitle = list.find((chat: any) => !chat.seen);
-      if (unReadMsgTitle) {
-        await putUpdateSeen(userId);
-        console.log("메시지 타이틀 읽음 처리 완료");
-      }
+      const unReadMessages = messages.find((chat) => !chat.seen);
+      if (unReadMessages) await putUpdateSeen(userId);
+
+      const unReadMsgTitle = list.find((chat) => !chat.seen);
+      if (unReadMsgTitle) await putUpdateSeen(userId);
     } catch (error) {
       console.error("읽음 처리 실패", error);
     }
   };
 
   // 특정 유저와의 채팅 목록 모달 열기
-  const handleSelectChat = async (user: { fullName: string; _id: string }) => {
+  const handleSelectChat = async (user: User) => {
     if (!user._id) return console.error("user id가 없습니다");
     setCurrentUser(user);
     handleChatList(user._id);
@@ -87,18 +71,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
     setMessages([]);
   };
 
-  const [messages, setMessages] = useState<
-    {
-      message: string;
-      messageId: string;
-      senderId: string;
-      receiverId: string;
-      createdAt: string;
-      chatTime: string;
-      seen: boolean;
-      isReceived: boolean;
-    }[]
-  >([]);
+  const [messages, setMessages] = useState<MessageChat[]>([]);
   const [value, setValue] = useState<string>("");
 
   // 특정 유저와의 채팅 목록
@@ -108,7 +81,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
     try {
       const { data } = await getChatList({ id: userId });
       const filterMessages = data
-        .map((chat: any) => ({
+        .map((chat) => ({
           message: chat.message,
           messageId: chat._id,
           senderId: chat.sender._id,
@@ -124,7 +97,7 @@ export default function ChatMessage({ onClose }: ChatMessage) {
           seen: chat.seen,
           isReceived: chat.receiver._id === loggedInUser._id,
         }))
-        .reverse();
+        .reverse() as MessageChat[];
 
       setMessages(filterMessages);
     } catch (error) {

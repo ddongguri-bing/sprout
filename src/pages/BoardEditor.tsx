@@ -6,7 +6,7 @@ import { createPost, updatePost } from "../api/posting";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import { getPostById } from "../api/board";
 import { useModal } from "../stores/modalStore";
-import images from "../constants/images";
+import images from "../assets";
 
 import { useTriggerStore } from "../stores/triggerStore";
 import { twMerge } from "tailwind-merge";
@@ -218,7 +218,7 @@ export default function BoardEditor() {
               <label
                 className={twMerge(
                   "bg-whiteDark flex items-center justify-center rounded-[8px] cursor-pointer",
-                   "aspect-[399/300] min-h-[100px]"
+                  "aspect-[399/300] min-h-[100px]"
                 )}
               >
                 <input

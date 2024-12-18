@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { useTheme } from "../../stores/themeStore";
-import images from "../../constants/images";
+import images from "../../assets";
 import { useState } from "react";
 import BoardImageSkeleton from "./skeleton/BoardImageSkeleton";
 

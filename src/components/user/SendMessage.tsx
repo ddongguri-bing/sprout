@@ -11,7 +11,7 @@ export default function SendMessage({
 }: {
   onClose: () => void;
   checkLogin: () => void;
-  receiver: { fullName: string; _id: string };
+  receiver: User;
 }) {
   const user = useAuthStore((state) => state.user);
   const [msgContent, setMsgContent] = useState<string>("");

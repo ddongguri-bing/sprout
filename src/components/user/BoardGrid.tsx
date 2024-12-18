@@ -1,14 +1,7 @@
 import BoardGridItem from "./BoardGridItem";
 
-interface PostType {
-  _id: string;
-  channel: string;
-  image: string;
-  title: string;
-}
-
 interface BoardGridProps {
-  posts: PostType[];
+  posts: PostItem[];
 }
 
 export default function BoardGrid({ posts }: BoardGridProps) {

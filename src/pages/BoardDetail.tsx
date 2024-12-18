@@ -2,9 +2,9 @@ import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import BoardItem from "../components/board/BoardItem";
 import Button from "../components/common/Button";
-import images from "../constants/images";
+import images from "../assets";
 
-import { getPostById, PostItem } from "../api/board";
+import { getPostById } from "../api/board";
 import { deletePost } from "../api/posting";
 import { useModal } from "../stores/modalStore";
 import { useAuthStore } from "../stores/authStore";

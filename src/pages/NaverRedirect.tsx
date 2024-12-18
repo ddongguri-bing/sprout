@@ -8,7 +8,7 @@ const NAVER_REST_API_KEY = import.meta.env.VITE_NAVER_REST_API_KEY;
 const NAVER_REDIRECT_URI = `${
   import.meta.env.VITE_PUBLIC_URL
 }/auth/oauth/naver`;
-const { naver }: any = window;
+const { naver } = window;
 
 export default function NaverRedirect() {
   const navigate = useNavigate();

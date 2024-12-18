@@ -11,7 +11,7 @@ export default function ChatItem({
   seen,
   lastMsg,
 }: {
-  user: any;
+  user: User;
   msg: string;
   onOpen: () => void;
   createdAt: string;

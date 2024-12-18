@@ -7,7 +7,7 @@ import Avata from "../components/common/Avata";
 import { deleteFollowDelete, postFollowCreate } from "../api/follow";
 import { postNotification } from "../api/notification";
 import { useModal } from "../stores/modalStore";
-import images from "../constants/images";
+import images from "../assets";
 import { useAuthStore } from "../stores/authStore";
 import FollowList from "../components/user/FollowList";
 import SendMessage from "../components/user/SendMessage";
@@ -15,48 +15,13 @@ import ChatMessage from "../components/user/ChatMessage";
 import Loading from "../components/common/Loading";
 import { Fancybox } from "@fancyapps/ui";
 
-interface PostType {
-  _id: string;
-  channel: string;
-  image: string;
-  title: string;
-}
-
-export interface SpecificUserType {
-  _id: string;
-  fullName: string;
-  email: string;
-  followers: {
-    _id: string;
-    user: string;
-    follower: string;
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-  }[];
-  following: {
-    _id: string;
-    user: string;
-    follower: string;
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-  }[];
-  posts: PostType[];
-  image?: string;
-}
-
 export default function User() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [specificUser, setSpecificUser] = useState<SpecificUserType | null>(
-    null
-  );
-  const [followList, setFollowList] = useState<
-    { _id: string; fullName: string; email: string; image: string }[]
-  >([]);
+  const [specificUser, setSpecificUser] = useState<User | null>(null);
+  const [followList, setFollowList] = useState<User[]>([]);
   const loggedInUser = useAuthStore((state) => state.user);
 
   // 팔로우/팔로잉 기능
@@ -73,22 +38,11 @@ export default function User() {
   const [loadingFollowList, setLoadingFollowList] = useState(false);
   const toggleFollowList = () => setFollowListOpen((prev) => !prev);
 
-  const fetchUserDetails = async (userId: string) => {
+  const fetchUserDetails = async (userId: string): Promise<User> => {
     try {
-      const user = await getSpecificUser(userId);
-      return {
-        _id: user._id,
-        fullName: user.fullName,
-        email: user.email,
-        image: user.image,
-      };
+      return await getSpecificUser(userId);
     } catch (error) {
-      return {
-        _id: userId,
-        fullName: "알 수 없는 사용자",
-        email: "",
-        image: "Avatar",
-      };
+      throw new Error("알수 없는 사용자");
     }
   };
 

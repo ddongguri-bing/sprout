@@ -7,7 +7,7 @@ import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
 export default function Search() {
   const { query } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<SearchPostItem[]>([]);
 
   useEffect(() => {
     const handleSearch = async (query?: string) => {
@@ -16,6 +16,7 @@ export default function Search() {
         const data = (await getSearchPosts(query)).filter(
           (post) => post.author
         );
+        console.log(data);
         setPosts(data);
       } catch (err) {
         console.error(err);

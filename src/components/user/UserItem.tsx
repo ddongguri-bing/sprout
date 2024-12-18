@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import Avata from "../common/Avata";
 import { useUserStore } from "../../stores/userStore";
 
-export default function UserItem({ user }: { user: any }) {
+export default function UserItem({ user }: { user: User }) {
   const onlineUsers = useUserStore((state) => state.onlineUsers);
   const isOnline = !!onlineUsers.find((ou) => ou._id === user._id);
   return (

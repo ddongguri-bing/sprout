@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { User } from "./authStore";
 
 interface UserStore {
   onlineUsers: User[];

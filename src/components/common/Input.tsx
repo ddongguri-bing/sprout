@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useTheme } from "../../stores/themeStore";
-import images from "../../constants/images";
+import images from "../../assets";
 
 type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "type"> & {
   type: "text" | "email" | "number" | "password" | "tel";
@@ -34,9 +34,9 @@ export default function Input(props: InputProps) {
 
   const getPasswordToggleImage = () => {
     if (showPassword) {
-      return isDark ? images.darkEyeOff : images.eyeOff;
+      return isDark ? images.DarkEyeOff : images.EyeOff;
     } else {
-      return isDark ? images.darkEye : images.eye;
+      return isDark ? images.DarkEye : images.Eye;
     }
   };
 

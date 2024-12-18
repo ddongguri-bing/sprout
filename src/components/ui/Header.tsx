@@ -1,9 +1,9 @@
 import { Link, NavLink } from "react-router";
-import images from "../../constants/images";
+import images from "../../assets";
 import SearchBar from "../search/SearchBar";
 import ThemeToggle from "../common/ThemeToggle";
 import { useEffect, useState } from "react";
-import { ChannelItem, getChannels } from "../../api/channel";
+import { getChannels } from "../../api/channel";
 import { useTriggerStore } from "../../stores/triggerStore";
 import { twMerge } from "tailwind-merge";
 import { useAuthStore } from "../../stores/authStore";

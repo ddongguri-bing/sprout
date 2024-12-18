@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router";
-import images from "../../constants/images";
+import images from "../../assets";
 import Comments from "./Comments";
 import { useState, useEffect } from "react";
-import { PostItem, createLike, deleteLike, getPostById } from "../../api/board";
+import { createLike, deleteLike, getPostById } from "../../api/board";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import Avata from "../common/Avata";
@@ -16,13 +16,18 @@ import calculateTimeDifference from "../../utils/calculateTimeDifference";
 
 const { Kakao } = window;
 const KAKAO_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
-interface Props {
+
+interface BoardItemProps {
   isDetail?: boolean;
   post: PostItem;
   channelId: string;
 }
 
-export default function BoardItem({ isDetail, post, channelId }: Props) {
+export default function BoardItem({
+  isDetail,
+  post,
+  channelId,
+}: BoardItemProps) {
   useEffect(() => {
     if (!Kakao.isInitialized()) {
       Kakao.init(KAKAO_JAVASCRIPT_KEY);
@@ -271,7 +276,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                 )}
               >
                 <img
-                  src={isDark ? images.darkShare : images.share}
+                  src={isDark ? images.DarkShare : images.Share}
                   alt="share icon"
                 />
               </button>

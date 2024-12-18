@@ -1,14 +1,9 @@
 import UserItem from "./UserItem";
-import images from "../../constants/images";
+import images from "../../assets";
 import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
 
 interface FollowListProps {
-  users: {
-    _id?: string;
-    fullName?: string;
-    image?: string;
-    email?: string;
-  }[];
+  users: User[];
   title: string;
   loading: boolean;
   toggleOpen: () => void;

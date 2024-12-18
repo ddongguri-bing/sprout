@@ -9,11 +9,11 @@ import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
 import { useTriggerStore } from "../../stores/triggerStore";
 import { useUserStore } from "../../stores/userStore";
 
-interface Props {
+interface AsideProps {
   toggleOpen: () => void;
 }
 
-export default function Aside({ toggleOpen }: Props) {
+export default function Aside({ toggleOpen }: AsideProps) {
   //스토어에서 로그인 상태 반영
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user = useAuthStore((state) => state.user);
@@ -21,7 +21,7 @@ export default function Aside({ toggleOpen }: Props) {
   const setOnlineUsers = useUserStore((state) => state.setOnlineUsers);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const handleGetUsers = async () => {

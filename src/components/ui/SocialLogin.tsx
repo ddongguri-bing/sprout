@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { socialIcons } from "../../constants/images";
+import { socialIcons } from "../../assets";
 import { useGoogleLogin } from "@react-oauth/google";
 import { postSignIn, postSignUp } from "../../api/auth";
 import { useCookies } from "react-cookie";
@@ -17,7 +17,7 @@ const NAVER_REDIRECT_URI = `${
   import.meta.env.VITE_PUBLIC_URL
 }/auth/oauth/naver`;
 
-const { naver }: any = window;
+const { naver } = window;
 
 export default function SocialLogin() {
   // kakao

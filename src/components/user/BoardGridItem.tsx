@@ -1,17 +1,11 @@
 import { Link } from "react-router";
-import images from "../../constants/images";
+import images from "../../assets";
 import { useState } from "react";
 import BoardImageSkeleton from "../common/skeleton/BoardImageSkeleton";
 import { twMerge } from "tailwind-merge";
-interface PostType {
-  _id: string;
-  channel: string;
-  image: string;
-  title: string;
-}
 
 interface BoardGridItemProps {
-  post: PostType;
+  post: PostItem;
 }
 
 export default function BoardGridItem({ post }: BoardGridItemProps) {
