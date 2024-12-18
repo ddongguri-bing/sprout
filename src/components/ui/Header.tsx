@@ -15,7 +15,6 @@ export default function Header() {
           <img className="w-[188px]" src={images.Logo} alt="main logo" />
         </Link>
       </h1>
-      <div>1</div>
       <SearchBar />
       <div className="flex items-center gap-[10px] mb-[20px]">
         <h2 className="font-bold">게시판 목록</h2>
