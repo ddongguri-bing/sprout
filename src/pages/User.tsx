@@ -14,6 +14,7 @@ import SendMessage from "../components/user/SendMessage";
 import ChatMessage from "../components/user/ChatMessage";
 import Loading from "../components/common/Loading";
 import { Fancybox } from "@fancyapps/ui";
+import useDebounce from "../hooks/useDebounce";
 
 export default function User() {
   const { id } = useParams();
@@ -83,17 +84,25 @@ export default function User() {
     });
   };
 
+  const [followHandling, setFollowHandling] = useState<boolean>(false);
+  const debouncedIsLike = useDebounce(isFollow);
+
+  const handleFollowClick = () => {
+    if (!loggedInUser) return handleOpenModal();
+    setFollowHandling(true);
+    setIsFollow((prev) => !prev);
+    setFollowerCount((prev) => (isFollow ? prev - 1 : prev + 1));
+  };
+
   const handleFollow = async () => {
     // 로그인된 유저 정보가 없음 || 팔로우 대상의 정보가 없음 || 이미 팔로우 상태
     if (!loggedInUser) return handleOpenModal();
-    if (!specificUser || isFollow) return;
+    if (!specificUser) return;
 
     try {
       const response = await postFollowCreate(specificUser._id);
 
-      setFollowerCount((prev) => prev + 1);
       setFollowId(response._id);
-      setIsFollow(true);
       if (loggedInUser._id !== specificUser._id)
         await postNotification({
           notificationType: "FOLLOW",
@@ -111,13 +120,17 @@ export default function User() {
     try {
       await deleteFollowDelete(followId);
 
-      setFollowerCount((prev) => prev - 1);
       setFollowId(null);
-      setIsFollow(false);
     } catch (error) {
       console.error(`언팔로우 실패` + error);
     }
   };
+
+  useEffect(() => {
+    if (!followHandling) return;
+    debouncedIsLike ? handleFollow() : handleUnfollow();
+    setFollowHandling(false);
+  }, [debouncedIsLike]);
 
   const fetchSpecificUser = async () => {
     try {
@@ -190,11 +203,10 @@ export default function User() {
     ? "팔로우 끊기"
     : "팔로우";
 
-  const handleClickFollow = isMyPage
-    ? undefined
-    : isFollow
-    ? handleUnfollow
-    : handleFollow;
+  const handleClickFollow = isMyPage ? undefined : handleFollowClick;
+  // : isFollow
+  // ? handleUnfollow
+  // : handleFollow;
 
   const handleProfileClick = () => {
     if (specificUser?.image) {
