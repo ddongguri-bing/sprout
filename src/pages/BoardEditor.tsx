@@ -83,7 +83,6 @@ export default function BoardEditor() {
 
         if (data.success) {
           uploadedUrls.push(data.data.url); // 업로드된 URL을 배열에 추가
-          console.log("이미지 업로드 성공:", data.data.url);
         } else {
           throw new Error("이미지 업로드 실패");
         }

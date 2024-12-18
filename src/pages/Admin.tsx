@@ -27,7 +27,7 @@ export default function Admin() {
       const data = await getChannels();
       setChannels(data);
     } catch (error) {
-      console.log(`채널 목록 호출 실패 ${error}`);
+      console.error(`채널 목록 호출 실패 ${error}`);
     }
   };
 

@@ -19,7 +19,6 @@ export const useModal = create<ModalStore>((set) => ({
     message: "정말로 포스트를 삭제하시겠습니까?",
     btnText: "삭제",
     btnColor: "main",
-    onClick: () => console.log("클릭"),
     isOneBtn: false,
   },
   setModalOpen: (open, opts) =>

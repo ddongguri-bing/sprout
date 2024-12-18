@@ -23,7 +23,6 @@ import NaverRedirect from "./pages/NaverRedirect";
 export default function App() {
   const modalOpen = useModal((state) => state.modalOpen);
   const isLogIn = useAuthStore((state) => state.isLoggedIn);
-
   return (
     <>
       <Routes>

@@ -23,17 +23,18 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   }, []);
 
   useEffect(() => {
-    fetchUsers(debouncedValue);
+    fetchUsers(debouncedValue as string);
   }, [debouncedValue, fetchUsers]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(e);
     if (value) fetchUsers(value.trim());
   };
 
