@@ -32,7 +32,7 @@ export default function App() {
             <Route path="/" element={<Main />} />
             <Route path="board/:id" element={<Board />} />
             <Route path="board/:id/:postId" element={<BoardDetail />} />
-            <Route path="search/:query" element={<Search />} />
+            <Route path="search" element={<Search />} />
             <Route path="user/:id" element={<User />} />
             <Route element={<PrivateLayout />}>
               <Route element={<PrivateLayout isAdmin={true} />}>

@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import useDebounce from "../../hooks/useDebounce";
 import images from "../../assets";
+
 export default function SearchBar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -13,7 +14,8 @@ export default function SearchBar() {
   };
 
   useEffect(() => {
-    if (debouncedValue) navigate(`/search/${debouncedValue}`);
+    if (debouncedValue)
+      navigate(`/search?query=${debouncedValue}`, { replace: true });
     if (pathname.startsWith("/search") && !debouncedValue) navigate("/");
   }, [debouncedValue]);
 

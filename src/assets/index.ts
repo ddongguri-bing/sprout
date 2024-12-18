@@ -55,14 +55,6 @@ const images = {
 
 export default images;
 
-//* Landing */
-import Landing1 from "../assets/landing1.svg";
-import Landing2 from "../assets/landing2.svg";
-import Landing3 from "../assets/landing3.svg";
-import Landing4 from "../assets/landing4.svg";
-
-export const landingImages = [Landing1, Landing2, Landing3, Landing4];
-
 //** Not Found */
 import Notfound from "../assets/not_found.svg";
 import NotfoundIn from "../assets/not_found_i.svg";
