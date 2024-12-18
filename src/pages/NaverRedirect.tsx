@@ -1,26 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Loading from "../components/common/Loading";
-import { postSignIn, postSignUp } from "../api/auth";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router";
-import { useAuthStore } from "../stores/authStore";
-const NAVER_REST_API_KEY = import.meta.env.VITE_NAVER_REST_API_KEY;
-const NAVER_REDIRECT_URI = `${
-  import.meta.env.VITE_PUBLIC_URL
-}/auth/oauth/naver`;
+import socials from "../constants";
+import useSocialLogin from "../hooks/useSocialLogin";
+
 const { naver } = window;
 
 export default function NaverRedirect() {
-  const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
-  const [_, setCookie] = useCookies(["token"]);
+  const { setUser } = useSocialLogin(true);
 
-  const [user, setUser] = useState<any>(null);
   useEffect(() => {
     const initializeNaverLogin = async () => {
       const naverLogin = new naver.LoginWithNaverId({
-        clientId: NAVER_REST_API_KEY,
-        callbackUrl: NAVER_REDIRECT_URI,
+        clientId: socials.NAVER_REST_API_KEY,
+        callbackUrl: socials.NAVER_REDIRECT_URI,
         isPopup: false,
         callbackHandle: true,
       });
@@ -35,7 +27,11 @@ export default function NaverRedirect() {
             return;
           }
           const { user } = naverLogin;
-          setUser(user);
+          setUser({
+            email: user.email,
+            fullName: user.name,
+            password: user.id,
+          });
         } else {
           console.error("로그인 실패");
         }
@@ -44,29 +40,5 @@ export default function NaverRedirect() {
     initializeNaverLogin();
   }, []);
 
-  useEffect(() => {
-    if (!user) return;
-    // 1. 회원가입
-    const handleSignUp = async () => {
-      return await postSignUp({
-        email: user.email,
-        fullName: user.name,
-        password: user.id,
-      });
-    };
-    handleSignUp();
-    // 2.  로그인 = 회원가입이 되어있거나 회원가입 후
-    const handleSignIn = async () => {
-      const data = await postSignIn({ email: user.email, password: user.id });
-      if (data) {
-        login(data.token, data.user, true);
-        setCookie("token", data.token);
-        navigate("/");
-      }
-    };
-    setTimeout(() => {
-      handleSignIn();
-    }, 1300);
-  }, [user]);
   return <Loading />;
 }

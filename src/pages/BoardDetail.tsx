@@ -33,7 +33,7 @@ export default function BoardDetail() {
     });
   };
 
-  const auth = useAuthStore((state) => state.user);
+  const user = useAuthStore((state) => state.user);
   const setTargetLink = useTriggerStore((state) => state.setTargetLink);
   useEffect(() => {
     const fetchPostData = async () => {
@@ -56,8 +56,6 @@ export default function BoardDetail() {
       setTargetLink(null);
     };
   }, [postId]);
-
-  console.log(post);
 
   if (loading)
     return (
@@ -89,7 +87,7 @@ export default function BoardDetail() {
             />
           </button>
           <div className="flex items-center gap-5">
-            {auth?._id === post?.author._id && (
+            {user?._id === post?.author._id && (
               <>
                 <Button
                   theme="sub"

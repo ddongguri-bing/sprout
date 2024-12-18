@@ -19,7 +19,7 @@ const KAKAO_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
 
 interface BoardItemProps {
   isDetail?: boolean;
-  post: PostItem;
+  post: Omit<PostItem, "channel">;
   channelId: string;
 }
 
@@ -29,10 +29,7 @@ export default function BoardItem({
   channelId,
 }: BoardItemProps) {
   useEffect(() => {
-    if (!Kakao.isInitialized()) {
-      Kakao.init(KAKAO_JAVASCRIPT_KEY);
-      console.log("Kakao SDK Initialized:", Kakao.isInitialized());
-    }
+    if (!Kakao.isInitialized()) Kakao.init(KAKAO_JAVASCRIPT_KEY);
   }, []);
 
   const { createdAt, likes, comments, _id: postId, author } = post;

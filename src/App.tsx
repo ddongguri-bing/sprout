@@ -17,7 +17,7 @@ import { useAuthStore } from "./stores/authStore";
 import Admin from "./pages/Admin";
 import PrivateLayout from "./layouts/PrivateLayout";
 import RootLayout from "./layouts/RootLayout";
-import KakaoRedirect from "./pages/KakakoRedirect";
+import KakaoRedirect from "./pages/KakaoRedirect";
 import NaverRedirect from "./pages/NaverRedirect";
 
 export default function App() {

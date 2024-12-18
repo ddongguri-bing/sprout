@@ -10,7 +10,7 @@ interface BasicPost {
 }
 
 interface PostItem extends BasicPost {
-  channel: ChannelItem | string;
+  channel: ChannelItem;
 }
 
 interface Comment {
