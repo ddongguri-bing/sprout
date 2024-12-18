@@ -6,7 +6,6 @@ import images from "../constants/images";
 
 import { getPostById, PostItem } from "../api/board";
 import { deletePost } from "../api/posting";
-import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import { useAuthStore } from "../stores/authStore";
 import { useTriggerStore } from "../stores/triggerStore";
@@ -19,7 +18,6 @@ export default function BoardDetail() {
   const [post, setPost] = useState<PostItem | null>(null);
   const navigate = useNavigate();
 
-  const modalOpen = useModal((state) => state.modalOpen);
   const setModalOpen = useModal((state) => state.setModalOpen);
 
   const handleDeletePost = () => {
@@ -81,7 +79,6 @@ export default function BoardDetail() {
 
   return (
     <>
-      {modalOpen && <Modal />}
       <div className="pb-[30px] flex flex-col relative">
         <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
           <button onClick={() => navigate(-1)} className="">
