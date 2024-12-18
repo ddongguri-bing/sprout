@@ -5,7 +5,6 @@ import "draft-js/dist/Draft.css";
 import { createPost, updatePost } from "../api/posting";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import { getPostById } from "../api/board";
-import Modal from "../components/common/Modal";
 import { useModal } from "../stores/modalStore";
 import images from "../constants/images";
 
@@ -19,7 +18,6 @@ export default function BoardEditor() {
   const [searchParams] = useSearchParams();
   const channelName = searchParams.get("name");
 
-  const modalOpen = useModal((state) => state.modalOpen);
   const setModalOpen = useModal((state) => state.setModalOpen);
 
   //update인지 create인지 확인용
@@ -170,7 +168,6 @@ export default function BoardEditor() {
 
   return (
     <>
-      {modalOpen && <Modal />}
       <div className="pb-[30px] flex flex-col relative">
         <div className="h-[100px] px-[30px] mb-[50px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-10">
           <h2 className="text-xl font-bold">{postId ? "수정" : "작성"}</h2>

@@ -185,7 +185,7 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
       <div className="w-full pl-[89px]">
         <div className="w-full max-w-[688px] font-medium flex flex-col gap-[10px]">
           {/* 게시물 내용 */}
-          <div className="whitespace-pre-line">
+          <div className="whitespace-break-spaces break-words">
             {JSON.parse(post.title).text}
           </div>
           {/* 이미지 */}
