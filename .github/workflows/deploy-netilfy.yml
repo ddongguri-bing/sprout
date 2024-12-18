@@ -3,9 +3,18 @@ on:
   push:
     branches:
       - main
-jobs:
-  build:
-    runs-on: ubuntu-latest
+jobs: 
+  build: 
+    runs-on: ubuntu-latest 
+    env: 
+      VITE_API_KEY: ${{ secrets.VITE_API_KEY }} 
+      VITE_PUBLIC_URL: ${{ secrets.VITE_PUBLIC_URL }} 
+      VITE_IMAGE_UPLOAD_URL: ${{ secrets.VITE_IMAGE_UPLOAD_URL }} 
+      VITE_IMAGE_UPLOAD_KEY: ${{ secrets.VITE_IMAGE_UPLOAD_KEY }} 
+      VITE_KAKAO_REST_API_KEY: ${{ secrets.VITE_KAKAO_REST_API_KEY }} 
+      VITE_KAKAO_JAVASCRIPT_KEY: ${{ secrets.VITE_KAKAO_JAVASCRIPT_KEY }} 
+      VITE_NAVER_REST_API_KEY: ${{ secrets.VITE_NAVER_REST_API_KEY }} 
+      VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -35,12 +44,4 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
-          VITE_PUBLIC_URL: ${{ secrets.VITE_PUBLIC_URL }}
-          VITE_IMAGE_UPLOAD_URL: ${{ secrets.VITE_IMAGE_UPLOAD_URL }}
-          VITE_IMAGE_UPLOAD_KEY: ${{ secrets.VITE_IMAGE_UPLOAD_KEY }}
-          VITE_KAKAO_REST_API_KEY: ${{ secrets.VITE_KAKAO_REST_API_KEY }}
-          VITE_KAKAO_JAVASCRIPT_KEY: ${{ secrets.VITE_KAKAO_JAVASCRIPT_KEY }}
-          VITE_NAVER_REST_API_KEY: ${{ secrets.VITE_NAVER_REST_API_KEY }}
-          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
         timeout-minutes: 1
