@@ -248,12 +248,12 @@ export default function BoardItem({ isDetail, post, channelId }: Props) {
                   )}
                 >
                   <img
-                    src={likeId ? images.like_fill : images.darkLike}
+                    src={likeId ? images.LikeFill : images.darkLike}
                     alt="like icon dark"
                     className="dark:block hidden"
                   />
                   <img
-                    src={likeId ? images.like_fill : images.Like}
+                    src={likeId ? images.LikeFill : images.Like}
                     alt="like icon"
                     className="dark:hidden block"
                   />
