@@ -1,8 +1,9 @@
 import { Link } from "react-router";
 import Avata from "../common/Avata";
 import { useUserStore } from "../../stores/userStore";
+import React from "react";
 
-export default function UserItem({ user }: { user: User }) {
+export default React.memo(function UserItem({ user }: { user: User }) {
   const onlineUsers = useUserStore((state) => state.onlineUsers);
   const isOnline = !!onlineUsers.find((ou) => ou._id === user._id);
   return (
@@ -20,13 +21,13 @@ export default function UserItem({ user }: { user: User }) {
             </span>
           )}
         </div>
-        <div className="text-xs  line-clamp-1">
+        <div className="text-xs  truncate">
           <h3 className="font-bold line-clamp-1 text-black dark:text-white">
             {user.fullName}
           </h3>
-          <p className="text-gray dark:text-whiteDark">{user.email}</p>
+          <p className="text-gray dark:text-whiteDark truncate">{user.email}</p>
         </div>
       </Link>
     </li>
   );
-}
+});

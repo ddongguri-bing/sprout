@@ -18,7 +18,6 @@ export default function Search() {
         const data = (await getSearchPosts(query)).filter(
           (post) => post.author
         );
-        console.log(data);
         setPosts(data);
       } catch (err) {
         console.error(err);

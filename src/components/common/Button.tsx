@@ -1,4 +1,5 @@
-import { Link } from "react-router";
+import React from "react";
+import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 
 type ButtonPtops = {
@@ -9,15 +10,17 @@ type ButtonPtops = {
   to?: string;
 } & React.ComponentPropsWithoutRef<"button">;
 
-export default function Button({
+export default React.memo(function Button({
   text,
   size,
   type = "button",
   theme = "main",
   to,
   className,
+  onClick,
   ...rest
 }: ButtonPtops) {
+  const navigate = useNavigate();
   const BASE_STYLE =
     "rounded-[8px] flex items-center justify-center transition-all";
 
@@ -32,22 +35,14 @@ export default function Button({
     sub: "border border-main bg-white dark:bg-black hover:bg-whiteDark/30 dark:hover:bg-hoverGray",
   }[theme];
 
-  if (to)
-    return (
-      <Link
-        to={to}
-        className={twMerge(BASE_STYLE, SIZE_STYLE, THEME_STYLE, className)}
-      >
-        {text}
-      </Link>
-    );
   return (
     <button
       type={type}
       className={twMerge(BASE_STYLE, SIZE_STYLE, THEME_STYLE, className)}
+      onClick={(e) => (to ? navigate(to) : onClick && onClick(e))}
       {...rest}
     >
       {text}
     </button>
   );
-}
+});
