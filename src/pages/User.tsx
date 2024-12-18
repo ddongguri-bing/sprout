@@ -210,7 +210,7 @@ export default function User() {
   const [msgOpen, setMsgOpen] = useState<boolean>(false);
   const [type, setType] = useState<"SEND" | "CHAT">("SEND");
   const handleClickMsg = (type: "SEND" | "CHAT") => {
-    if (!loggedInUser) return handleOpenModal();
+    if (!loggedInUser) return handleOpenMsgModal();
     setMsgOpen((prev) => !prev);
     setType(type);
   };
