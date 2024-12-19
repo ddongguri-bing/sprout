@@ -220,7 +220,7 @@ export default function User() {
   };
   return (
     <>
-      <div className="h-[100px] md:h-[65px] px-[30px] z-[9] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray">
+      <div className="h-[100px] px-[30px] z-[9] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray md:hidden">
         <button onClick={() => navigate(-1)}>
           <img
             className="dark:invert dark:hover:fill-white"
@@ -249,29 +249,35 @@ export default function User() {
               <div className="flex flex-col gap-[20px]">
                 <div className="flex gap-[30px]">
                   <div
-                    className="flex items-center gap-[10px] cursor-pointer md:flex-col md:gap-0"
+                    className="flex items-center gap-[5px] cursor-pointer md:flex-col md:gap-0"
                     onClick={() => {
                       setFollowListType("followers");
                       toggleFollowList();
                     }}>
-                    <span className="md:text-[14px]">팔로우</span>{" "}
+                    <span className="md:text-[14px] whitespace-nowrap">
+                      팔로우
+                    </span>{" "}
                     <span className="text-gray dark:text-whiteDark font-bold">
                       {followerCount}
                     </span>
                   </div>
                   <div
-                    className="flex items-center gap-[10px] cursor-pointer md:flex-col md:gap-0"
+                    className="flex items-center gap-[5px] cursor-pointer md:flex-col md:gap-0"
                     onClick={() => {
                       setFollowListType("following");
                       toggleFollowList();
                     }}>
-                    <span className="md:text-[14px]">팔로잉</span>{" "}
+                    <span className="md:text-[14px] whitespace-nowrap">
+                      팔로잉
+                    </span>{" "}
                     <span className="text-gray dark:text-whiteDark font-bold">
                       {specificUser.following.length}
                     </span>
                   </div>
-                  <div className="flex items-center gap-[10px] md:flex-col md:gap-0">
-                    <span className="md:text-[14px]">포스트</span>{" "}
+                  <div className="flex items-center gap-[5px] md:flex-col md:gap-0">
+                    <span className="md:text-[14px] whitespace-nowrap">
+                      포스트
+                    </span>{" "}
                     <span className="text-gray dark:text-whiteDark font-bold ">
                       {specificUser.posts.length}
                     </span>
