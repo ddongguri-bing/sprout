@@ -39,7 +39,7 @@ export default function SignIn() {
       <form className="w-full max-w-[494px] flex flex-col gap-[30px]">
         <Input
           theme="auth"
-          className="h-[76px]"
+          className="h-[76px] md:h-[60px]"
           type="text"
           name="email"
           value={email}
@@ -49,7 +49,7 @@ export default function SignIn() {
         <div>
           <Input
             theme="auth"
-            className="h-[76px]"
+            className="h-[76px] md:h-[60px]"
             type="password"
             name="password"
             value={password}

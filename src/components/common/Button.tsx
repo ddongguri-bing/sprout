@@ -25,7 +25,7 @@ export default React.memo(function Button({
     "rounded-[8px] flex items-center justify-center transition-all";
 
   const SIZE_STYLE = {
-    lg: "h-[76px] text-[20px] font-bold md:[60px]",
+    lg: "h-[76px] text-[20px] font-bold md:h-[60px]",
     md: "w-full h-[42px] text-sm font-medium",
     sm: "w-[100px] h-[42px] px-4 text-sm",
   }[size];

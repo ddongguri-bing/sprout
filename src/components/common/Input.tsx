@@ -16,7 +16,7 @@ export default function Input(props: InputProps) {
   const AUTH_STYLE =
     "w-full py-[26px] px-[30px] border border-main rounded-[8px] focus:outline-none placeholder:text-gray bg-white dark:bg-black text-black dark:text-white dark:placeholder:text-whiteDark";
   const SETTING_STYLE =
-    "w-full max-w-[500px] h-[50px] rounded-[8px] border border-whiteDark dark:border-gray bg-white dark:bg-black text-black dark:text-white placeholder:text-gray dark:placeholder:text-whiteDark disabled:text-whiteDark dark:disabled:text-gray px-5";
+    "w-full h-[50px] rounded-[8px] border border-whiteDark dark:border-gray bg-white dark:bg-black text-black dark:text-white placeholder:text-gray dark:placeholder:text-whiteDark disabled:text-whiteDark dark:disabled:text-gray px-5";
 
   const PASSWORD_TOGGLE_STYLE =
     "absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer";
@@ -41,7 +41,7 @@ export default function Input(props: InputProps) {
   };
 
   return (
-    <div className="relative">
+    <div className="flex-1 relative">
       <input
         className={twMerge(handleGetStyle(theme), className)}
         type={type === "password" ? (showPassword ? "text" : "password") : type}
