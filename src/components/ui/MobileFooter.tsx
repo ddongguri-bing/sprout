@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { mobileIcons } from "../../assets";
 import { useAuthStore } from "../../stores/authStore";
@@ -9,6 +9,7 @@ interface FooterProps {
 
 export default function MobileFooter({ toggleOpen }: FooterProps) {
   const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
   return (
     <footer className="bg-white w-full h-[80px] fixed bottom-0 left-0 border-t border-whiteDark lg:hidden">
       <ul
@@ -44,31 +45,42 @@ export default function MobileFooter({ toggleOpen }: FooterProps) {
             />
           </NavLink>
         </li>
-        {/* <li>
-          <NavLink
-            to={id ? `/board/${id}/create?name=${id}` : `/`}
-            className={twMerge("font-bold text-main")}
-          >
-            <img src={mobileIcons.Create} className="w-[30px]" alt="search" />
-          </NavLink>
-        </li> */}
         <li>
           <NavLink to={`/`} className={twMerge("font-bold text-main")}>
-            <img src={mobileIcons.Bell} className="w-[30px]" alt="search" />
+            <img src={mobileIcons.Bell} className="w-[30px]" alt="noti icon" />
           </NavLink>
         </li>
         <li>
           <button onClick={toggleOpen}>
-            <img src={mobileIcons.Users} className="w-[30px]" alt="search" />
+            <img
+              src={mobileIcons.Users}
+              className="w-[30px]"
+              alt="users icon"
+            />
           </button>
         </li>
         <li>
-          <NavLink
-            to={`/user/${user?._id}`}
-            className={twMerge("font-bold text-main")}
-          >
-            <img src={mobileIcons.UserInfo} className="w-[30px]" alt="search" />
-          </NavLink>
+          {user && (
+            <NavLink
+              to={`/user/${user._id}`}
+              className={twMerge("font-bold text-main")}
+            >
+              <img
+                src={mobileIcons.UserInfo}
+                className="w-[30px]"
+                alt="user-info-icon"
+              />
+            </NavLink>
+          )}
+          {!user && (
+            <button type="button" onClick={() => navigate("/auth/signIn")}>
+              <img
+                src={mobileIcons.UserInfo}
+                className="w-[30px]"
+                alt="user-info-icon"
+              />
+            </button>
+          )}
         </li>
       </ul>
     </footer>
