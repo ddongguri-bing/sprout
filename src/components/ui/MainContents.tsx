@@ -7,7 +7,12 @@ export default function MainContents() {
 
   return (
     <div className="w-full max-w-[777px] mt-[50px]">
-      <ul className="font-roboto font-semibold text-[22px] flex gap-[10px] md:flex-col md:items-center">
+      <ul
+        className={twMerge(
+          "font-roboto font-semibold text-[22px] flex gap-[10px] md:items-center",
+          "md:text-[16px]"
+        )}
+      >
         {categories.map((category) => (
           <li
             key={category.name}
@@ -16,18 +21,19 @@ export default function MainContents() {
               setSelectedCategory(category.name);
             }}
             className={twMerge(
-              `px-[55px] py-[21px] rounded-lg duration-200 cursor-pointer dark:text-black md:w-full md:text-center ${
+              `px-[55px] py-[21px] rounded-lg duration-200 cursor-pointer dark:text-black ${
                 selectedCategory === category.name
                   ? "bg-main"
                   : "bg-[#91C788]/30 dark:bg-[#DEEEDB]"
-              }`
+              }`,
+              "flex-1 px-0 text-center"
             )}
           >
             {category.name}
           </li>
         ))}
       </ul>
-      <p className="mt-[30px] font-light text-[18px] text-gray dark:text-whiteDark ">
+      <p className={twMerge("mt-[30px] font-light text-[18px] text-gray dark:text-whiteDark ", "md:text-[12px]")}>
         {
           categories.find((category) => category.name === selectedCategory)
             ?.description
