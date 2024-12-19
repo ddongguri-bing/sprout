@@ -2,7 +2,7 @@ import MainContents from "../components/ui/MainContents";
 
 export default function Main() {
   return (
-    <div className="flex flex-col justify-center items-center mt-10">
+    <div className="flex flex-col justify-center items-center m-10">
       <div className="w-full max-w-[777px]">
         <h2 className=" font-roboto font-bold text-[50px] leading-[55px]">
           Together We Grow,

@@ -60,7 +60,7 @@ export default function BoardDetail() {
   if (loading)
     return (
       <div className="pb-[30px] flex flex-col relative">
-        <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
+        <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10 md:hidden">
           <button onClick={() => navigate(-1)} className="">
             <img
               className="dark:invert dark:hover:fill-white"
@@ -78,7 +78,7 @@ export default function BoardDetail() {
   return (
     <>
       <div className="pb-[30px] flex flex-col relative">
-        <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
+        <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10 md:hidden">
           <button onClick={() => navigate(-1)} className="">
             <img
               className="dark:invert dark:hover:fill-white"

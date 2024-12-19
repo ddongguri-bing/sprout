@@ -45,7 +45,7 @@ export default function Search() {
         </>
       ) : (
         <div className="w-[calc(100%-60px)] max-w-[777px] text-xl mx-auto mt-20 ">
-          검색어{" "}
+          검색어
           <b className="text-4xl text-main">"{decodeURI(query || "")}"</b>에
           해당하는 포스트가 없습니다.
         </div>

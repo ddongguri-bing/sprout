@@ -190,7 +190,7 @@ export default function BoardEditor() {
                     key={i}
                     className={twMerge(
                       "rounded-[8px] overflow-hidden relative",
-                      "aspect-[399/300] min-h-[100px]"
+                      "aspect-[399/300] min-h-[90px]"
                     )}
                   >
                     <button
@@ -217,7 +217,7 @@ export default function BoardEditor() {
               <label
                 className={twMerge(
                   "bg-whiteDark flex items-center justify-center rounded-[8px] cursor-pointer",
-                  "aspect-[399/300] min-h-[100px]"
+                  "aspect-[399/300] min-h-[90px]"
                 )}
               >
                 <input

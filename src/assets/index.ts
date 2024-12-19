@@ -65,3 +65,27 @@ import KakaoIcon from "../assets/kakao.svg";
 import NaverIcon from "../assets/naver.svg";
 import GoogleIcon from "../assets/google.svg";
 export const socialIcons = [KakaoIcon, NaverIcon, GoogleIcon];
+
+//**mobile */
+import Home from "../assets/home.svg";
+import HomeSelected from "../assets/home-selected.svg";
+import UserInfo from "../assets/user-info.svg";
+import Users from "../assets/users.svg";
+import Bell from "../assets/bell.svg";
+import BellSelected from "../assets/bell-selected.svg";
+import Create from "../assets/create.svg";
+import EllipsisH from "../assets/ellipsis-horizon.svg";
+import SearchFooter from "../assets/search-footer.svg";
+import SearchFooterSelected from "../assets/search-footer-selected.svg";
+export const mobileIcons = {
+  Home,
+  HomeSelected,
+  UserInfo,
+  Users,
+  Bell,
+  BellSelected,
+  Create,
+  EllipsisH,
+  SearchFooter,
+  SearchFooterSelected
+};

@@ -41,7 +41,7 @@ export default function Aside({ toggleOpen }: AsideProps) {
   }, [user, trigger]);
 
   return (
-    <aside className="w-[257px] max-h-screen h-screen sticky top-0 right-0 bg-white dark:bg-black border-l border-whiteDark dark:border-gray pt-[22px] pb-[17px] px-[24px] text-black dark:text-white flex flex-col justify-between">
+    <aside className="w-[257px] max-h-screen h-screen sticky top-0 right-0 bg-white dark:bg-black border-l border-whiteDark dark:border-gray pt-[22px] pb-[17px] px-[24px] text-black dark:text-white flex flex-col justify-between md:hidden">
       {/* 상단 로그인/알림 박스 */}
       {isLoggedIn && user ? <AfterUserBox user={user} /> : <BeforeUserBox />}
 
