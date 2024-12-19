@@ -292,7 +292,7 @@ export default function BoardItem({
           >
             <div
               className={twMerge(
-                "absolute mt-2 w-[120px] bg-white dark:bg-black border border-gray-300 dark:border-gray-700 rounded-md shadow-lg",
+                "absolute mt-2 w-[120px] bg-white dark:bg-black border border-whiteDark dark:border-gray-700 rounded-md shadow-lg",
                 `right-[30px]`
               )}
               style={{ top: `${modalPosition - 30}px` }}
