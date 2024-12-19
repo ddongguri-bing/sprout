@@ -195,7 +195,7 @@ export default function UserEdit() {
         </button>
       </div>
       <form
-        className="w-full max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px] md:max-w-full md:px-[20px]"
+        className="w-[calc(100%-40px)] max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px]"
         onSubmit={handleSubmit}
       >
         <label className="cursor-pointer relative mb-5 md:mt-[30px] flex flex-col items-center">
@@ -215,33 +215,37 @@ export default function UserEdit() {
         <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
           <label
             htmlFor=""
-            className="w-[100px] font-bold md:text-[16px] md:w-[140px]"
+            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
           >
             이메일
           </label>
-          <Input
-            theme="setting"
-            type={"text"}
-            value={email || ""}
-            disabled
-            className="w-[500px] md:w-[260px] md:text-xs"
-          />
+          <div className="flex-1  max-w-[500px]">
+            <Input
+              theme="setting"
+              type={"text"}
+              value={email || ""}
+              disabled
+              className="w-full md:text-xs"
+            />
+          </div>
         </div>
 
         <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
           <label
             htmlFor=""
-            className="w-[100px] font-bold md:text-[16px] md:w-[140px]"
+            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
           >
             이름
           </label>
-          <Input
-            theme="setting"
-            type={"text"}
-            value={fullName || ""}
-            disabled
-            className="w-[500px] md:w-[260px] md:text-xs"
-          />
+          <div className="flex-1  max-w-[500px]">
+            <Input
+              theme="setting"
+              type={"text"}
+              value={fullName || ""}
+              disabled
+              className="w-full md:text-xs"
+            />
+          </div>
         </div>
 
         {!isSocial && (
@@ -249,11 +253,11 @@ export default function UserEdit() {
             <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
               <label
                 htmlFor=""
-                className="w-[100px] font-bold md:text-[16px] md:w-[140px]"
+                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
               >
                 비밀번호
               </label>
-              <div className="flex flex-col w-[500px] md:w-[500px]">
+              <div className="flex flex-col flex-1 max-w-[500px]">
                 <Input
                   theme="setting"
                   type={"password"}
@@ -273,11 +277,11 @@ export default function UserEdit() {
             <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
               <label
                 htmlFor=""
-                className="w-[100px] font-bold md:text-[16px] md:w-[140px]"
+                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
               >
                 비밀번호 확인
               </label>
-              <div className="flex flex-col w-[500px] md:w-[500px]">
+              <div className="flex flex-col flex-1 max-w-[500px]">
                 <Input
                   theme="setting"
                   type={"password"}
@@ -306,11 +310,10 @@ export default function UserEdit() {
           <Button type="submit" text={"완료"} size={"sm"} disabled={fetching} />
         </div>
       </form>
-
-      <div className="w-full max-w-[777px] mx-auto flex items-end mb-[30px] justify-between gap-5 md:flex-col  md:gap-[20px] md:px-[20px]">
-        <div className="flex flex-col gap-[5px] text-gray dark:text-whiteDark ">
+      <div className="w-[calc(100%-40px)] max-w-[777px] mx-auto flex items-end mb-[30px] md:items-start justify-between gap-5 md:flex-col  md:gap-[20px]">
+        <div className="flex flex-col md:items-start gap-[5px] text-gray dark:text-whiteDark ">
           <div className="font-bold">로그아웃</div>
-          <div className="text-xs">
+          <div className="text-xs break-keep">
             SPROUT 사이트에서 로그아웃을 원하신다면 로그아웃 버튼을 클릭하세요
           </div>
         </div>

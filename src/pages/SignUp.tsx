@@ -78,7 +78,7 @@ export default function SignUp() {
   };
 
   return (
-    <form className="w-full max-w-[494px] flex flex-col gap-[30px] md:max-w-[315px]">
+    <form className="w-full max-w-[494px] flex flex-col gap-[30px]">
       <div>
         <Input
           theme="auth"
