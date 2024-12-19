@@ -12,7 +12,12 @@ export default function Search() {
   const [posts, setPosts] = useState<SearchPostItem[]>([]);
 
   useEffect(() => {
-    const handleSearch = async (query?: string) => {
+    const handleSearch = async (query: string | null) => {
+      if (!query) {
+        setPosts([]);
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         const data = (await getSearchPosts(query)).filter(
@@ -25,7 +30,7 @@ export default function Search() {
         setTimeout(() => setLoading(false), 500);
       }
     };
-    if (query) handleSearch(query);
+    handleSearch(query);
   }, [query]);
 
   return (
@@ -43,6 +48,11 @@ export default function Search() {
             <SearchBoardItem key={`search-${post._id}`} post={post} />
           ))}
         </>
+      ) : !query ? (
+        <div className="w-[calc(100%-60px)] max-w-[777px] text-xl mx-auto md:mt-10 mt-20 ">
+          <b className="md:text-2xl text-4xl text-main">검색어</b>를
+          입력해주세요.
+        </div>
       ) : (
         <div className="w-[calc(100%-60px)] max-w-[777px] text-xl mx-auto mt-20 ">
           검색어
