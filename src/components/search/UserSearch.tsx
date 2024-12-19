@@ -38,7 +38,7 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
 
   return (
     <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 flex items-center justify-center z-[9999]">
-      <article className="w-[calc(100%-32px)] max-w-[600px] bg-white dark:bg-grayDark pt-5 pb-[30px] rounded-[8px] flex flex-col px-[44px]">
+      <article className="w-[calc(100%-32px)] max-w-[600px] bg-white dark:bg-grayDark pt-5 pb-[30px] rounded-[8px] flex flex-col md:px-5 px-[44px]">
         <div className="flex justify-end mb-5">
           <button onClick={toggleOpen}>
             <img className="dark:invert" src={images.Close} alt="close icon" />
