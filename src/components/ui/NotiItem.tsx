@@ -5,9 +5,11 @@ import { useNavigate } from "react-router";
 export default function NotiItem({
   active,
   noti,
+  onClick,
 }: {
   active: boolean;
   noti: NotiType;
+  onClick?: () => void;
 }) {
   const handleGetMessage = (type: "comment" | "like" | "follow") => {
     switch (type) {
@@ -35,6 +37,7 @@ export default function NotiItem({
   const handleClickItem = async (type: "comment" | "like" | "follow") => {
     if (active) await putNotificationSeen({ id: noti._id });
     navigate(handleLink(type));
+    if (onClick) onClick();
   };
 
   return (

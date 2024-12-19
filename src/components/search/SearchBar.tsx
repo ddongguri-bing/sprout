@@ -2,21 +2,26 @@ import { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import useDebounce from "../../hooks/useDebounce";
 import images from "../../assets";
+import { twMerge } from "tailwind-merge";
+import { useTriggerStore } from "../../stores/triggerStore";
 
 export default function SearchBar() {
+  const isMobile = useTriggerStore((state) => state.isMobile);
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [value, setValue] = useState("");
   const debouncedValue = useDebounce(value);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (value) navigate(`/search/${value.trim()}`);
+    if (value) navigate(`/search?query=${value.trim()}`);
   };
 
   useEffect(() => {
     if (debouncedValue)
       navigate(`/search?query=${debouncedValue}`, { replace: true });
-    if (pathname.startsWith("/search") && !debouncedValue) navigate("/");
+    if (pathname.startsWith("/search") && !debouncedValue && !isMobile)
+      navigate("/");
   }, [debouncedValue]);
 
   useEffect(() => {
@@ -24,7 +29,10 @@ export default function SearchBar() {
   }, [pathname]);
 
   return (
-    <form onSubmit={handleSubmit} className="relative mb-[30px]">
+    <form
+      onSubmit={handleSubmit}
+      className={twMerge("w-full relative md:mb-0 mb-[30px]")}
+    >
       <label htmlFor="search" className="absolute top-[15px] left-[15px]">
         <img src={images.Search} alt="search icon" />
       </label>
