@@ -13,7 +13,7 @@ export default function Loading() {
         />
       </div>
       <div className="ml-[50px] md:ml-0 md:text-left">
-        <p className="font-angkor text-[50px] md:text-[40px]  text-main dark:text-white">
+        <p className="font-angkor text-[50px] md:text-[40px] text-main">
           SPROUT
         </p>
         <p className="font-angkor text-[105px] md:text-[60px] dark:text-white ">
