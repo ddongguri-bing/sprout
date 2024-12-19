@@ -189,16 +189,16 @@ export default function UserEdit() {
           />
         </div>
       )}
-      <div className="w-full h-[100px] px-[30px] mb-10 sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-[9]">
+      <div className="w-full h-[100px] px-[30px] mb-10 sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-[9] md:hidden">
         <button onClick={() => history.back()} className="">
           <img className="dark:invert" src={images.Back} alt="back icon" />
         </button>
       </div>
       <form
-        className="w-full max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px]"
+        className="w-full max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px] md:max-w-[335px] md:mr-5 md:ml-5"
         onSubmit={handleSubmit}
       >
-        <label className="cursor-pointer relative mb-5">
+        <label className="cursor-pointer relative mb-5 md:mt-[30px] ">
           <input
             type="file"
             accept="image/*"
@@ -207,12 +207,12 @@ export default function UserEdit() {
             onChange={handleSelectPhoto}
           />
           <Avata profile={photoUrl || profileImg} size={"lg"} />
-          <span className=" absolute -bottom-[10px] -right-[10px] ">
+          <span className=" absolute -bottom-[10px] -right-[10px] md:w-[26.09px] md:h-[26.09px]">
             <img src={images.Camera} alt="camera icon" />
           </span>
         </label>
         <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="" className="w-[100px]">
+          <label htmlFor="" className="w-[100px] font-bold">
             이메일
           </label>
           <Input
@@ -220,11 +220,11 @@ export default function UserEdit() {
             type={"text"}
             value={email || ""}
             disabled
-            className="w-[500px]"
+            className="w-[500px] md:max-w-[210px] md:text-xs"
           />
         </div>
         <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="" className="w-[100px]">
+          <label htmlFor="" className="w-[100px] font-bold">
             이름
           </label>
           <Input
@@ -232,13 +232,15 @@ export default function UserEdit() {
             type={"text"}
             value={fullName || ""}
             disabled
-            className="w-[500px]"
+            className="w-[500px] md:max-w-[210px] md:text-xs"
           />
         </div>
         {!isSocial && (
           <>
             <div className="w-full flex items-center justify-between gap-5">
-              <label htmlFor="">비밀번호</label>
+              <label htmlFor="" className="w-[100px] font-bold">
+                비밀번호
+              </label>
               <div className="flex flex-col w-[500px]">
                 <Input
                   theme="setting"
@@ -246,7 +248,7 @@ export default function UserEdit() {
                   value={updatePassword}
                   onChange={(e) => setUpdatePassword(e.target.value)}
                   placeholder="변경할 비밀번호를 입력해주세요"
-                  className="w-full"
+                  className="w-[500px] md:max-w-[210px] md:text-xs"
                 />
                 {updatePasswordError && (
                   <p className="text-red text-xs mt-[10px]">
@@ -256,14 +258,17 @@ export default function UserEdit() {
               </div>
             </div>
             <div className="w-full flex items-center justify-between gap-5">
-              <label htmlFor="">비밀번호 확인</label>
-              <div className="flex flex-col w-[500px]">
+              <label htmlFor="" className="w-[100px] font-bold">
+                비밀번호 확인
+              </label>
+              <div className="flex flex-col w-[500px] relative">
                 <Input
                   theme="setting"
                   type={"password"}
                   value={confirmUpdatePassword}
                   onChange={(e) => setConfirmUpdatePassword(e.target.value)}
                   placeholder="비밀번호를 확인해주세요"
+                  className="w-full md:max-w-[210px] md:text-xs"
                 />
                 {confirmUpdatePasswordError && (
                   <p className="text-red text-xs mt-[10px]">
@@ -284,7 +289,7 @@ export default function UserEdit() {
           <Button type="submit" text={"완료"} size={"sm"} disabled={fetching} />
         </div>
       </form>
-      <div className="w-full max-w-[777px] mx-auto flex items-end mb-[30px] justify-between gap-5">
+      <div className="w-full max-w-[777px] mx-auto flex items-end mb-[30px] justify-between gap-5 md:flex-col md:items-start md:ml-[20px] md:mr-[20px]">
         <div className="flex flex-col gap-[5px] text-gray dark:text-whiteDark">
           <div className="font-bold">로그아웃</div>
           <div className="text-xs">
