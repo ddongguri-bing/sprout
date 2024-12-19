@@ -1,9 +1,5 @@
 import images from "../assets";
 import { Link, Outlet, useLocation } from "react-router";
-import MobileFooter from "../components/ui/MobileFooter";
-import React, { Suspense, useState } from "react";
-
-const UserSearch = React.lazy(() => import("../components/search/UserSearch"));
 
 export default function AuthLayout() {
   const { pathname } = useLocation();
@@ -12,9 +8,6 @@ export default function AuthLayout() {
     signIn: "로그인",
     signUp: "회원가입",
   }[path!];
-
-  const [searchOpen, setSearchOpen] = useState<boolean>(false);
-  const toggleUserSearch = () => setSearchOpen((prev) => !prev);
 
   return (
     <>
@@ -29,12 +22,6 @@ export default function AuthLayout() {
           <Outlet />
         </section>
       </article>
-      {searchOpen && (
-        <Suspense>
-          <UserSearch toggleOpen={toggleUserSearch} />
-        </Suspense>
-      )}
-      <MobileFooter toggleOpen={toggleUserSearch} />
     </>
   );
 }
