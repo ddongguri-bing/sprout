@@ -7,10 +7,16 @@ import MobileHeader from "../components/ui/MobileHeader";
 import MobileFooter from "../components/ui/MobileFooter";
 
 const UserSearch = React.lazy(() => import("../components/search/UserSearch"));
+const MobileNotiModal = React.lazy(
+  () => import("../components/ui/MobileNotiModal")
+);
 
 export default function MainLayout() {
-  const [searchOpen, setSearchOpen] = useState<boolean>(false);
-  const toggleUserSearch = () => setSearchOpen((prev) => !prev);
+  const [userSearchOpen, setUserSearchOpen] = useState<boolean>(false);
+  const toggleUserSearch = () => setUserSearchOpen((prev) => !prev);
+
+  const [notiOpen, setNotiOpen] = useState<boolean>(false);
+  const toggleNotiOpen = () => setNotiOpen((prev) => !prev);
 
   return (
     <div className="w-full flex min-h-screen text-black dark:text-white bg-white dark:bg-black md:flex-col">
@@ -20,12 +26,22 @@ export default function MainLayout() {
         <Outlet />
       </div>
       <Aside toggleOpen={toggleUserSearch} />
-      {searchOpen && (
+      {userSearchOpen && (
         <Suspense>
           <UserSearch toggleOpen={toggleUserSearch} />
         </Suspense>
       )}
-      <MobileFooter toggleOpen={toggleUserSearch} />
+      <MobileFooter
+        userSearchOpen={userSearchOpen}
+        toggleUserSearch={toggleUserSearch}
+        notiOpen={notiOpen}
+        toggleNotiOpen={toggleNotiOpen}
+      />
+      {notiOpen && (
+        <Suspense>
+          <MobileNotiModal toggleOpen={toggleNotiOpen} />
+        </Suspense>
+      )}
     </div>
   );
 }

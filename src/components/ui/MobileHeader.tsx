@@ -1,16 +1,31 @@
-import { useNavigate, useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import images from "../../assets";
 import Navbar from "./Navbar";
+import SearchBar from "../search/SearchBar";
+import { useTriggerStore } from "../../stores/triggerStore";
+import { useEffect } from "react";
+import ThemeToggle from "../common/ThemeToggle";
 
 export default function MobileHeader() {
+  const setIsMobile = useTriggerStore((state) => state.setIsMobile);
+  const { pathname } = useLocation();
   const { postId } = useParams();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setIsMobile(true);
+    return () => {
+      setIsMobile(false);
+    };
+  }, []);
+
   return (
-    <header className="sticky top-0 left-0 bg-white z-20 lg:hidden">
-      <div className="border-b border-whiteDark">
-        {postId ? (
-          <div className="h-[58px] px-[20px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black dark:border-gray z-10">
+    <header className="sticky top-0 left-0 bg-white dark:bg-black z-20 lg:hidden">
+      <div className="w-full h-[65px] border-b border-whiteDark dark:border-gray flex items-center px-5">
+        {pathname.startsWith("/search") ? (
+          <SearchBar />
+        ) : postId ? (
+          <div className="h-[58px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black dark:border-gray z-10">
             <button onClick={() => navigate(-1)} className="">
               <img
                 className="dark:invert dark:hover:fill-white"
@@ -18,13 +33,17 @@ export default function MobileHeader() {
                 alt="back icon"
               />
             </button>
-            <div className="flex items-center gap-5">
-            </div>
+            <div className="flex items-center gap-5"></div>
           </div>
         ) : (
-          <h1 className="ml-3 flex justify-center">
-            <img className="w-[188px]" src={images.Logo} alt="main logo" />
-          </h1>
+          <div className="w-full flex items-center justify-between">
+            <h1 className="flex justify-center">
+              <Link to={"/"}>
+                <img className="w-[188px]" src={images.Logo} alt="main logo" />
+              </Link>
+            </h1>
+            <ThemeToggle />
+          </div>
         )}
       </div>
       <Navbar />

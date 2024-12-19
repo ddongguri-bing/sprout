@@ -69,23 +69,35 @@ export const socialIcons = [KakaoIcon, NaverIcon, GoogleIcon];
 //**mobile */
 import Home from "../assets/home.svg";
 import HomeSelected from "../assets/home-selected.svg";
+import HomeWhite from "../assets/home-white.svg";
 import UserInfo from "../assets/user-info.svg";
+import UserInfoWhite from "../assets/user-info-white.svg";
 import Users from "../assets/users.svg";
+import UsersSelected from "../assets/users-selected.svg";
+import UsersWhite from "../assets/users-white.svg";
 import Bell from "../assets/bell.svg";
 import BellSelected from "../assets/bell-selected.svg";
+import BellWhite from "../assets/bell-white.svg";
 import Create from "../assets/create.svg";
 import EllipsisH from "../assets/ellipsis-horizon.svg";
 import SearchFooter from "../assets/search-footer.svg";
 import SearchFooterSelected from "../assets/search-footer-selected.svg";
+import SearchFooterWhite from "../assets/search-footer-white.svg";
 export const mobileIcons = {
   Home,
   HomeSelected,
+  HomeWhite,
   UserInfo,
+  UserInfoWhite,
   Users,
+  UsersSelected,
+  UsersWhite,
   Bell,
   BellSelected,
+  BellWhite,
   Create,
   EllipsisH,
   SearchFooter,
-  SearchFooterSelected
+  SearchFooterSelected,
+  SearchFooterWhite,
 };
