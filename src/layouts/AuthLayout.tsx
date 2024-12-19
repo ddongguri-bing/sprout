@@ -23,7 +23,7 @@ export default function AuthLayout() {
           <img src={images.Logo} alt="main logo" />
         </Link>
       </header>
-      <article className="w-full min-h-screen flex py-[162px] justify-center bg-white text-black dark:bg-black dark:text-white">
+      <article className="w-full min-h-screen flex py-[162px] md:py-[80px] justify-center bg-white text-black dark:bg-black dark:text-white">
         <section className="w-[494px] h-auto flex flex-col items-center gap-[60px] md:mr-5 md:ml-5 ">
           <h1 className="font-bold text-[32px]">{title}</h1>
           <Outlet />

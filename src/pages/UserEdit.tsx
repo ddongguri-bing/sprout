@@ -195,10 +195,10 @@ export default function UserEdit() {
         </button>
       </div>
       <form
-        className="w-full max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px] md:max-w-[335px] md:mr-5 md:ml-5"
+        className="w-full max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px] md:max-w-full md:px-[20px]"
         onSubmit={handleSubmit}
       >
-        <label className="cursor-pointer relative mb-5 md:mt-[30px] ">
+        <label className="cursor-pointer relative mb-5 md:mt-[30px] flex flex-col items-center">
           <input
             type="file"
             accept="image/*"
@@ -207,12 +207,13 @@ export default function UserEdit() {
             onChange={handleSelectPhoto}
           />
           <Avata profile={photoUrl || profileImg} size={"lg"} />
-          <span className=" absolute -bottom-[10px] -right-[10px] md:w-[26.09px] md:h-[26.09px]">
+          <span className="absolute -bottom-[10px] -right-[10px] md:w-[26.09px] md:h-[26.09px]">
             <img src={images.Camera} alt="camera icon" />
           </span>
         </label>
-        <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="" className="w-[100px] font-bold">
+
+        <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
+          <label htmlFor="" className="w-[100px] font-bold md:w-[140px]">
             이메일
           </label>
           <Input
@@ -220,11 +221,12 @@ export default function UserEdit() {
             type={"text"}
             value={email || ""}
             disabled
-            className="w-[500px] md:max-w-[210px] md:text-xs"
+            className="w-[500px] md:w-[345px] md:text-xs"
           />
         </div>
-        <div className="w-full flex items-center justify-between gap-5">
-          <label htmlFor="" className="w-[100px] font-bold">
+
+        <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
+          <label htmlFor="" className="w-[100px] font-bold md:w-[140px]">
             이름
           </label>
           <Input
@@ -232,23 +234,24 @@ export default function UserEdit() {
             type={"text"}
             value={fullName || ""}
             disabled
-            className="w-[500px] md:max-w-[210px] md:text-xs"
+            className="w-[500px] md:w-[345px] md:text-xs"
           />
         </div>
+
         {!isSocial && (
           <>
-            <div className="w-full flex items-center justify-between gap-5">
-              <label htmlFor="" className="w-[100px] font-bold">
+            <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
+              <label htmlFor="" className="w-[100px] font-bold md:w-[140px]">
                 비밀번호
               </label>
-              <div className="flex flex-col w-[500px]">
+              <div className="flex flex-col w-[500px] md:w-[500px]">
                 <Input
                   theme="setting"
                   type={"password"}
                   value={updatePassword}
                   onChange={(e) => setUpdatePassword(e.target.value)}
                   placeholder="변경할 비밀번호를 입력해주세요"
-                  className="w-[500px] md:max-w-[210px] md:text-xs"
+                  className="w-full md:text-xs"
                 />
                 {updatePasswordError && (
                   <p className="text-red text-xs mt-[10px]">
@@ -257,18 +260,19 @@ export default function UserEdit() {
                 )}
               </div>
             </div>
-            <div className="w-full flex items-center justify-between gap-5">
-              <label htmlFor="" className="w-[100px] font-bold">
+
+            <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
+              <label htmlFor="" className="w-[100px] font-bold md:w-[140px]">
                 비밀번호 확인
               </label>
-              <div className="flex flex-col w-[500px] relative">
+              <div className="flex flex-col w-[500px] md:w-[500px]">
                 <Input
                   theme="setting"
                   type={"password"}
                   value={confirmUpdatePassword}
                   onChange={(e) => setConfirmUpdatePassword(e.target.value)}
                   placeholder="비밀번호를 확인해주세요"
-                  className="w-full md:max-w-[210px] md:text-xs"
+                  className="w-full md:text-xs"
                 />
                 {confirmUpdatePasswordError && (
                   <p className="text-red text-xs mt-[10px]">
@@ -279,7 +283,8 @@ export default function UserEdit() {
             </div>
           </>
         )}
-        <div className="w-full flex justify-end items-center gap-5">
+
+        <div className="w-full flex justify-end items-center gap-5 md:justify-center">
           <Button
             onClick={() => history.back()}
             text={"취소"}
@@ -289,8 +294,9 @@ export default function UserEdit() {
           <Button type="submit" text={"완료"} size={"sm"} disabled={fetching} />
         </div>
       </form>
-      <div className="w-full max-w-[777px] mx-auto flex items-end mb-[30px] justify-between gap-5 md:flex-col md:items-start md:ml-[20px] md:mr-[20px]">
-        <div className="flex flex-col gap-[5px] text-gray dark:text-whiteDark">
+
+      <div className="w-full max-w-[777px] mx-auto flex items-end mb-[30px] justify-between gap-5 md:flex-col md:items-center md:gap-[20px] md:px-[20px]">
+        <div className="flex flex-col gap-[5px] text-gray dark:text-whiteDark md:text-center">
           <div className="font-bold">로그아웃</div>
           <div className="text-xs">
             SPROUT 사이트에서 로그아웃을 원하신다면 로그아웃 버튼을 클릭하세요
