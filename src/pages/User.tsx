@@ -316,7 +316,7 @@ export default function User() {
               className="hidden md:block"
               onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}>
               <img
-                className="w-[25px] h-[25px] dark:invert dark:hover:fill-white hidden"
+                className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
                 src={isMyPage ? images.MessageBoxBtn : images.MessageSendBtn}
               />
             </button>
