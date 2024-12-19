@@ -1,7 +1,7 @@
 import { axiosInstance } from ".";
 
 export const getSearchPosts = async (
-  query?: string
+  query: string
 ): Promise<SearchPostItem[]> => {
   return (await axiosInstance.get(`/search/all/${query}`)).data;
 };
