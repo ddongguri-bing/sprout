@@ -24,6 +24,7 @@ import DarkEyeOff from "../assets/dark_eye_off.svg";
 import DarkEye from "../assets/dark_eye.svg";
 import Share from "../assets/share.svg";
 import DarkShare from "../assets/dark_share.svg";
+import Youtube from "../assets/youtube.svg";
 const images = {
   Logo,
   Profile,
@@ -51,6 +52,7 @@ const images = {
   DarkEye,
   Share,
   DarkShare,
+  Youtube,
 };
 
 export default images;
