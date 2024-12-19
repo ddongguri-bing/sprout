@@ -69,7 +69,7 @@ export default function MobileFooter({
           <NavLink to={`/search`} className={twMerge("text-main")}>
             <img
               src={
-                pathname.startsWith("/search")
+                pathname.startsWith("/search") && !notiOpen && !userSearchOpen
                   ? mobileIcons.SearchFooterSelected
                   : isDark
                   ? mobileIcons.SearchFooterWhite
