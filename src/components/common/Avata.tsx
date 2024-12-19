@@ -18,7 +18,7 @@ export default function Avata({
     "rounded-[8px] relative border border-whiteDark dark:border-gray overflow-hidden";
   const BOX_SIZE = {
     sm: "w-[50px] h-[50px] min-w-[50px] min-h-[50px]",
-    md: "w-[75px] h-[75px] min-w-[75px] min-h-[75px]",
+    md: "w-[75px] md:w-[50px] h-[75px] md:h-[50px] min-w-[50px] min-h-[50px] max-w-[75px] max-h-[75px]",
     lg: "w-[220px] md:w-[100px] h-[220px] md:h-[100px] min-w-[100px] min-h-[100px] max-w-[220px] max-h-[220px]",
   }[size];
   const IMG_BASE_STYLE =
