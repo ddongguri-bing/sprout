@@ -118,13 +118,23 @@ export default function Board() {
 
   return (
     <div className="pb-[30px] flex flex-col">
-      <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10">
+      <div className="h-[100px] px-[30px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black border-b border-whiteDark dark:border-gray z-10 md:hidden">
         <h2 className="text-xl font-bold">{channelName}</h2>
         {isLoggedIn && (
           <Button
             to={`/board/${channelId}/create?name=${channelName}`}
             text="포스트 작성"
             size={"sm"}
+          />
+        )}
+      </div>
+      <div className="lg:hidden">
+        {isLoggedIn && (
+          <Button
+            to={`/board/${channelId}/create?name=${channelName}`}
+            text="+"
+            size={"sm"}
+            className="md:mr-3 md:w-[42px] md:rounded-full md:font-bold md:fixed md:bottom-[92px] md:right-0 z-10"
           />
         )}
       </div>

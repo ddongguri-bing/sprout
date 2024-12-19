@@ -3,9 +3,9 @@ on:
   push:
     branches:
       - main
-jobs: 
-  build: 
-    runs-on: ubuntu-latest 
+jobs:
+  build:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -14,29 +14,27 @@ jobs:
       - name: Node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: "20.18.x"
+          node-version: '20.18.x'
 
-      - name: .env setting
-        run: |
-          echo "VITE_API_KEY=${{ secrets.VITE_API_KEY }}" >> .env
-          echo "VITE_PUBLIC_URL=${{ secrets.VITE_PUBLIC_URL }}" >> .env
-          echo "VITE_IMAGE_UPLOAD_URL=${{ secrets.VITE_IMAGE_UPLOAD_URL }}" >> .env
-          echo "VITE_IMAGE_UPLOAD_KEY=${{ secrets.VITE_IMAGE_UPLOAD_KEY }}" >> .env
-          echo "VITE_KAKAO_REST_API_KEY=${{ secrets.VITE_KAKAO_REST_API_KEY }}" >> .env
-          echo "VITE_KAKAO_JAVASCRIPT_KEY=${{ secrets.VITE_KAKAO_JAVASCRIPT_KEY }}" >> .env
-          echo "VITE_NAVER_REST_API_KEY=${{ secrets.VITE_NAVER_REST_API_KEY }}" >> .env
-          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}" >> .env
-        
       - name: Install dependencies
         run: yarn install
 
       - name: Build
         run: yarn vite build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_PUBLIC_URL: ${{ secrets.VITE_PUBLIC_URL }}
+          VITE_IMAGE_UPLOAD_URL: ${{ secrets.VITE_IMAGE_UPLOAD_URL }}
+          VITE_IMAGE_UPLOAD_KEY: ${{ secrets.VITE_IMAGE_UPLOAD_KEY }}
+          VITE_KAKAO_REST_API_KEY: ${{ secrets.VITE_KAKAO_REST_API_KEY }}
+          VITE_KAKAO_JAVASCRIPT_KEY: ${{ secrets.VITE_KAKAO_JAVASCRIPT_KEY }}
+          VITE_NAVER_REST_API_KEY: ${{ secrets.VITE_NAVER_REST_API_KEY }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
-          publish-dir: "./dist"
+          publish-dir: './dist'
           production-branch: main
           github-token: ${{ secrets.GIT_HUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
