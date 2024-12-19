@@ -13,6 +13,7 @@
     "@fancyapps/ui": "^5.0.36",
     "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.9",
+    "draft-js": "^0.11.7",
     "npm-check": "^6.0.1",
     "react": "^18.3.1",
     "react-cookie": "^7.2.2",
@@ -20,7 +21,6 @@
     "react-router": "^7.0.2",
     "react-spinners": "^0.15.0",
     "react-textarea-autosize": "^8.5.5",
-    "sweetalert2": "^11.14.5",
     "tailwind-merge": "^2.5.5",
     "zustand": "^5.0.2"
   },
