@@ -3,6 +3,8 @@ import { Outlet } from "react-router";
 import Header from "../components/ui/Header";
 import Aside from "../components/ui/Aside";
 import { useState } from "react";
+import MobileHeader from "../components/ui/MobileHeader";
+import MobileFooter from "../components/ui/MobileFooter";
 
 const UserSearch = React.lazy(() => import("../components/search/UserSearch"));
 
@@ -11,9 +13,10 @@ export default function MainLayout() {
   const toggleUserSearch = () => setSearchOpen((prev) => !prev);
 
   return (
-    <div className="w-full flex min-h-screen text-black dark:text-white bg-white dark:bg-black">
+    <div className="w-full flex min-h-screen text-black dark:text-white bg-white dark:bg-black md:flex-col">
       <Header />
-      <div className="flex-1">
+      <MobileHeader />
+      <div className="flex-1 md:pb-[80px]">
         <Outlet />
       </div>
       <Aside toggleOpen={toggleUserSearch} />
@@ -22,6 +25,7 @@ export default function MainLayout() {
           <UserSearch toggleOpen={toggleUserSearch} />
         </Suspense>
       )}
+      <MobileFooter toggleOpen={toggleUserSearch} />
     </div>
   );
 }
