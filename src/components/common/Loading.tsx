@@ -2,8 +2,8 @@ import { FadeLoader } from "react-spinners";
 
 export default function Loading() {
   return (
-    <div className="flex md:flex-col items-top md:items-start justify-center mt-[100px] bg-white dark:bg-black md:px-[26px]">
-      <div className="md:mb-[80px]">
+    <div className="flex md:flex-col  md:items-center items-top justify-center md:mt-[50px] mt-[100px] bg-white dark:bg-black ">
+      <div className="md:mb-[60px] md:mr-[230px]">
         <FadeLoader
           color="#91C788"
           height={25}
@@ -16,7 +16,7 @@ export default function Loading() {
         <p className="font-angkor text-[50px] md:text-[40px] text-main">
           SPROUT
         </p>
-        <p className="font-angkor text-[105px] md:text-[60px] dark:text-white ">
+        <p className="font-angkor text-[105px] md:text-[60px] dark:text-white">
           Loading..
         </p>
         <p className="text-gray dark:text-whiteDark text-[22px] md:text-[14px] md:mb-[50px]">
