@@ -75,6 +75,7 @@ export default function Admin() {
     }
   };
 
+  // useEffect
   useEffect(() => {
     fetchGetChannel();
   }, []);
