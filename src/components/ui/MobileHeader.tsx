@@ -24,7 +24,7 @@ export default function MobileHeader() {
       <div className="w-full h-[65px] border-b border-whiteDark dark:border-gray flex items-center px-5">
         {pathname.startsWith("/search") ? (
           <SearchBar />
-        ) : postId ? (
+        ) : postId || pathname.startsWith("/user") ? (
           <div className="h-[58px] sticky top-0 left-0 flex justify-between items-center dark:text-white bg-white dark:bg-black dark:border-gray z-10">
             <button onClick={() => navigate(-1)} className="">
               <img
