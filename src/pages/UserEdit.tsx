@@ -213,7 +213,10 @@ export default function UserEdit() {
         </label>
 
         <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
-          <label htmlFor="" className="w-[100px] font-bold md:w-[140px]">
+          <label
+            htmlFor=""
+            className="w-[100px] font-bold md:text-[16px] md:w-[140px]"
+          >
             이메일
           </label>
           <Input
@@ -221,12 +224,15 @@ export default function UserEdit() {
             type={"text"}
             value={email || ""}
             disabled
-            className="w-[500px] md:w-[345px] md:text-xs"
+            className="w-[500px] md:w-[260px] md:text-xs"
           />
         </div>
 
         <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
-          <label htmlFor="" className="w-[100px] font-bold md:w-[140px]">
+          <label
+            htmlFor=""
+            className="w-[100px] font-bold md:text-[16px] md:w-[140px]"
+          >
             이름
           </label>
           <Input
@@ -234,14 +240,17 @@ export default function UserEdit() {
             type={"text"}
             value={fullName || ""}
             disabled
-            className="w-[500px] md:w-[345px] md:text-xs"
+            className="w-[500px] md:w-[260px] md:text-xs"
           />
         </div>
 
         {!isSocial && (
           <>
             <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
-              <label htmlFor="" className="w-[100px] font-bold md:w-[140px]">
+              <label
+                htmlFor=""
+                className="w-[100px] font-bold md:text-[16px] md:w-[140px]"
+              >
                 비밀번호
               </label>
               <div className="flex flex-col w-[500px] md:w-[500px]">
@@ -262,7 +271,10 @@ export default function UserEdit() {
             </div>
 
             <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
-              <label htmlFor="" className="w-[100px] font-bold md:w-[140px]">
+              <label
+                htmlFor=""
+                className="w-[100px] font-bold md:text-[16px] md:w-[140px]"
+              >
                 비밀번호 확인
               </label>
               <div className="flex flex-col w-[500px] md:w-[500px]">
@@ -284,7 +296,7 @@ export default function UserEdit() {
           </>
         )}
 
-        <div className="w-full flex justify-end items-center gap-5 md:justify-center">
+        <div className="w-full flex justify-end items-center gap-5 ">
           <Button
             onClick={() => history.back()}
             text={"취소"}
@@ -295,8 +307,8 @@ export default function UserEdit() {
         </div>
       </form>
 
-      <div className="w-full max-w-[777px] mx-auto flex items-end mb-[30px] justify-between gap-5 md:flex-col md:items-center md:gap-[20px] md:px-[20px]">
-        <div className="flex flex-col gap-[5px] text-gray dark:text-whiteDark md:text-center">
+      <div className="w-full max-w-[777px] mx-auto flex items-end mb-[30px] justify-between gap-5 md:flex-col  md:gap-[20px] md:px-[20px]">
+        <div className="flex flex-col gap-[5px] text-gray dark:text-whiteDark ">
           <div className="font-bold">로그아웃</div>
           <div className="text-xs">
             SPROUT 사이트에서 로그아웃을 원하신다면 로그아웃 버튼을 클릭하세요
