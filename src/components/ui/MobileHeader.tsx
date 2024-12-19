@@ -10,7 +10,7 @@ export default function MobileHeader() {
   const navigate = useNavigate();
 
   return (
-    <header className="sticky top-0 left-0 bg-white dark:bg-black z-20 lg:hidden">
+    <header className="sticky top-0 left-0 bg-white dark:bg-black z-20 md:block hidden">
       <div className="w-full h-[65px] border-b border-whiteDark dark:border-gray flex items-center px-5">
         {pathname.startsWith("/search") ? (
           <SearchBar />
