@@ -154,7 +154,7 @@ export default function ChatMessage({ onClose }: ChatMessageProps) {
   }, [messages, currentUser]);
 
   return (
-    <article className="w-[calc(100%-32px)] max-w-[600px] bg-white dark:bg-grayDark pt-5 pb-[30px] rounded-[8px] flex flex-col px-[44px]">
+    <article className="w-[calc(100%-32px)] max-w-[600px] bg-white dark:bg-grayDark pt-5 pb-[30px] rounded-[8px] flex flex-col px-[44px] md:px-[20px]">
       <div className="flex justify-between items-center mb-5">
         <h2 className="text-xl font-bold">
           {currentUser ? currentUser.fullName : "대화 목록"}
@@ -220,7 +220,9 @@ export default function ChatMessage({ onClose }: ChatMessageProps) {
                   >
                     <div
                       className={`${
-                        msg.isReceived ? "ml-[30px]" : "mr-[30px]"
+                        msg.isReceived
+                          ? "ml-[30px] md:ml-[10px]"
+                          : "mr-[30px] md:mr-[10px]"
                       } ${
                         msg.isReceived
                           ? "bg-whiteDark dark:bg-gray dark:text-white"
@@ -249,11 +251,11 @@ export default function ChatMessage({ onClose }: ChatMessageProps) {
                 handleSendMessage();
               }}
               className={twMerge(
-                "w-full flex items-start px-5 py-[15px] border border-main rounded-[8px] mt-auto"
+                "w-full flex items-start px-5 md:px-[15px] py-[15px] border border-main rounded-[8px] mt-auto"
               )}
             >
               <TextareaAutosize
-                className="w-full h-6 focus:outline-none  scroll resize-none bg-white dark:bg-grayDark dark:placeholder:bg-grayDark"
+                className="w-full h-6 focus:outline-none  scroll resize-none bg-white dark:bg-grayDark dark:placeholder:bg-grayDark md:text-[14px] "
                 onChange={(e) => setValue(e.target.value)}
                 onKeyDown={handleKeyDown}
                 value={value}
@@ -261,7 +263,7 @@ export default function ChatMessage({ onClose }: ChatMessageProps) {
                 maxRows={3}
               />
               <button
-                className="mt-[2px] ml-1"
+                className="mt-[2px] ml-1 "
                 type="submit"
                 disabled={!value.trim()}
               >
