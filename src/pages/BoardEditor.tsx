@@ -168,7 +168,7 @@ export default function BoardEditor() {
   return (
     <>
       <div className="pb-[30px] flex flex-col relative">
-        <div className="h-[100px] px-[30px] mb-[50px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-10">
+        <div className="h-[100px] px-[30px] mb-[50px] sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-10 md:hidden">
           <h2 className="text-xl font-bold">{postId ? "수정" : "작성"}</h2>
           <div className="flex items-center gap-5">
             <Button
@@ -179,6 +179,9 @@ export default function BoardEditor() {
             />
             <Button text={"완료"} size={"sm"} onClick={handleCreatePost} />
           </div>
+        </div>
+        <div className="lg:hidden fixed top-[10px] right-[20px] z-20">
+          <Button text={"완료"} size={"sm"} onClick={handleCreatePost} />
         </div>
         <div className="w-full max-w-[777px] flex flex-col items-start gap-5 mx-auto px-[15px]">
           <DraftEditor getEditorText={getEditorText} editorText={editorText} />
