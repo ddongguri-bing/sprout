@@ -2,7 +2,6 @@ import images from "../assets";
 import { Link, Outlet, useLocation } from "react-router";
 import MobileFooter from "../components/ui/MobileFooter";
 import React, { Suspense, useState } from "react";
-import Aside from "../components/ui/Aside";
 
 const UserSearch = React.lazy(() => import("../components/search/UserSearch"));
 
@@ -30,6 +29,12 @@ export default function AuthLayout() {
           <Outlet />
         </section>
       </article>
+      {searchOpen && (
+        <Suspense>
+          <UserSearch toggleOpen={toggleUserSearch} />
+        </Suspense>
+      )}
+      <MobileFooter toggleOpen={toggleUserSearch} />
     </>
   );
 }
