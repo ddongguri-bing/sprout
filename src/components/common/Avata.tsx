@@ -19,7 +19,7 @@ export default function Avata({
   const BOX_SIZE = {
     sm: "w-[50px] h-[50px] min-w-[50px] min-h-[50px]",
     md: "w-[75px] h-[75px] min-w-[75px] min-h-[75px]",
-    lg: "w-[220px] h-[220px] min-w-[220px] min-h-[220px]",
+    lg: "w-[220px] md:w-[100px] h-[220px] md:h-[100px] min-w-[100px] min-h-[100px] max-w-[220px] max-h-[220px]",
   }[size];
   const IMG_BASE_STYLE =
     "object-cover min-h-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2";
