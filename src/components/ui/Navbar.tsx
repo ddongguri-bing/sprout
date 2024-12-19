@@ -17,8 +17,8 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="w-full flex-1 flex-grow max-h-[calc(100vh-296px)] scroll overflow-y-auto md:p-4 md:border-b md:border-whiteDark">
-      <ul className={twMerge("w-full flex flex-col gap-5", "md:flex-row")}>
+    <nav className="w-full flex-1 flex-grow max-h-[calc(100vh-296px)] md:scroll overflow-y-auto md:p-4 md:border-b md:border-whiteDark md:dark:border-gray">
+      <ul className="w-full flex flex-col gap-5 md:flex-row md:justify-center">
         {menus.map((menu) => (
           <li key={menu._id}>
             <NavLink
