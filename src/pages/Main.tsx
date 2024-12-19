@@ -17,7 +17,7 @@ export default function Main() {
           Together We Grow,
           <br /> Together We Achieve
         </h2>
-        <p className="mt-[30px] md:mt-5 font-light text-gray dark:text-whiteDark md:hidden">
+        <p className="mt-[30px] md:mt-5 font-light text-gray dark:text-whiteDark md:hidden break-keep">
           건강, 공부, 독서, 요리, 자격증까지, 당신의 열정을 키울 수 있는 공간,
           SPROUT
           <br />

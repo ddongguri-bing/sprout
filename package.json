@@ -12,6 +12,7 @@
   "dependencies": {
     "@fancyapps/ui": "^5.0.36",
     "@react-oauth/google": "^0.12.1",
+    "@types/react-slick": "^0.23.13",
     "axios": "^1.7.9",
     "draft-js": "^0.11.7",
     "npm-check": "^6.0.1",
@@ -19,6 +20,7 @@
     "react-cookie": "^7.2.2",
     "react-dom": "^18.3.1",
     "react-router": "^7.0.2",
+    "react-slick": "^0.30.3",
     "react-spinners": "^0.15.0",
     "react-textarea-autosize": "^8.5.5",
     "tailwind-merge": "^2.5.5",
@@ -36,6 +38,7 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
     "postcss": "^8.4.49",
+    "slick-carousel": "^1.8.1",
     "tailwindcss": "^3.4.15",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0",

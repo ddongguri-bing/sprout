@@ -22,7 +22,7 @@ export default function MainLayout() {
     <div className="w-full flex min-h-screen text-black dark:text-white bg-white dark:bg-black md:flex-col">
       <Header />
       <MobileHeader />
-      <div className="flex-1 md:pb-[80px]">
+      <div className="flex-1 md:pb-[80px] min-w-0">
         <Outlet />
       </div>
       <Aside toggleOpen={toggleUserSearch} />
