@@ -118,7 +118,7 @@ export default function MobileFooter({
             className={twMerge("text-main")}
           >
             {user ? (
-              <Avata profile={user.image} size={"sm"} />
+              <Avata profile={user.image} size={"xs"} />
             ) : (
               <img
                 src={isDark ? mobileIcons.UserInfoWhite : mobileIcons.UserInfo}
