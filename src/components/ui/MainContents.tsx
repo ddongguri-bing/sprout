@@ -6,13 +6,12 @@ export default function MainContents() {
   const [selectedImg, setSelectedImg] = useState<string>(categories[0].img);
 
   return (
-    <div className="w-full max-w-[777px] mt-[50px]">
+    <div className="w-full max-w-[777px] mt-[50px] md:mt-[30px]">
       <ul
         className={twMerge(
           "font-roboto font-semibold text-[22px] flex gap-[10px] md:items-center",
           "md:text-[16px]"
-        )}
-      >
+        )}>
         {categories.map((category) => (
           <li
             key={category.name}
@@ -27,19 +26,22 @@ export default function MainContents() {
                   : "bg-[#91C788]/30 dark:bg-[#DEEEDB]"
               }`,
               "flex-1 px-0 text-center"
-            )}
-          >
+            )}>
             {category.name}
           </li>
         ))}
       </ul>
-      <p className={twMerge("mt-[30px] font-light text-[18px] text-gray dark:text-whiteDark ", "md:text-[12px]")}>
+      <p
+        className={twMerge(
+          "mt-[30px] font-light text-[18px] text-gray dark:text-whiteDark ",
+          "md:text-[12px] md:mt-5"
+        )}>
         {
           categories.find((category) => category.name === selectedCategory)
             ?.description
         }
       </p>
-      <div className="w-full h-auto rounded-lg mt-[30px] bg-white border border-whiteDark overflow-hidden">
+      <div className="w-full h-auto rounded-lg mt-[30px] md:mt-5 bg-white border border-whiteDark overflow-hidden">
         {selectedImg && (
           <img
             src={selectedImg}
