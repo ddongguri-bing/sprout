@@ -263,7 +263,8 @@ export default function BoardItem({
             e.stopPropagation();
             navigate(`/user/${author._id}`);
           }}
-          className="flex gap-[10px] items-center cursor-pointer">
+          className="flex gap-[10px] items-center cursor-pointer"
+        >
           <Avata profile={author.image} size={"md"} />
           <div>
             <h3 className="font-bold line-clamp-1">{author.fullName}</h3>
@@ -278,7 +279,8 @@ export default function BoardItem({
             type="button"
             className="lg:hidden"
             onClick={handleModalOpen}
-            ref={buttonRef}>
+            ref={buttonRef}
+          >
             <img src={mobileIcons.EllipsisH} className="" alt="" />
           </button>
         )}
@@ -286,25 +288,29 @@ export default function BoardItem({
         {showActions && (
           <div
             className="fixed top-0 left-0 bottom-0 right-0 bg-transparent flex items-center justify-center z-[9999]"
-            onClick={handleModalOpen}>
+            onClick={handleModalOpen}
+          >
             <div
               className={twMerge(
                 "absolute mt-2 w-[120px] bg-white dark:bg-black border border-whiteDark dark:border-gray rounded-md shadow-lg",
                 `right-[30px]`
               )}
-              style={{ top: `${modalPosition - 30}px` }}>
+              style={{ top: `${modalPosition - 30}px` }}
+            >
               <button
                 className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800"
                 onClick={() => {
                   navigate(
                     `/board/${channelId}/${postId}/update?name=${currentChannelName}`
                   );
-                }}>
+                }}
+              >
                 수정
               </button>
               <button
                 className="w-full px-4 py-2 text-left hover:bg-red-100 text-red-500 dark:hover:bg-red-800"
-                onClick={handleDeletePost}>
+                onClick={handleDeletePost}
+              >
                 삭제
               </button>
             </div>
@@ -314,7 +320,10 @@ export default function BoardItem({
       <div className="w-full pl-[89px] md:pl-[55px]">
         <div className="w-full max-w-[688px] font-medium md:text-[14px] flex flex-col gap-[10px]">
           {/* 게시물 내용 */}
-          <div className="whitespace-break-spaces break-words">
+          <div
+            className="whitespace-break-spaces"
+            style={{ overflowWrap: "anywhere" }}
+          >
             {JSON.parse(post.title).text}
           </div>
           {/* 이미지 */}
@@ -322,7 +331,8 @@ export default function BoardItem({
             className={twMerge(
               "w-full grid gap-[10px]",
               postImages.length > 1 ? "grid-cols-2" : ""
-            )}>
+            )}
+          >
             {postImages.length > 0 &&
               postImages.map((url: string, i: number) => (
                 <div key={i}>
@@ -363,12 +373,14 @@ export default function BoardItem({
               </button>
               <button
                 onClick={handleLikeClick}
-                className="flex items-center gap-[10px] group ">
+                className="flex items-center gap-[10px] group "
+              >
                 <div
                   className={twMerge(
                     "rounded-full p-2 transition duration-100",
                     likeClicked ? "scale-125" : "scale-100"
-                  )}>
+                  )}
+                >
                   <img
                     src={isLike ? images.LikeFill : images.darkLike}
                     alt="like icon dark"
@@ -390,7 +402,8 @@ export default function BoardItem({
                 className={twMerge(
                   "flex items-center gap-[15px] p-2 rounded-full transition-all duration-200 ",
                   isDark ? "hover:bg-gray" : "hover:bg-whiteDark"
-                )}>
+                )}
+              >
                 <img
                   src={isDark ? images.DarkShare : images.Share}
                   className="min-w-[20px]"
@@ -433,7 +446,8 @@ export default function BoardItem({
           navigate(`/board/${channelId}/${postId}`);
         }
       }}
-      className="p-[30px] border-b border-whiteDark dark:border-gray flex flex-col items-center transition-all hover:bg-whiteDark/30 dark:hover:bg-grayDark cursor-pointer">
+      className="p-[30px] border-b border-whiteDark dark:border-gray flex flex-col items-center transition-all hover:bg-whiteDark/30 dark:hover:bg-grayDark cursor-pointer"
+    >
       {mainContents}
     </div>
   );
