@@ -78,11 +78,11 @@ export default function SignUp() {
   };
 
   return (
-    <form className="w-full max-w-[494px] flex flex-col gap-[30px]">
+    <form className="w-full max-w-[494px] flex flex-col gap-[30px] md:max-w-[315px]">
       <div>
         <Input
           theme="auth"
-          className="h-[76px]"
+          className="h-[76px] md:h-[60px]"
           type="text"
           name="email"
           value={email}
@@ -95,7 +95,7 @@ export default function SignUp() {
       </div>
       <Input
         theme="auth"
-        className="h-[76px]"
+        className="h-[76px] md:h-[60px]"
         type="text"
         name="fullName"
         value={fullName}
@@ -105,7 +105,7 @@ export default function SignUp() {
       <div>
         <Input
           theme="auth"
-          className="h-[76px]"
+          className="h-[76px] md:h-[60px]"
           type="password"
           name="password"
           value={password}
@@ -119,7 +119,7 @@ export default function SignUp() {
       <div>
         <Input
           theme="auth"
-          className="h-[76px]"
+          className="h-[76px] md:h-[60px]"
           type="password"
           name="password-confirm"
           value={confirmPassword}
