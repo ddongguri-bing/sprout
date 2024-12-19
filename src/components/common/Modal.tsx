@@ -10,7 +10,12 @@ export default function Modal() {
 
   return (
     <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 flex items-center justify-center z-[9999]">
-      <article className="w-[calc(100%-32px)] max-w-[425px] h-[230px] bg-white dark:bg-grayDark rounded-[8px] flex flex-col items-center justify-center">
+      <article
+        className={twMerge(
+          "w-full max-w-[425px] h-[230px] bg-white dark:bg-grayDark rounded-[8px] flex flex-col items-center justify-center",
+          "md:mx-5"
+        )}
+      >
         <div className="font-bold mb-[30px] text-black dark:text-white">
           {message}
         </div>
