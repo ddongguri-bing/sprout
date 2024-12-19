@@ -3,11 +3,8 @@ import { useLocation, useNavigate } from "react-router";
 import useDebounce from "../../hooks/useDebounce";
 import images from "../../assets";
 import { twMerge } from "tailwind-merge";
-import { useTriggerStore } from "../../stores/triggerStore";
 
 export default function SearchBar() {
-  const isMobile = useTriggerStore((state) => state.isMobile);
-
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [value, setValue] = useState("");
@@ -18,10 +15,7 @@ export default function SearchBar() {
   };
 
   useEffect(() => {
-    if (debouncedValue)
-      navigate(`/search?query=${debouncedValue}`, { replace: true });
-    if (pathname.startsWith("/search") && !debouncedValue && !isMobile)
-      navigate("/");
+    navigate(`/search?query=${debouncedValue}`, { replace: true });
   }, [debouncedValue]);
 
   useEffect(() => {

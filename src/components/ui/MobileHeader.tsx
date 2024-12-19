@@ -2,22 +2,12 @@ import { Link, useLocation, useNavigate, useParams } from "react-router";
 import images from "../../assets";
 import Navbar from "./Navbar";
 import SearchBar from "../search/SearchBar";
-import { useTriggerStore } from "../../stores/triggerStore";
-import { useEffect } from "react";
 import ThemeToggle from "../common/ThemeToggle";
 
 export default function MobileHeader() {
-  const setIsMobile = useTriggerStore((state) => state.setIsMobile);
   const { pathname } = useLocation();
   const { postId } = useParams();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setIsMobile(true);
-    return () => {
-      setIsMobile(false);
-    };
-  }, []);
 
   return (
     <header className="sticky top-0 left-0 bg-white dark:bg-black z-20 lg:hidden">
