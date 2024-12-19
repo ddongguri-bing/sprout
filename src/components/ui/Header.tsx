@@ -9,7 +9,7 @@ export default function Header() {
   const user = useAuthStore((state) => state.user);
 
   return (
-    <header className="w-[257px] max-h-screen h-screen sticky top-0 left-0 border-r border-whiteDark dark:border-gray py-[21px] px-[32px] flex flex-col items-start md:hidden">
+    <header className="w-[257px] min-w-[257px] max-h-screen h-screen sticky top-0 left-0 border-r border-whiteDark dark:border-gray py-[21px] px-[32px] flex flex-col items-start md:hidden">
       <h1 className="mb-[50px]">
         <Link to={"/"}>
           <img className="w-[188px]" src={images.Logo} alt="main logo" />

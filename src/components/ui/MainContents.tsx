@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { categories } from "../../constants/main";
+import Slider from "react-slick";
 export default function MainContents() {
-  const [selectedCategory, setSelectedCategory] = useState("Health");
+  const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
   const [selectedImg, setSelectedImg] = useState<string>(categories[0].img);
+  const sliderRef = useRef<Slider | null>(null);
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    afterChange: (current: number) => {
+      setSelectedCategory(categories[current].name);
+      setSelectedImg(categories[current].img);
+    },
+  };
 
   return (
     <div className="w-full max-w-[777px] mt-[50px] md:mt-[30px]">
@@ -12,10 +27,11 @@ export default function MainContents() {
           "font-roboto font-semibold text-[22px] flex gap-[10px] md:items-center",
           "md:text-[16px]"
         )}>
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <li
             key={category.name}
             onClick={() => {
+              sliderRef.current?.slickGoTo(index);
               setSelectedImg(category.img);
               setSelectedCategory(category.name);
             }}
@@ -43,11 +59,17 @@ export default function MainContents() {
       </p>
       <div className="w-full h-auto rounded-lg mt-[30px] md:mt-5 bg-white border border-whiteDark overflow-hidden">
         {selectedImg && (
-          <img
-            src={selectedImg}
-            alt="image"
-            className="bg-white w-auto h-full object-contain mx-auto "
-          />
+          <Slider ref={sliderRef} {...settings}>
+            {categories.map((category) => (
+              <div key={category.name}>
+                <img
+                  src={category.img}
+                  alt={category.name}
+                  className="bg-white w-auto h-full object-contain mx-auto"
+                />
+              </div>
+            ))}
+          </Slider>
         )}
       </div>
     </div>
