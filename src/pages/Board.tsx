@@ -170,7 +170,6 @@ export default function Board() {
     );
     return postData;
   };
-
   useEffect(() => {
     const scrollState = sessionStorage.getItem("scrollState");
     const restoreScrollAndFetchData = async () => {

@@ -1,51 +1,89 @@
-# React + TypeScript + Vite
+# 🌱 E와I들 - 자기개발 커뮤니티(SPROUT)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🧑🏻‍💻👩🏻‍💻Developers
+|Frontend|Frontend|Frontend|Frontend|Frontend|
+|:----:|:----:|:----:|:----:|:----:|
+|<img src="https://github.com/user-attachments/assets/5da96811-cf1c-4a90-b8d0-f32a2c963d63"  width="100"/> | <img src="https://github.com/user-attachments/assets/72e19e75-5d88-453e-9dbf-66d8cfff57b4"  width="100"/> | <img src='https://github.com/user-attachments/assets/9fe42332-5c5f-4992-90ed-a3250b445e5a'  width="100"/> | <img src="https://github.com/user-attachments/assets/ecfdea20-5919-4044-af7b-d034f8e01ce7"  width="100"/> | <img src="https://github.com/user-attachments/assets/ff874a01-a97b-45b0-ac65-44c4c6ef1d7f"  width="100"/> |
+|김동찬|박선형|이수빈|이준영|정현승|
+|[@kdc9050](https://github.com/kdc9050)|[@sunhyeongpp](https://github.com/sunhyeongpp)|[@ddongguri-bing](https://github.com/ddongguri-bing)|[@osanThor](https://github.com/osanThor)|[@denshou](https://github.com/denshou)|
 
-Currently, two official plugins are available:
+<br/>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 💻 Tech Stack
+### Project setting
+  
+  <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white"> <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/ReactRouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"> <img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
 
-## Expanding the ESLint configuration
+### React Compiler
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+  <img src="https://img.shields.io/badge/SWC-F8C457?style=for-the-badge&logo=swc&logoColor=black">
 
-- Configure the top-level `parserOptions` property like this:
+### Design
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+  <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Etc
+  <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white"> <img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+<br/>
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
-# VITE
+## 📝 Code Convention 
+### Commit Message
+- [FEAT]: 코드 새로운 기능 구현.
+- [FIX]: 코드 버그 수정.
+- [REFACTOR]:  코드의 기능을 바꾸지 않고 코드 구조를 개선.
+- [STYLE]: 코드 포맷팅(세미콜론 누락 수정, 코드 로직 변경이 없는 경우).
+- [DOCS]: 문서 수정.
+- [CONF]: 프로젝트 설정 파일 변경(설정 중심).
+- [CHORE]: 개발 환경 설정(일반적인 유지 관리나 작업).
+- [DESIGN]: csse등 UI 디자인 변경.
+- [RENAME]: 파일 명/폴더 명을 수정.
+- [REMOVE]: 코드(파일)의 삭제.
+- [COMMENT]: 필요한 주석 추가 및 변경.
+
+<br/>
+
+## ✅ Implementation List
+
+### 기본 요구사항
+
+- [x]  사용자는 **회원가입과 로그인**을 할 수 있습니다.
+- [x]  사용자는 **채널에 올라온 글**을 볼 수 있습니다.
+- [x]  사용자는 **가입자 목록**을 볼 수 있습니다.
+- [x]  사용자는 **가입자를 이름**으로 **검색**을 할 수 있습니다.
+- [x]  사용자는 **가입자의 정보**를 볼 수 있습니다.
+- [x]  사용자는 **포스트 혹은 가입자를 검색**할 수 있습니다.
+- [x]  인증된 사용자는 **자신의 정보를 변경**할 수 있습니다.
+- [x]  인증된 사용자는 **채널에 올라온 글**을 볼 수 있습니다.
+- [x]  인증된 사용자는 **채널에 포스트를 남길 수** 있습니다.
+- [x]  인증된 사용자는 **포스트를 좋아요** 할 수 있습니다.
+- [x]  인증된 사용자는 **포스트에 댓글**을 남길 수 있습니다.
+- [x]  인증된 사용자는 **자신의 알림 목록을 확인** 할 수 있습니다.
+- [x]  **SPA 형태**로 제작 하였습니다.
+- [x]  엉뚱한 페이지에 접속하면 **404 페이지**가 출력됩니다.
+
+### 보너스 요구사항
+
+- [x]  다크 모드를 적용할 수 있습니다.
+- [x]  인증된 사용자는 프로필 이미지 변경 및 포스트를 작성할 때 이미지를 첨부할 수 있습니다.
+- [x]  사용자는 현재 접속 중인 사용자를 볼 수 있습니다.
+- [x]  인증된 사용자는 다른 가입자에게 메시지를 보낼 수 있습니다.
+- [x]  인증된 사용자는 자신에게 온 메시지 목록을 확인 할 수 있습니다.
+- [x]  인증된 사용자는 특정 사용자와의 메시지 대화 내역을 확인 할 수 있습니다.
+- [x]  이미지 클릭 시 원본 이미지를 확인할 수 있습니다.
+- [x]  게시판 목록를 스크롤하여 마지막 포스트를 확인할 수 있습니다(무한 스크롤).
+- [x]  텍스트 에디터로 다양한 텍스트 스타일을 적용할 수 있습니다.
+- [x]  OAuth 사용한 소셜 로그인으로 간단하게 가입할 수 있습니다.
+- [x]  반응형으로 다양한 디바이스에서 이용할 수 있습니다.
+- [x]  카카오 공유하기 기능으로 간편하게 포스트를 공유할 수 있습니다.
+- [x]  다중 이미지를 업로드 할 수 있습니다.
+- [x]  관리자 계정으로 로그인 시 채널을 생성 및 삭제할 수 있습니다.
+- [x]  다른 사용자를 팔로우/언팔로우 할 수 있습니다.
+- [x]  경고 메세지 출력 시 커스텀 모달이 출력됩니다.
+
+## 🌟 Result 
+<div align='center'>
+<a href="https://programmers-sprout.netlify.app/">
+  <img src="https://github.com/user-attachments/assets/d2eb6d2c-56e8-43f7-b542-1c21cc9eb9a0" alt="sprout logo" />
+</a>
+</div>
