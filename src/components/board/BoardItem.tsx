@@ -177,7 +177,7 @@ export default function BoardItem({
     Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
-        title: JSON.parse(post.title).text,
+        title: JSON.parse(post.title).text.replace(/<\/?[^>]+(>|$)/g, ""),
         // description: "des",
         imageUrl: postImages[0] || "",
         link: {
@@ -325,9 +325,8 @@ export default function BoardItem({
           <div
             className="whitespace-break-spaces"
             style={{ overflowWrap: "anywhere" }}
-          >
-            {JSON.parse(post.title).text}
-          </div>
+            dangerouslySetInnerHTML={{ __html: JSON.parse(post.title).text }}
+          ></div>
           {/* 이미지 */}
           <div
             className={twMerge(
