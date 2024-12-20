@@ -34,7 +34,6 @@ export default function EasterEggImage({ easterEgg }: { easterEgg: string }) {
         console.error(err);
       }
     };
-    //
     handlefetchImage();
   }, [trigger]);
 
@@ -54,7 +53,7 @@ export default function EasterEggImage({ easterEgg }: { easterEgg: string }) {
       <Button
         onClick={() => setTrigger((prev) => !prev)}
         size="sm"
-        text="다른 강아지"
+        text={`다른 ${easterEgg}`}
       />
     </>
   );
