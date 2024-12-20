@@ -53,7 +53,7 @@ export default function EasterEggImage({ easterEgg }: { easterEgg: string }) {
       <Button
         onClick={() => setTrigger((prev) => !prev)}
         size="sm"
-        text={`다른 ${easterEgg}`}
+        text="다른 강아지"
       />
     </>
   );
