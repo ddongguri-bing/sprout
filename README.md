@@ -82,6 +82,8 @@
 - [x]  경고 메세지 출력 시 커스텀 모달이 출력됩니다.
 
 ## 🌟 Result 
-
-[Sprout 홈페이지](https://programmers-sprout.netlify.app/) 
-
+<div align='center'>
+<a href="https://programmers-sprout.netlify.app/">
+  <img src="https://github.com/user-attachments/assets/d2eb6d2c-56e8-43f7-b542-1c21cc9eb9a0" alt="sprout logo" />
+</a>
+</div>
