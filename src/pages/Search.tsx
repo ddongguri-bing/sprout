@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { getSearchPosts } from "../api/search";
 import SearchBoardItem from "../components/search/SearchBoardItem";
 import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
+import EasterEgg from "../components/ui/EasterEgg";
+import easterEggs from "../constants/easterEggs";
 
 export default function Search() {
   const { search } = useLocation();
@@ -10,14 +12,27 @@ export default function Search() {
   const query = params.get("query");
   const [loading, setLoading] = useState<boolean>(true);
   const [posts, setPosts] = useState<SearchPostItem[]>([]);
+  const [isEasterEgg, setIsEasterEgg] = useState<boolean>(false);
+  const [easterEgg, setEasterEgg] = useState<string | null>(null);
 
   useEffect(() => {
     const handleSearch = async (query: string | null) => {
       if (!query) {
         setPosts([]);
         setLoading(false);
+        setIsEasterEgg(false);
+        setEasterEgg(null);
         return;
       }
+
+      if (easterEggs.includes(query.toLowerCase())) {
+        setIsEasterEgg(true);
+        setEasterEgg(query);
+      } else {
+        setIsEasterEgg(false);
+        setEasterEgg(null);
+      }
+
       try {
         setLoading(true);
         const data = (await getSearchPosts(query)).filter(
@@ -59,6 +74,12 @@ export default function Search() {
           <b className="text-4xl text-main">"{decodeURI(query || "")}"</b>에
           해당하는 포스트가 없습니다.
         </div>
+      )}
+      {isEasterEgg && easterEgg && (
+        <EasterEgg
+          easterEgg={easterEgg}
+          onClose={() => setIsEasterEgg(false)}
+        />
       )}
     </div>
   );
