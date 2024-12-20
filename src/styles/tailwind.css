@@ -47,24 +47,6 @@ body {
   font-optical-sizing: auto;
 }
 
-/* .DraftEditor-root {
-  width: 100%;
-  border-radius: 8px;
-  padding: 16px 0;
-  color: black;
-}
-.dark .DraftEditor-root {
-  width: 100%;
-  border-radius: 8px;
-  padding: 16px 0;
-  color: #fefefe;
-}
-.public-DraftEditorPlaceholder-inner {
-  color: #4d4d4d;
-}
-.dark .public-DraftEditorPlaceholder-inner {
-  color: #dbdbdb;
-} */
 .quill > .ql-container > .ql-editor {
   font-size: 16px;
   padding: 12px 0;
@@ -78,6 +60,12 @@ body {
 }
 .ql-bubble {
   z-index: 20;
+}
+.ql-editor {
+  overflow-y: unset !important;
+}
+.ql-editor a {
+  color: rgb(59 130 246);
 }
 
 .scene {
