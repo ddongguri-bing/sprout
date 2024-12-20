@@ -5,7 +5,6 @@ import { getPostsByChannelWithPagination } from "../api/board";
 import BoardItem from "../components/board/BoardItem";
 import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
-// import Loading from "../components/common/Loading";
 import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
 import images from "../assets";
 

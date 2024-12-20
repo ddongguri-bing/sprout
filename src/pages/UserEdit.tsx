@@ -10,8 +10,8 @@ import Avata from "../components/common/Avata";
 import { useTriggerStore } from "../stores/triggerStore";
 import Input from "../components/common/Input";
 import { useCookies } from "react-cookie";
-import { FadeLoader } from "react-spinners";
 import { validifyPw } from "../utils/validify";
+import Loading from "../components/common/Loading";
 
 export default function UserEdit() {
   const setTrigger = useTriggerStore((state) => state.setTrigger);
@@ -183,17 +183,7 @@ export default function UserEdit() {
 
   return (
     <>
-      {fetching && (
-        <div className="w-full h-full inset-0 bg-black/50 fixed z-[99999] flex justify-center items-center">
-          <FadeLoader
-            color="#91C788"
-            height={25}
-            width={8}
-            radius={10}
-            margin={20}
-          />
-        </div>
-      )}
+      {fetching && <Loading />}
       <div className="w-full h-[100px] px-[30px] mb-10 sticky top-0 left-0 flex justify-between items-center bg-white dark:bg-black dark:text-white border-b border-whiteDark dark:border-gray z-[9] md:hidden">
         <button onClick={() => history.back()} className="">
           <img className="dark:invert" src={images.Back} alt="back icon" />
@@ -201,8 +191,7 @@ export default function UserEdit() {
       </div>
       <form
         className="w-[calc(100%-40px)] max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px]"
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         <label className="cursor-pointer relative mb-5 md:mt-[30px] flex flex-col items-center">
           <input
             type="file"
@@ -220,8 +209,7 @@ export default function UserEdit() {
         <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
           <label
             htmlFor=""
-            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
-          >
+            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]">
             이메일
           </label>
           <div className="flex-1  max-w-[500px]">
@@ -238,8 +226,7 @@ export default function UserEdit() {
         <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
           <label
             htmlFor=""
-            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
-          >
+            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]">
             이름
           </label>
           <div className="flex-1  max-w-[500px]">
@@ -258,8 +245,7 @@ export default function UserEdit() {
             <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
               <label
                 htmlFor=""
-                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
-              >
+                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]">
                 비밀번호
               </label>
               <div className="flex flex-col flex-1 max-w-[500px]">
@@ -282,8 +268,7 @@ export default function UserEdit() {
             <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
               <label
                 htmlFor=""
-                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
-              >
+                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]">
                 비밀번호 확인
               </label>
               <div className="flex flex-col flex-1 max-w-[500px]">
@@ -325,8 +310,7 @@ export default function UserEdit() {
         <button
           aria-label="logout button"
           onClick={handleLogoutOpen}
-          className="text-red text-xs font-medium underline flex items-center gap-[10px]"
-        >
+          className="text-red text-xs font-medium underline flex items-center gap-[10px]">
           로그아웃
           <img src={images.Logout} alt="logout icon" />
         </button>
