@@ -39,7 +39,7 @@ export default function EasterEggImage({ easterEgg }: { easterEgg: string }) {
 
   return (
     <>
-      <div className="w-[calc(100%-40px)] relative mb-5 min-h-20">
+      <div className="w-[calc(100%-40px)] relative mb-5 min-h-20 flex items-center justify-center">
         {url && (
           <img
             className="w-full max-w-[500px] max-h-[70vh]"
