@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import Button from "../components/common/Button";
-// import DraftEditor from "../components/board/DraftEditor";
-import "draft-js/dist/Draft.css";
 import { createPost, updatePost } from "../api/posting";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import { getPostById } from "../api/board";
@@ -165,9 +163,9 @@ export default function BoardEditor() {
     };
   }, [preview]);
 
-  useEffect(()=>{
-    console.log(editorText)
-  },[editorText])
+  useEffect(() => {
+    console.log(editorText);
+  }, [editorText]);
 
   if (uploading) return <Loading />;
 
@@ -194,7 +192,7 @@ export default function BoardEditor() {
             getEditorText={handleGetEditorText}
             editorText={editorText}
           /> */}
-          <QuillEditor getEditorText = {handleGetEditorText} value={editorText}/>
+          <QuillEditor getEditorText={handleGetEditorText} value={editorText} />
           <div className="w-full grid grid-cols-2 gap-[10px]">
             {preview.length > 0 &&
               preview.map((url, i) => {
