@@ -170,7 +170,7 @@ export default function Board() {
     );
     return postData;
   };
-
+  // 임시
   useEffect(() => {
     const scrollState = sessionStorage.getItem("scrollState");
     const restoreScrollAndFetchData = async () => {
