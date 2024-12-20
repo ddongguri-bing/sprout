@@ -1,6 +1,6 @@
 # 🌱 E와I들 - 자기개발 커뮤니티(SPROUT)
 
-## Developers
+## 🧑🏻‍💻👩🏻‍💻Developers
 |Frontend|Frontend|Frontend|Frontend|Frontend|
 |:----:|:----:|:----:|:----:|:----:|
 |<img src="https://github.com/user-attachments/assets/5da96811-cf1c-4a90-b8d0-f32a2c963d63"  width="100"/> | <img src="https://github.com/user-attachments/assets/72e19e75-5d88-453e-9dbf-66d8cfff57b4"  width="100"/> | <img src='https://github.com/user-attachments/assets/9fe42332-5c5f-4992-90ed-a3250b445e5a'  width="100"/> | <img src="https://github.com/user-attachments/assets/ecfdea20-5919-4044-af7b-d034f8e01ce7"  width="100"/> | <img src="https://github.com/user-attachments/assets/ff874a01-a97b-45b0-ac65-44c4c6ef1d7f"  width="100"/> |
@@ -27,7 +27,7 @@
 
 <br/>
 
-## ✏️ Code Convention 
+## 📝 Code Convention 
 ### Commit Message
 - [FEAT]: 코드 새로운 기능 구현.
 - [FIX]: 코드 버그 수정.
@@ -81,7 +81,7 @@
 - [x]  다른 사용자를 팔로우/언팔로우 할 수 있습니다.
 - [x]  경고 메세지 출력 시 커스텀 모달이 출력됩니다.
 
-## 🏅 Result 
+## 🌟 Result 
 
 [Sprout 홈페이지](https://programmers-sprout.netlify.app/) 
 
