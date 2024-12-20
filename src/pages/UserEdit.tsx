@@ -11,6 +11,7 @@ import { useTriggerStore } from "../stores/triggerStore";
 import Input from "../components/common/Input";
 import { useCookies } from "react-cookie";
 import { FadeLoader } from "react-spinners";
+import { validifyPw } from "../utils/validify";
 
 export default function UserEdit() {
   const setTrigger = useTriggerStore((state) => state.setTrigger);
@@ -87,8 +88,7 @@ export default function UserEdit() {
     const imageChanged = isImageChanged();
     if (imageChanged && !updatePassword) return true;
 
-    const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    const isValidPw = passwordRegExp.test(updatePassword);
+    const isValidPw = validifyPw(updatePassword);
     setUpdatePasswordError(isValidPw ? "" : "올바른 비밀번호가 아닙니다");
     return isValidPw;
   };
