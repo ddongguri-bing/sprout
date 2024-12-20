@@ -53,17 +53,23 @@ export default function Board() {
     }
   }, [channelId]);
 
-  let firstTime = true;
   // 더 많은 데이터를 로드하는 함수
+  let firstTime = true;
   const loadMoreItems = async () => {
     // 로딩 중이거나 더 이상 게시물이 없으면 추가로 로딩하지 않도록 처리
     if (isLoading || !hasMorePosts || !channelId) return;
-    if (navigationType === "POP" && firstTime) {
+    if (navigationType === "PUSH") {
+      console.log("hi");
+      sessionStorage.removeItem("scrollState");
+    }
+    const savedState = sessionStorage.getItem("scrollState");
+    if (savedState && firstTime) {
       firstTime = false;
       return;
     }
 
     try {
+      console.log("loadmore");
       setIsLoading(true);
       if (channelId) {
         const postData = await getPostsByChannelWithPagination(
@@ -169,8 +175,8 @@ export default function Board() {
   };
 
   useEffect(() => {
+    const scrollState = sessionStorage.getItem("scrollState");
     const restoreScrollAndFetchData = async () => {
-      const scrollState = sessionStorage.getItem("scrollState");
       if (scrollState && channelId) {
         const { offset: savedOffset, scrollY: savedScrollY } =
           JSON.parse(scrollState);
@@ -188,7 +194,7 @@ export default function Board() {
         }
       }
     };
-    if (navigationType === "POP") {
+    if (scrollState && navigationType === "POP") {
       restoreScrollAndFetchData();
     } else {
       setPosts([]);
