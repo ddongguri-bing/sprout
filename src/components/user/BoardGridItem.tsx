@@ -18,13 +18,13 @@ export default function BoardGridItem({ post }: BoardGridItemProps) {
   return (
     <Link
       to={`/board/${post.channel}/${post._id}`}
-      className="aspect-square min-h-[50px] md:max-h-[324px] max-h-[280px] rounded-[8px] bg-white dark:bg-black overflow-hidden"
-    >
+      className="aspect-square min-h-[50px] md:max-h-[324px] max-h-[280px] rounded-[8px] bg-white dark:bg-black overflow-hidden">
       {!JSON.parse(post.title).images.length ? (
         <div className="w-full h-full flex flex-col justify-center items-center border border-1 rounded-[8px] border-whiteDark dark:border-gray text-[14px] text-gray dark:text-whiteDark">
           <img src={images.Sprout} />
-          <span className="pt-5">이미지가 없는 포스트입니다</span>
-          <span>포스트를 눌러</span> 작성한 글을 확인해보세요
+          <span className="pt-5 md:hidden">이미지가 없는 포스트입니다</span>
+          <span className="md:hidden">포스트를 눌러</span>{" "}
+          <span className="md:hidden">작성한 글을 확인해보세요</span>
         </div>
       ) : (
         <>
