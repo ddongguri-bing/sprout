@@ -257,6 +257,17 @@ export default function BoardItem({
     getChannelName();
   }, [channelId]);
 
+  const contentRef = useRef<HTMLDivElement | null>(null);
+    // DOM 렌더링 후 Tailwind 스타일을 적용
+    useEffect(() => {
+      if (contentRef.current) {
+        const links = contentRef.current.querySelectorAll("a");
+        links.forEach((link) => {
+          link.classList.add("text-blue-500", "hover:underline");
+        });
+      }
+    }, [post.title]);
+
   const mainContents = (
     <div className="w-full max-w-[777px] flex flex-col items-start gap-5">
       <div className="w-full flex justify-between">
@@ -326,6 +337,7 @@ export default function BoardItem({
             className="whitespace-break-spaces"
             style={{ overflowWrap: "anywhere" }}
             dangerouslySetInnerHTML={{ __html: JSON.parse(post.title).text }}
+            ref={contentRef}
           ></div>
           {/* 이미지 */}
           <div

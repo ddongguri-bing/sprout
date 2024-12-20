@@ -163,10 +163,6 @@ export default function BoardEditor() {
     };
   }, [preview]);
 
-  useEffect(() => {
-    console.log(editorText);
-  }, [editorText]);
-
   if (uploading) return <Loading />;
 
   return (
