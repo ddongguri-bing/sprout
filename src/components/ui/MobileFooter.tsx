@@ -21,7 +21,6 @@ export default function MobileFooter({
 }: FooterProps) {
   const { pathname } = useLocation();
   const user = useAuthStore((state) => state.user);
-
   const isDark = useTheme((state) => state.isDarkMode);
   const setOpen = useModal((state) => state.setModalOpen);
   const navigate = useNavigate();

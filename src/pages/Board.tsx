@@ -59,7 +59,6 @@ export default function Board() {
     // 로딩 중이거나 더 이상 게시물이 없으면 추가로 로딩하지 않도록 처리
     if (isLoading || !hasMorePosts || !channelId) return;
     if (navigationType === "PUSH") {
-      console.log("hi");
       sessionStorage.removeItem("scrollState");
     }
     const savedState = sessionStorage.getItem("scrollState");
@@ -69,7 +68,6 @@ export default function Board() {
     }
 
     try {
-      console.log("loadmore");
       setIsLoading(true);
       if (channelId) {
         const postData = await getPostsByChannelWithPagination(

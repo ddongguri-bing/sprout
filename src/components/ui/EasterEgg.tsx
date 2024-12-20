@@ -14,7 +14,6 @@ export default function EasterEgg({
 }) {
   const BG_STYLE =
     "fixed top-0 left-0 right-0 bottom-0 inset-0 flex flex-col justify-center items-center bg-black/40 z-20 opacity-0 transition-all ease-linear";
-
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

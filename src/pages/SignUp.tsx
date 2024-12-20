@@ -15,6 +15,8 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
+  const navigate = useNavigate();
+
   // 이메일, 비밀번호, 비밀번호 확인 올바른지 확인하는 로직
   const isValidEmail = () => {
     const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -51,8 +53,6 @@ export default function SignUp() {
   useEffect(() => {
     isConfirmPassword();
   }, [confirmPassword]);
-
-  const navigate = useNavigate();
 
   const handleSignup = async () => {
     if (!isValidEmail() || !isValidPassword() || !isConfirmPassword()) return;

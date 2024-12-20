@@ -19,7 +19,6 @@ export default function Aside({ toggleOpen }: AsideProps) {
   const user = useAuthStore((state) => state.user);
   const trigger = useTriggerStore((state) => state.trigger);
   const setOnlineUsers = useUserStore((state) => state.setOnlineUsers);
-
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<User[]>([]);
 

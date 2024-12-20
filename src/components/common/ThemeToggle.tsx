@@ -6,6 +6,7 @@ export default function ThemeToggle() {
   const setIsDarkMode = useTheme((state) => state.setIsDarkMode);
   const defaultStyle =
     "relative w-[56px] h-[30px] after:bg-center after:bg-no-repeat after:bg-auto bg-main peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full  rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1/2 after:-translate-y-1/2 after:start-[2px] after:rounded-full after:bg-white after:h-[26px] after:w-[26px] after:transition-all peer-checked:bg-gray";
+
   const handleToggleTheme = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
     setIsDarkMode(checked);

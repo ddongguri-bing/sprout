@@ -11,6 +11,9 @@ export default function NotiItem({
   noti: NotiType;
   onClick?: () => void;
 }) {
+  const type = noti.comment ? "comment" : noti.like ? "like" : "follow";
+  const navigate = useNavigate();
+
   const handleGetMessage = (type: "comment" | "like" | "follow") => {
     switch (type) {
       case "comment":
@@ -22,7 +25,6 @@ export default function NotiItem({
     }
   };
 
-  const type = noti.comment ? "comment" : noti.like ? "like" : "follow";
   const handleLink = (type: "comment" | "like" | "follow") => {
     switch (type) {
       case "comment":
@@ -33,7 +35,7 @@ export default function NotiItem({
         return `/user/${noti.author._id}`;
     }
   };
-  const navigate = useNavigate();
+
   const handleClickItem = async (type: "comment" | "like" | "follow") => {
     if (active) await putNotificationSeen({ id: noti._id });
     navigate(handleLink(type));

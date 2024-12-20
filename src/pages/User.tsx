@@ -2,7 +2,7 @@ import BoardGrid from "../components/user/BoardGrid";
 import Button from "../components/common/Button";
 import { getSpecificUser } from "../api/users";
 import { useLocation, useNavigate, useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Avata from "../components/common/Avata";
 import { deleteFollowDelete, postFollowCreate } from "../api/follow";
 import { postNotification } from "../api/notification";
@@ -38,6 +38,13 @@ export default function User() {
   >("followers");
   const [loadingFollowList, setLoadingFollowList] = useState(false);
   const toggleFollowList = () => setFollowListOpen((prev) => !prev);
+
+  const followHandlingRef = useRef<boolean>(false);
+  const debouncedIsLike = useDebounce(isFollow);
+
+  //* Message */
+  const [msgOpen, setMsgOpen] = useState<boolean>(false);
+  const [type, setType] = useState<"SEND" | "CHAT">("SEND");
 
   const fetchUserDetails = async (userId: string): Promise<User> => {
     try {
@@ -84,12 +91,9 @@ export default function User() {
     });
   };
 
-  const [followHandling, setFollowHandling] = useState<boolean>(false);
-  const debouncedIsLike = useDebounce(isFollow);
-
   const handleFollowClick = () => {
     if (!loggedInUser) return handleOpenModal();
-    setFollowHandling(true);
+    followHandlingRef.current = true;
     setIsFollow((prev) => !prev);
     setFollowerCount((prev) => (isFollow ? prev - 1 : prev + 1));
   };
@@ -127,9 +131,9 @@ export default function User() {
   };
 
   useEffect(() => {
-    if (!followHandling) return;
+    if (!followHandlingRef.current) return;
     debouncedIsLike ? handleFollow() : handleUnfollow();
-    setFollowHandling(false);
+    followHandlingRef.current = false;
   }, [debouncedIsLike]);
 
   const fetchSpecificUser = async () => {
@@ -173,9 +177,7 @@ export default function User() {
     if (isFollowListOpen) setFollowListOpen(false);
   }, [location]);
 
-  //* Message */
-  const [msgOpen, setMsgOpen] = useState<boolean>(false);
-  const [type, setType] = useState<"SEND" | "CHAT">("SEND");
+  // Message Handling
   const handleClickMsg = (type: "SEND" | "CHAT") => {
     if (!loggedInUser) return handleOpenMsgModal();
     setMsgOpen((prev) => !prev);
@@ -196,6 +198,7 @@ export default function User() {
   };
 
   if (!specificUser) return <Loading />;
+
   const isMyPage = loggedInUser?._id === specificUser._id;
   const followBtnTxt = isMyPage
     ? "프로필 수정"
@@ -204,9 +207,6 @@ export default function User() {
     : "팔로우";
 
   const handleClickFollow = isMyPage ? undefined : handleFollowClick;
-  // : isFollow
-  // ? handleUnfollow
-  // : handleFollow;
 
   const handleProfileClick = () => {
     if (specificUser?.image) {
@@ -253,7 +253,8 @@ export default function User() {
                     onClick={() => {
                       setFollowListType("followers");
                       toggleFollowList();
-                    }}>
+                    }}
+                  >
                     <span className="md:text-[14px] whitespace-nowrap">
                       팔로우
                     </span>{" "}
@@ -266,7 +267,8 @@ export default function User() {
                     onClick={() => {
                       setFollowListType("following");
                       toggleFollowList();
-                    }}>
+                    }}
+                  >
                     <span className="md:text-[14px] whitespace-nowrap">
                       팔로잉
                     </span>{" "}
@@ -296,7 +298,8 @@ export default function User() {
                   />
                   <button
                     type="button"
-                    onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}>
+                    onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}
+                  >
                     <img
                       className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
                       src={
@@ -320,7 +323,8 @@ export default function User() {
             <button
               type="button"
               className="hidden md:block"
-              onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}>
+              onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}
+            >
               <img
                 className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
                 src={isMyPage ? images.MessageBoxBtn : images.MessageSendBtn}

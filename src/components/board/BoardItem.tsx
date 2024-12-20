@@ -34,16 +34,15 @@ export default function BoardItem({
   useEffect(() => {
     if (!Kakao.isInitialized()) Kakao.init(socials.KAKAO_JAVASCRIPT_KEY);
   }, []);
+  const { createdAt, likes, comments, _id: postId, author } = post;
 
   const [currentChannelName, setCurrentChannelName] = useState("");
-
-  const { createdAt, likes, comments, _id: postId, author } = post;
   const isDark = useTheme((state) => state.isDarkMode);
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const exactDate = new Date(createdAt).toLocaleString();
 
-  const [likeHandling, setLikeHandling] = useState<boolean>(false);
+  const likeHandlingRef = useRef(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const debouncedIsLike = useDebounce(isLike);
 
@@ -56,6 +55,17 @@ export default function BoardItem({
 
   const [likeClicked, setLikeClicked] = useState(false);
   const [prevLikeCount, setPrevLikeCount] = useState(likeCount);
+
+  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(
+    new Array(postImages.length).fill(false)
+  );
+
+  const [showActions, setShowActions] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const [modalPosition, setModalPosition] = useState(0);
+
+  const setModalOpen = useModal((state) => state.setModalOpen);
+
   useEffect(() => {
     if (likeCount > prevLikeCount) {
       setLikeClicked(true);
@@ -67,6 +77,7 @@ export default function BoardItem({
   const updateCommentCount = (newCount: number) => {
     setCommentsCount(newCount);
   };
+
   const handleLikeModal = () => {
     setOpen(true, {
       message: "로그인 후 좋아요를 눌러주세요!",
@@ -78,6 +89,7 @@ export default function BoardItem({
       },
     });
   };
+
   useEffect(() => {
     const fetchPostData = async () => {
       try {
@@ -107,7 +119,7 @@ export default function BoardItem({
   ) => {
     e.stopPropagation();
     if (!isLoggedIn) return handleLikeModal();
-    setLikeHandling(true);
+    likeHandlingRef.current = true;
     setIsLike((prev) => !prev);
     setLikeCount((prev) => (isLike ? prev - 1 : prev + 1));
   };
@@ -136,14 +148,10 @@ export default function BoardItem({
   };
 
   useEffect(() => {
-    if (!likeHandling) return;
+    if (!likeHandlingRef.current) return;
     handleLike();
-    setLikeHandling(false);
+    likeHandlingRef.current = false;
   }, [debouncedIsLike]);
-
-  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(
-    new Array(postImages.length).fill(false)
-  );
 
   useEffect(() => {
     const loadImages = () => {
@@ -165,7 +173,7 @@ export default function BoardItem({
     loadImages();
   }, [postImages]); // postImages가 변경될 때마다 다시 실행
 
-  const shareKakao = () => {
+  const handleShareKakao = () => {
     Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
@@ -196,12 +204,6 @@ export default function BoardItem({
       ],
     });
   };
-
-  const [showActions, setShowActions] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const [modalPosition, setModalPosition] = useState(0);
-
-  const setModalOpen = useModal((state) => state.setModalOpen);
 
   const handleDeletePost = () => {
     setModalOpen(true, {
@@ -397,7 +399,7 @@ export default function BoardItem({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  shareKakao();
+                  handleShareKakao();
                 }}
                 className={twMerge(
                   "flex items-center gap-[15px] p-2 rounded-full transition-all duration-200 ",

@@ -20,6 +20,9 @@ export default function BoardDetail() {
 
   const setModalOpen = useModal((state) => state.setModalOpen);
 
+  const user = useAuthStore((state) => state.user);
+  const setTargetLink = useTriggerStore((state) => state.setTargetLink);
+
   const handleDeletePost = () => {
     setModalOpen(true, {
       message: "정말로 포스트를 삭제하시겠습니까?",
@@ -33,8 +36,6 @@ export default function BoardDetail() {
     });
   };
 
-  const user = useAuthStore((state) => state.user);
-  const setTargetLink = useTriggerStore((state) => state.setTargetLink);
   useEffect(() => {
     const fetchPostData = async () => {
       if (!postId) return;
