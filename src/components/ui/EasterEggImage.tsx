@@ -34,6 +34,7 @@ export default function EasterEggImage({ easterEgg }: { easterEgg: string }) {
         console.error(err);
       }
     };
+    //
     handlefetchImage();
   }, [trigger]);
 
