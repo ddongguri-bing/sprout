@@ -253,10 +253,9 @@ export default function User() {
                     onClick={() => {
                       setFollowListType("followers");
                       toggleFollowList();
-                    }}
-                  >
+                    }}>
                     <span className="md:text-[14px] whitespace-nowrap">
-                      팔로우
+                      팔로워
                     </span>{" "}
                     <span className="text-gray dark:text-whiteDark font-bold">
                       {followerCount}
@@ -267,8 +266,7 @@ export default function User() {
                     onClick={() => {
                       setFollowListType("following");
                       toggleFollowList();
-                    }}
-                  >
+                    }}>
                     <span className="md:text-[14px] whitespace-nowrap">
                       팔로잉
                     </span>{" "}
@@ -298,8 +296,7 @@ export default function User() {
                   />
                   <button
                     type="button"
-                    onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}
-                  >
+                    onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}>
                     <img
                       className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
                       src={
@@ -323,8 +320,7 @@ export default function User() {
             <button
               type="button"
               className="hidden md:block"
-              onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}
-            >
+              onClick={() => handleClickMsg(isMyPage ? "CHAT" : "SEND")}>
               <img
                 className="w-[25px] h-[25px] dark:invert dark:hover:fill-white"
                 src={isMyPage ? images.MessageBoxBtn : images.MessageSendBtn}
