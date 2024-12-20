@@ -5,8 +5,7 @@
 |:----:|:----:|:----:|:----:|:----:|
 |<img src="https://github.com/kdc9050"  width="100"/> | <img src="https://github.com/user-attachments/assets/3415d086-0fc2-4221-a5f5-0ec93a658dfe"  width="100"/> | <img src='https://github.com/user-attachments/assets/9fe42332-5c5f-4992-90ed-a3250b445e5a'  width="100"/> | <img src="https://github.com/user-attachments/assets/ecfdea20-5919-4044-af7b-d034f8e01ce7"  width="100"/> | <img src="(https://github.com/user-attachments/assets/610d6862-cf6b-4257-8131-e325fc292290)"  width="100"/> |
 |김동찬|박선형|이수빈|이준영|정현승|
-|[@Soorangmanju](https://github.com/Soorangmanju)|[@songwon-sung](https://github.com/songwon-sung)|[@ddongguri-bing](https://github.com/ddongguri-bing)|[@osanThor
-](https://github.com/osanThor)|[@tiffanyhansy](https://github.com/tiffanyhansy)|[@YongJaeHyun](https://github.com/YongJaeHyun)|
+|[@Soorangmanju](https://github.com/Soorangmanju)|[@songwon-sung](https://github.com/songwon-sung)|[@ddongguri-bing](https://github.com/ddongguri-bing)|[@osanThor](https://github.com/osanThor)|[@tiffanyhansy](https://github.com/tiffanyhansy)|[@YongJaeHyun](https://github.com/YongJaeHyun)|
 
 <br/>
 
