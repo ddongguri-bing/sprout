@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Button from "../common/Button";
-import { FadeLoader } from "react-spinners";
 import easterEggs from "../../constants/easterEggs";
 import Loading from "../common/Loading";
 
