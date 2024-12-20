@@ -11,6 +11,7 @@ import { useTriggerStore } from "../stores/triggerStore";
 import Input from "../components/common/Input";
 import { useCookies } from "react-cookie";
 import { FadeLoader } from "react-spinners";
+import { validifyPw } from "../utils/validify";
 
 export default function UserEdit() {
   const setTrigger = useTriggerStore((state) => state.setTrigger);
@@ -20,6 +21,27 @@ export default function UserEdit() {
   const [photoUrl, setPhotoUrl] = useState("");
   const [photoId, setPhotoId] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  //변경 못하는 정보 반영하기(내 이메일, 이름)
+  const email = useAuthStore((state) => state.user?.email);
+  const fullName = useAuthStore((state) => state.user?.fullName);
+
+  //zustand에서 프로필 이미지 가져오기
+  const profileImg = useAuthStore((state) => state.user?.image);
+
+  //비밀번호 수정 관련
+  const [updatePassword, setUpdatePassword] = useState("");
+  const [confirmUpdatePassword, setConfirmUpdatePassword] = useState("");
+  const [updatePasswordError, setUpdatePasswordError] = useState("");
+  const [confirmUpdatePasswordError, setConfirmUpdatePasswordError] =
+    useState("");
+
+  //로그아웃 관련
+  const [_, _set, removeCookie] = useCookies(["token"]);
+  const setOpen = useModal((state) => state.setModalOpen);
+  const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
+
   // 사진 선택 함수
   const handleSelectPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -61,25 +83,12 @@ export default function UserEdit() {
     return false;
   };
 
-  //변경 못하는 정보 반영하기(내 이메일, 이름)
-  const email = useAuthStore((state) => state.user?.email);
-  const fullName = useAuthStore((state) => state.user?.fullName);
-  //zustand에서 프로필 이미지 가져오기
-  const profileImg = useAuthStore((state) => state.user?.image);
-  //비밀번호 수정 관련
-  const [updatePassword, setUpdatePassword] = useState("");
-  const [confirmUpdatePassword, setConfirmUpdatePassword] = useState("");
-  const [updatePasswordError, setUpdatePasswordError] = useState("");
-  const [confirmUpdatePasswordError, setConfirmUpdatePasswordError] =
-    useState("");
-
   // 비밀번호조건(대소문자+숫자 8자리 이상) 만족
   const isValidUpdatePassword = () => {
     const imageChanged = isImageChanged();
     if (imageChanged && !updatePassword) return true;
 
-    const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    const isValidPw = passwordRegExp.test(updatePassword);
+    const isValidPw = validifyPw(updatePassword);
     setUpdatePasswordError(isValidPw ? "" : "올바른 비밀번호가 아닙니다");
     return isValidPw;
   };
@@ -114,12 +123,8 @@ export default function UserEdit() {
       return false;
     }
   };
-  //로그아웃 관련
-  const [_, _set, removeCookie] = useCookies(["token"]);
 
-  const setOpen = useModal((state) => state.setModalOpen);
-  const logout = useAuthStore((state) => state.logout);
-  const navigate = useNavigate();
+  //로그아웃 관련
   const handleLogout = async () => {
     await postLogOut();
     setOpen(false);

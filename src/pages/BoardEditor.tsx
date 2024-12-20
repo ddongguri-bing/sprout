@@ -20,6 +20,8 @@ export default function BoardEditor() {
 
   const setModalOpen = useModal((state) => state.setModalOpen);
 
+  const setTargetLink = useTriggerStore((state) => state.setTargetLink);
+
   //update인지 create인지 확인용
   const { id, postId } = useParams();
   const currentPostId = postId!;
@@ -33,7 +35,7 @@ export default function BoardEditor() {
   const [uploading, setUploading] = useState(false);
 
   //현재 포스트 가져오기
-  const getCurrentPost = async () => {
+  const handleGetCurrentPost = async () => {
     try {
       const currentPost = await getPostById(currentPostId);
       const parsedData = JSON.parse(currentPost.title);
@@ -49,7 +51,7 @@ export default function BoardEditor() {
   };
 
   //editor에서 텍스트 가져오기
-  const getEditorText = (text: string) => {
+  const handleGetEditorText = (text: string) => {
     setEditorText(text);
   };
 
@@ -145,12 +147,10 @@ export default function BoardEditor() {
     setImageUrl((prev) => prev.filter((_, index) => index !== indexToDelete));
   };
 
-  const setTargetLink = useTriggerStore((state) => state.setTargetLink);
-
   useEffect(() => {
     if (channelName) setTargetLink(channelName);
     //update라면 현재 포스트 내용 불러오기
-    if (currentPostId) getCurrentPost();
+    if (currentPostId) handleGetCurrentPost();
     return () => {
       setTargetLink(null);
     };
@@ -184,7 +184,10 @@ export default function BoardEditor() {
           <Button text={"완료"} size={"sm"} onClick={handleCreatePost} />
         </div>
         <div className="w-full max-w-[777px] flex flex-col items-start gap-5 mx-auto px-[15px]">
-          <DraftEditor getEditorText={getEditorText} editorText={editorText} />
+          <DraftEditor
+            getEditorText={handleGetEditorText}
+            editorText={editorText}
+          />
           <div className="w-full grid grid-cols-2 gap-[10px]">
             {preview.length > 0 &&
               preview.map((url, i) => {

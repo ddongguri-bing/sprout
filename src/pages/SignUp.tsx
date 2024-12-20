@@ -3,6 +3,7 @@ import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 import { useNavigate } from "react-router";
 import { postSignUp } from "../api/auth";
+import { validifyPw } from "../utils/validify";
 
 export default function SignUp() {
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -14,6 +15,8 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const navigate = useNavigate();
 
   // 이메일, 비밀번호, 비밀번호 확인 올바른지 확인하는 로직
   const isValidEmail = () => {
@@ -28,14 +31,15 @@ export default function SignUp() {
   };
 
   const isValidPassword = () => {
-    const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    if (!passwordRegExp.test(password)) {
+    const isValidPw = validifyPw(password);
+
+    if (!isValidPw) {
       setPasswordError("대소문자(영문), 숫자 포함 8자리 이상이어야 합니다");
-      return false;
     } else {
       setPasswordError("");
     }
-    return true;
+
+    return isValidPw;
   };
 
   const isConfirmPassword = () => {
@@ -51,8 +55,6 @@ export default function SignUp() {
   useEffect(() => {
     isConfirmPassword();
   }, [confirmPassword]);
-
-  const navigate = useNavigate();
 
   const handleSignup = async () => {
     if (!isValidEmail() || !isValidPassword() || !isConfirmPassword()) return;

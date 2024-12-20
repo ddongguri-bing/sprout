@@ -13,7 +13,9 @@ export default function SearchBoardItem({ post }: { post: SearchPostItem }) {
     };
     handleGetAuthor();
   }, []);
+
   if (!author) return <BoardItemSkeleton />;
+
   return (
     <BoardItem
       key={post._id}

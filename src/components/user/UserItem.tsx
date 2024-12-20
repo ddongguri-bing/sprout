@@ -12,6 +12,7 @@ export default React.memo(function UserItem({
 }) {
   const onlineUsers = useUserStore((state) => state.onlineUsers);
   const isOnline = !!onlineUsers.find((ou) => ou._id === user._id);
+
   return (
     <li className="w-full" onClick={onClick}>
       <Link

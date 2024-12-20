@@ -21,6 +21,7 @@ export default function ChatItem({
   const onlineUsers = useUserStore((state) => state.onlineUsers);
   const isOnline = !!onlineUsers.find((ou) => ou._id === user._id);
   const loggedInUser = useAuthStore((state) => state.user);
+
   return (
     <>
       <li
