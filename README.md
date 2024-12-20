@@ -3,9 +3,9 @@
 ## Developers
 |Frontend|Frontend|Frontend|Frontend|Frontend|
 |:----:|:----:|:----:|:----:|:----:|
-|<img src="https://github.com/kdc9050"  width="100"/> | <img src="https://github.com/user-attachments/assets/3415d086-0fc2-4221-a5f5-0ec93a658dfe"  width="100"/> | <img src='https://github.com/user-attachments/assets/9fe42332-5c5f-4992-90ed-a3250b445e5a'  width="100"/> | <img src="https://github.com/user-attachments/assets/ecfdea20-5919-4044-af7b-d034f8e01ce7"  width="100"/> | <img src="(https://github.com/user-attachments/assets/610d6862-cf6b-4257-8131-e325fc292290)"  width="100"/> |
+|<img src="https://github.com/user-attachments/assets/5da96811-cf1c-4a90-b8d0-f32a2c963d63"  width="100"/> | <img src="https://github.com/user-attachments/assets/72e19e75-5d88-453e-9dbf-66d8cfff57b4"  width="100"/> | <img src='https://github.com/user-attachments/assets/9fe42332-5c5f-4992-90ed-a3250b445e5a'  width="100"/> | <img src="https://github.com/user-attachments/assets/ecfdea20-5919-4044-af7b-d034f8e01ce7"  width="100"/> | <img src="https://github.com/user-attachments/assets/ff874a01-a97b-45b0-ac65-44c4c6ef1d7f"  width="100"/> |
 |김동찬|박선형|이수빈|이준영|정현승|
-|[@Soorangmanju](https://github.com/Soorangmanju)|[@songwon-sung](https://github.com/songwon-sung)|[@ddongguri-bing](https://github.com/ddongguri-bing)|[@osanThor](https://github.com/osanThor)|[@tiffanyhansy](https://github.com/tiffanyhansy)|[@YongJaeHyun](https://github.com/YongJaeHyun)|
+|[@kdc9050](https://github.com/kdc9050)|[@sunhyeongpp](https://github.com/sunhyeongpp)|[@ddongguri-bing](https://github.com/ddongguri-bing)|[@osanThor](https://github.com/osanThor)|[@denshou](https://github.com/denshou)|
 
 <br/>
 
