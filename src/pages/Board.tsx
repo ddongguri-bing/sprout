@@ -1,4 +1,4 @@
-import { useLocation } from "react-router";
+import { useLocation, useNavigationType } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { getChannels } from "../api/channel";
 import { getPostsByChannelWithPagination } from "../api/board";
@@ -7,6 +7,7 @@ import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
 // import Loading from "../components/common/Loading";
 import BoardItemSkeleton from "../components/common/skeleton/BoardItemSkeleton";
+import images from "../assets";
 
 export default function Board() {
   const { search } = useLocation();
@@ -23,6 +24,9 @@ export default function Board() {
   const limit = 6;
 
   const lastItemRef = useRef<HTMLDivElement | null>(null);
+
+  const [scrollY, setScrollY] = useState(0); // 현재 스크롤 위치 상태
+  const navigationType = useNavigationType();
 
   // 채널 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -49,10 +53,15 @@ export default function Board() {
     }
   }, [channelId]);
 
+  let firstTime = true;
   // 더 많은 데이터를 로드하는 함수
   const loadMoreItems = async () => {
     // 로딩 중이거나 더 이상 게시물이 없으면 추가로 로딩하지 않도록 처리
     if (isLoading || !hasMorePosts || !channelId) return;
+    if (navigationType === "POP" && firstTime) {
+      firstTime = false;
+      return;
+    }
 
     try {
       setIsLoading(true);
@@ -101,7 +110,7 @@ export default function Board() {
         }
       },
       {
-        rootMargin: "680px", // 마지막 아이템이 화면에 680px 정도 가깝게 보이면 로드 시작
+        rootMargin: "0px", // 마지막 아이템이 화면에 680px 정도 가깝게 보이면 로드 시작
       }
     );
 
@@ -115,6 +124,78 @@ export default function Board() {
       }
     };
   }, [isLoading, hasMorePosts, offset]); // 상태 변화 시 observer를 새로 설정
+
+  useEffect(() => {
+    // 스크롤 이벤트 핸들러
+    const handleScroll = () => {
+      setScrollY(window.scrollY); // 스크롤 상태 업데이트
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const saveScrollState = () => {
+      sessionStorage.setItem(
+        "scrollState",
+        JSON.stringify({ offset, scrollY })
+      );
+    };
+    window.addEventListener("scroll", saveScrollState);
+    return () => {
+      window.removeEventListener("scroll", saveScrollState);
+    };
+  }, [offset, scrollY]);
+
+  useEffect(() => {
+    if (navigationType && navigationType === "POP") {
+      const scrollState = sessionStorage.getItem("scrollState");
+      if (scrollState) {
+        setOffset(JSON.parse(scrollState).offset);
+        setScrollY(JSON.parse(scrollState).scrollY);
+      }
+    }
+  }, [navigationType]);
+
+  const getDataWithSaved = async (channelId: string, savedOffset: number) => {
+    const postData = await getPostsByChannelWithPagination(
+      channelId,
+      0,
+      savedOffset
+    );
+    return postData;
+  };
+
+  useEffect(() => {
+    const restoreScrollAndFetchData = async () => {
+      const scrollState = sessionStorage.getItem("scrollState");
+      if (scrollState && channelId) {
+        const { offset: savedOffset, scrollY: savedScrollY } =
+          JSON.parse(scrollState);
+
+        try {
+          const postData = await getDataWithSaved(channelId, savedOffset);
+
+          setPosts(postData);
+
+          setTimeout(() => {
+            window.scrollTo(0, savedScrollY || 0);
+          }, 0);
+        } catch (error) {
+          console.error("데이터 복원 중 오류 발생:", error);
+        }
+      }
+    };
+    if (navigationType === "POP") {
+      restoreScrollAndFetchData();
+    } else {
+      setPosts([]);
+      setOffset(0);
+      setHasMorePosts(true);
+    }
+  }, []);
 
   return (
     <div className="pb-[30px] flex flex-col">
@@ -152,7 +233,9 @@ export default function Board() {
         />
       ))}
       {isLoading && <BoardItemSkeleton />}
-      <div ref={lastItemRef}></div>
+      <div ref={lastItemRef} className="flex justify-center pt-5">
+        <img src={images.Sprout} alt="" />
+      </div>
     </div>
   );
 }
