@@ -47,7 +47,7 @@ body {
   font-optical-sizing: auto;
 }
 
-.DraftEditor-root {
+/* .DraftEditor-root {
   width: 100%;
   border-radius: 8px;
   padding: 16px 0;
@@ -64,6 +64,20 @@ body {
 }
 .dark .public-DraftEditorPlaceholder-inner {
   color: #dbdbdb;
+} */
+.quill > .ql-container > .ql-editor {
+  font-size: 16px;
+  padding: 12px 0;
+}
+.quill > .ql-container > .ql-editor.ql-blank::before {
+  font-size: 16px;
+  color: grey;
+  font-style: normal;
+  left: 0;
+  right: 0;
+}
+.ql-bubble {
+  z-index: 20;
 }
 
 .scene {

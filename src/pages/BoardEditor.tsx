@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../components/common/Button";
-import DraftEditor from "../components/board/DraftEditor";
+// import DraftEditor from "../components/board/DraftEditor";
 import "draft-js/dist/Draft.css";
 import { createPost, updatePost } from "../api/posting";
 import { useNavigate, useParams, useSearchParams } from "react-router";
@@ -12,6 +12,8 @@ import { useTriggerStore } from "../stores/triggerStore";
 import { twMerge } from "tailwind-merge";
 import { postImages } from "../api/imgbb";
 import Loading from "../components/common/Loading";
+
+import QuillEditor from "../components/board/QuillEditor";
 
 export default function BoardEditor() {
   const navigate = useNavigate();
@@ -163,6 +165,10 @@ export default function BoardEditor() {
     };
   }, [preview]);
 
+  useEffect(()=>{
+    console.log(editorText)
+  },[editorText])
+
   if (uploading) return <Loading />;
 
   return (
@@ -184,10 +190,11 @@ export default function BoardEditor() {
           <Button text={"완료"} size={"sm"} onClick={handleCreatePost} />
         </div>
         <div className="w-full max-w-[777px] flex flex-col items-start gap-5 mx-auto px-[15px]">
-          <DraftEditor
+          {/* <DraftEditor
             getEditorText={handleGetEditorText}
             editorText={editorText}
-          />
+          /> */}
+          <QuillEditor getEditorText = {handleGetEditorText} value={editorText}/>
           <div className="w-full grid grid-cols-2 gap-[10px]">
             {preview.length > 0 &&
               preview.map((url, i) => {
