@@ -15,6 +15,7 @@ export default function MobileNotiModal({
   const trigger = useTriggerStore((state) => state.trigger);
   const setTrigger = useTriggerStore((state) => state.setTrigger);
   const [notis, setNotis] = useState<NotiType[]>([]);
+
   useEffect(() => {
     const handleGetNotis = async () => {
       const data = await getNotification();

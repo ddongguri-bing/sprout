@@ -11,7 +11,11 @@ export default function Navbar() {
   useEffect(() => {
     const handleGetMenus = async () => {
       const data = await getChannels();
-      setMenus(data);
+      setMenus(
+        data.sort((a, b) => {
+          return a.name > b.name ? 1 : -1;
+        })
+      );
     };
     handleGetMenus();
   }, []);

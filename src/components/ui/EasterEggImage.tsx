@@ -2,31 +2,47 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Button from "../common/Button";
 import { FadeLoader } from "react-spinners";
+import easterEggs from "../../constants/easterEggs";
 
-export default function EasterEggDog() {
+const OPEN_API_CAT = "https://cataas.com";
+const OPEN_API_DOG = "https://dog.ceo/api/breeds/image/random";
+
+export default function EasterEggImage({ easterEgg }: { easterEgg: string }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [trigger, setTrigger] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(null);
+
   useEffect(() => {
-    const fetchDog = async () => {
+    const handlefetchImage = async () => {
       try {
         setLoading(true);
-        const OPEN_API_DOMAIN = "https://dog.ceo/api/breeds/image/random";
-        const { data } = await axios.get(OPEN_API_DOMAIN);
-        setUrl(data.message);
+        const params = { json: true };
+        const isCat = easterEgg === easterEggs[1];
+        const OPEN_API = isCat
+          ? `${OPEN_API_CAT}/cat/says/DEV_COURSE_FIGHTING`
+          : OPEN_API_DOG;
+        const { data } = await axios.get(OPEN_API, {
+          params: isCat ? params : undefined,
+        });
+
+        setUrl(
+          isCat
+            ? `${OPEN_API_CAT}/cat/${data._id}/says/DEV_COURSE_FIGHTING`
+            : data.message
+        );
       } catch (err) {
         console.error(err);
       }
     };
-    fetchDog();
+    handlefetchImage();
   }, [trigger]);
 
   return (
     <>
-      <div className="relative mb-5">
+      <div className="w-[calc(100%-40px)] relative mb-5 min-h-20">
         {url && (
           <img
-            className="max-w-[500px]"
+            className="w-full max-w-[500px] max-h-[70vh]"
             src={url}
             alt="dog"
             onLoad={() => setLoading(false)}

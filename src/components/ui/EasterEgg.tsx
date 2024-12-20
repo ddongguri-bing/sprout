@@ -3,8 +3,7 @@ import images from "../../assets";
 import { useEffect, useState } from "react";
 import easterEggs from "../../constants/easterEggs";
 import EasterEggSu from "./EasterEggSu";
-import EasterEggCat from "./EasterEggCat";
-import EasterEggDog from "./EasterEggDog";
+import EasterEggImage from "./EasterEggImage";
 
 export default function EasterEgg({
   easterEgg,
@@ -34,9 +33,11 @@ export default function EasterEgg({
           <img className="w-5 invert" src={images.Close} alt="close icon" />
         </button>
       </div>
-      {easterEgg === easterEggs[0] && <EasterEggSu />}
-      {easterEgg === easterEggs[1] && <EasterEggCat />}
-      {easterEgg === easterEggs[2] && <EasterEggDog />}
+      {easterEgg === easterEggs[0] ? (
+        <EasterEggSu />
+      ) : (
+        <EasterEggImage easterEgg={easterEgg} />
+      )}
     </div>
   );
 }
