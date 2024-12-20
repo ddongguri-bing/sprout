@@ -66,13 +66,7 @@ export default function BoardItem({
 
   const setModalOpen = useModal((state) => state.setModalOpen);
 
-  useEffect(() => {
-    if (likeCount > prevLikeCount) {
-      setLikeClicked(true);
-      setTimeout(() => setLikeClicked(false), 100);
-    }
-    setPrevLikeCount(likeCount);
-  }, [likeCount]);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const updateCommentCount = (newCount: number) => {
     setCommentsCount(newCount);
@@ -89,30 +83,6 @@ export default function BoardItem({
       },
     });
   };
-
-  useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        const post = await getPostById(postId);
-        if (!user) return;
-        const currentUserLike = post.likes.find(
-          (like: { user: string }) => like.user === user._id
-        );
-        if (currentUserLike) {
-          setLikeId(currentUserLike._id);
-          setIsLike(true);
-        } else {
-          setLikeId(null);
-          setIsLike(false);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchPostData();
-    Fancybox.bind(`[data-fancybox="gallery-${postId}"]`);
-  }, [postId, user]);
 
   const handleLikeClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -146,32 +116,6 @@ export default function BoardItem({
       console.error(`좋아요 ${likeId ? "취소" : "추가"} 중 오류 발생:`, error);
     }
   };
-
-  useEffect(() => {
-    if (!likeHandlingRef.current) return;
-    handleLike();
-    likeHandlingRef.current = false;
-  }, [debouncedIsLike]);
-
-  useEffect(() => {
-    const loadImages = () => {
-      postImages.forEach((url: string, index: number) => {
-        if (!imagesLoaded[index]) {
-          const img = new Image();
-          img.src = url;
-          img.onload = () => {
-            setImagesLoaded((prevState) => {
-              const updated = [...prevState]; // 기존 상태를 복사
-              updated[index] = true; // 해당 인덱스의 값을 true로 설정
-              return updated; // 새로운 상태를 반환
-            });
-          };
-        }
-      });
-    };
-
-    loadImages();
-  }, [postImages]); // postImages가 변경될 때마다 다시 실행
 
   const handleShareKakao = () => {
     Kakao.Share.sendDefault({
@@ -223,6 +167,64 @@ export default function BoardItem({
   };
 
   useEffect(() => {
+    if (likeCount > prevLikeCount) {
+      setLikeClicked(true);
+      setTimeout(() => setLikeClicked(false), 100);
+    }
+    setPrevLikeCount(likeCount);
+  }, [likeCount]);
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      try {
+        const post = await getPostById(postId);
+        if (!user) return;
+        const currentUserLike = post.likes.find(
+          (like: { user: string }) => like.user === user._id
+        );
+        if (currentUserLike) {
+          setLikeId(currentUserLike._id);
+          setIsLike(true);
+        } else {
+          setLikeId(null);
+          setIsLike(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPostData();
+    Fancybox.bind(`[data-fancybox="gallery-${postId}"]`);
+  }, [postId, user]);
+
+  useEffect(() => {
+    if (!likeHandlingRef.current) return;
+    handleLike();
+    likeHandlingRef.current = false;
+  }, [debouncedIsLike]);
+
+  useEffect(() => {
+    const loadImages = () => {
+      postImages.forEach((url: string, index: number) => {
+        if (!imagesLoaded[index]) {
+          const img = new Image();
+          img.src = url;
+          img.onload = () => {
+            setImagesLoaded((prevState) => {
+              const updated = [...prevState]; // 기존 상태를 복사
+              updated[index] = true; // 해당 인덱스의 값을 true로 설정
+              return updated; // 새로운 상태를 반환
+            });
+          };
+        }
+      });
+    };
+
+    loadImages();
+  }, [postImages]); // postImages가 변경될 때마다 다시 실행
+
+  useEffect(() => {
     // 스크롤 막기: 모달이 열릴 때
     if (showActions) {
       document.body.style.overflow = "hidden";
@@ -257,16 +259,32 @@ export default function BoardItem({
     getChannelName();
   }, [channelId]);
 
-  const contentRef = useRef<HTMLDivElement | null>(null);
-    // DOM 렌더링 후 Tailwind 스타일을 적용
-    useEffect(() => {
-      if (contentRef.current) {
-        const links = contentRef.current.querySelectorAll("a");
-        links.forEach((link) => {
-          link.classList.add("text-blue-500", "hover:underline");
-        });
+  // DOM 렌더링 후 Tailwind 스타일을 적용
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+    const links = contentRef.current.querySelectorAll("a");
+    links.forEach((link) => {
+      link.classList.add("text-blue-500", "hover:underline");
+    });
+  }, [post.title]);
+
+  // 링크 클릭 시 이벤트 전파를 막기
+  useEffect(() => {
+    if (!contentRef.current) return;
+    const handleLinkClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target && target.tagName === "A") {
+        event.stopPropagation();
       }
-    }, [post.title]);
+    };
+
+    contentRef.current.addEventListener("click", handleLinkClick);
+
+    return () => {
+      contentRef.current?.removeEventListener("click", handleLinkClick);
+    };
+  }, []);
 
   const mainContents = (
     <div className="w-full max-w-[777px] flex flex-col items-start gap-5">
