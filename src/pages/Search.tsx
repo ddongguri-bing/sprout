@@ -35,9 +35,11 @@ export default function Search() {
 
       try {
         setLoading(true);
-        const data = (await getSearchPosts(query)).filter(
-          (post) => post.author
-        );
+        const data = (await getSearchPosts(query))
+          .filter((post) => post.author)
+          .sort((a, b) =>
+            new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
+          );
         setPosts(data);
       } catch (err) {
         console.error(err);

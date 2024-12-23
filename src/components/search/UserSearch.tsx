@@ -1,23 +1,36 @@
-import { useState, useEffect, useCallback, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { getUsers } from "../../api/users";
 import images from "../../assets";
 import UserItem from "../user/UserItem";
 import useDebounce from "../../hooks/useDebounce";
 import { getSearchUsers } from "../../api/search";
 import UserItemSkeleton from "../common/skeleton/UserItemSkeleton";
+import { useUserStore } from "../../stores/userStore";
 
 export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
   const [value, setValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<User[]>([]);
+  const onlineUsers = useUserStore((state) => state.onlineUsers);
 
   const debouncedValue = useDebounce(value.trim());
 
-  const fetchUsers = useCallback(async (query?: string) => {
+  const fetchUsers = async (query?: string) => {
     try {
       setLoading(true);
       const data = query ? await getSearchUsers(query) : await getUsers();
-      setUsers(data);
+      const onlineIds = new Set(onlineUsers.map((user) => user._id));
+
+      setUsers(
+        data.sort((user1, user2) => {
+          const isInB1 = onlineIds.has(user1._id);
+          const isInB2 = onlineIds.has(user2._id);
+
+          if (isInB1 && !isInB2) return -1;
+          if (!isInB1 && isInB2) return 1;
+          return 0;
+        })
+      );
     } catch (err) {
       console.error(err);
     } finally {
@@ -25,7 +38,7 @@ export default function UserSearch({ toggleOpen }: { toggleOpen: () => void }) {
         setLoading(false);
       }, 500);
     }
-  }, []);
+  };
 
   useEffect(() => {
     fetchUsers(debouncedValue as string);

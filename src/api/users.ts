@@ -1,12 +1,14 @@
 import { axiosInstance } from ".";
 
 // 사용자 목록
-export const getUsers = async (params?: { [key: string]: string }) => {
+export const getUsers = async (params?: {
+  [key: string]: string;
+}): Promise<User[]> => {
   return (await axiosInstance.get(`/users/get-users`, { params })).data;
 };
 
 // 사용자 목록
-export const getOnlineUsers = async () => {
+export const getOnlineUsers = async (): Promise<User[]> => {
   return (await axiosInstance.get(`users/online-users`)).data;
 };
 
