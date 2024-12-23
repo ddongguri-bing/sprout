@@ -5,12 +5,15 @@ import { BrowserRouter } from "react-router";
 import App from "./App";
 import { CookiesProvider } from "react-cookie";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+import socials from "./constants";
+
+const expires = new Date();
+expires.setMinutes(expires.getMinutes() + 60);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <CookiesProvider defaultSetOptions={{ path: "/" }}>
+    <GoogleOAuthProvider clientId={socials.GOOGLE_CLIENT_ID}>
+      <CookiesProvider defaultSetOptions={{ path: "/", expires }}>
         <BrowserRouter>
           <App />
         </BrowserRouter>

@@ -29,11 +29,8 @@ axiosInstance.interceptors.response.use(
           headers: { Authorization: `Bearer ${token}` },
         });
         if (data) {
-          useAuthStore.setState({
-            token: token,
-            user: data,
-            isLoggedIn: true,
-          });
+          const login = useAuthStore.getState().login;
+          login(token, data);
           retry = false; // 성공하면 다시 시도할 수 있게 수정
           originRequest.headers["Authorization"] = `Bearer ${data.token}`;
         }
