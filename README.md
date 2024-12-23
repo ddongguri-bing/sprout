@@ -153,10 +153,10 @@
           <img src="https://github.com/user-attachments/assets/c4fca89d-5fb7-4293-bafd-786cf9008263" style="width:230px"/>
       </td>
       <td>
-          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/cb00e119-75fb-44dd-9128-1bed0086752b" style="width:230px"/>
+          <img src="https://github.com/user-attachments/assets/e5f7232d-5f92-4dd7-a8a0-eaf265ebf5ca" style="width:230px"/>
       </td>
       <td>
-          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/416a32ff-ca38-4e9d-894e-68ab980ded95" style="width:230px"/>
+          <img src="https://github.com/user-attachments/assets/7f0a8792-8a27-4873-80d8-b66b4b0712a9" style="width:230px"/>
       </td>
     </tr>
     <tr>
@@ -167,16 +167,16 @@
     </tr>
     <tr>
       <td>
-          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/ac19163d-cfb1-48bb-b92c-7750a89b3dcd" style="width:230px"/>
+          <img src="https://github.com/user-attachments/assets/6d0d397b-d9aa-4edf-9f26-b0af0a4c952e" style="width:230px"/>
       </td>
       <td>
-          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/6d49d3ac-4198-4341-97be-d4038bd67ed2" style="width:230px"/>
+          <img src="https://github.com/user-attachments/assets/4b7a3346-1bb4-491f-bdc7-7f5ead3d4b90" style="width:230px"/>
       </td>
       <td>
-          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/1f4919e9-6b5d-4c4a-8013-4678afebfa32" style="width:230px"/>
+          <img src="https://github.com/user-attachments/assets/c86e804c-a889-43eb-a991-f62b479a1d36" style="width:230px"/>
       </td>
       <td>
-          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/2ab2b0f5-9f5f-437d-939a-1d718191b2ec" style="width:230px"/>
+          <img src="https://github.com/user-attachments/assets/af1fdb28-bf0f-4227-b0f8-b1ce7e7efd07" style="width:230px"/>
       </td>
     </tr>
   </tbody>
