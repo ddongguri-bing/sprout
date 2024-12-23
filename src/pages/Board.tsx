@@ -113,7 +113,8 @@ export default function Board() {
         }
       },
       {
-        rootMargin: "0px", // 마지막 아이템이 화면에 680px 정도 가깝게 보이면 로드 시작
+        rootMargin: "0px",
+        threshold: [0.01, 0.1, 1],
       }
     );
 
