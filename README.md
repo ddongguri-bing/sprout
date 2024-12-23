@@ -112,6 +112,96 @@
 
 ## 🔥 Trouble Shooting
 
+### 1. Token 관리
+
+#### 방법 검토
+1. **쿠키**를 사용
+   - 장점: 브라우저 탭 간 이동이나 브라우저를 닫았다 열어도 토큰(로그인 상태)이 유지됨
+   - 단점: XSS(Cross-Site Scripting) 공격에 취약하기 때문에, HttpOnly 옵션을 반드시 설정해야 하나, 현재 백엔드가 이를 지원하지 않는 상황
+
+2. **Persist 미들웨어와 세션스토리지** 사용
+   - 장점: 로그인 후 사용자 정보를 불러올 때, 렌더링 전에 사용자 정보를 미리 가져올 수 있어 사용자 경험(UX)을 향상시킴
+   - 단점: 세션스토리지는 브라우저 탭 간 정보가 공유되지 않으므로, 탭 이동 시 로그인 상태가 유지되지 않는 한계가 있음
+
+3. **Persist 미들웨어와 로컬스토리지** 사용
+   - 장점: 간단히 토큰을 저장하고 유지할 수 있으며, 브라우저를 닫아도 데이터가 남아 있어 장기적으로 상태를 유지함
+   - 단점: 로그아웃하지 않으면 토큰이 로컬스토리지에 계속 남아 있어 보안에 취약함. (특히, XSS 공격에 민감하게 노출됨.)
+
+#### 결론
+  리액트 쿠키와 세션스토리지를 함께 활용하여 보안성과 사용자 경험을 모두 충족하고자 함
+  => 리액트 쿠키: 유효시간(expiration time)을 설정하여 토큰 만료를 관리함. 추후 백엔드에서 HttpOnly 처리가 가능해지면, 보안성을 더욱 강화할 수 있을 것으로 기대
+
+![스크린샷 2024-12-23 오후 3 16 28 1](https://github.com/user-attachments/assets/c9bbe194-b859-4da7-9be7-0efa7a667d57)
+![스크린샷 2024-12-23 오후 2 57 00 1](https://github.com/user-attachments/assets/5c70ae1f-3ec9-4ba9-a00e-bca6c0a4fef2)
+
+=> Zustand Persist: 렌더링 전에 사용자 정보를 불러오는 기능을 제공하여, 로그인 직후 사용자 정보가 없는 상태의 화면이 잠깐 표시되는 문제를 해결함.
+![스크린샷 2024-12-23 오후 3 15 18 1](https://github.com/user-attachments/assets/cf2ad68e-f6ec-4a5d-9ed7-44766107662a)
+
+### 2. 무한 스크롤 구현 (Intersection Observer 사용)
+
+#### Intersection Observer를 사용한 이유
+
+**장점**
+1. 비동기적 처리
+    - 스크롤 이벤트는 매우 자주 발생하므로, 이를 처리할 때 성능 문제가 발생할 수 있습니다. 반면, Intersection Observer는 지정된 요소가 화면에 보일 때만 실행되어 불필요한 계산을 줄이고 성능을 최적화합니다.
+2. 성능 우수
+    - 특정 요소가 뷰포트에 나타날 때만 이벤트가 발생하므로, 스크롤 이벤트를 계속 처리하는 것보다 효율적입니다.
+
+####  문제점 및 해결 방법
+1. 게시글 클릭 후 뒤로 가기 시 스크롤과 게시글 초기화
+    - 문제: 게시글을 클릭하고 뒤로 가기를 하면, 이전에 저장된 스크롤 위치나 게시글 상태가 초기화됩니다.
+    - 해결:
+    sessionStorage에 offset과 scrollY 값을 저장하여 페이지가 새로고침되거나 뒤로가기 할 때 이를 복원합니다.
+    scrollY는 ref에 저장하여 불필요한 리렌더링을 방지하고 성능을 최적화합니다.
+    세션 저장: 스크롤 위치가 변경될 때마다 scrollYRef 값을 갱신하고, offset과 scrollY를 sessionStorage에 저장합니다.
+    만약 뒤로가기로 페이지에 접근하였다면  (navigationType === "POP" 이라면)  sessionStorage에서 값을 불러와 데이터를 fetch 합니다.
+
+2. 새로고침 시 불러오는 데이터 수가 증가하는 문제
+    - 문제: 새로고침 후 offset이 증가한 상태에서 데이터를 불러오는 문제가 발생합니다.
+    - 해결:
+    만약 처음 데이터를 불러오는 것이라면 loadMoreItems를 실행하지 않도록 합니다.
+    새로고침 시, scrollState가 없는 경우 기본적으로 6개의 데이터만 로드하도록 설정합니다.
+    만약 scrollState가 존재한다면, 이를 기반으로 데이터를 로드합니다.
+
+3. sessionStrage에 scrollState가 없을 경우 데이터를 정상적으로 fetch하지 못하는 문제
+    - scrollState가 있을 경우에만 scrollState를 가져와서 데이터를 fetch하고, (restoreScrollAndFetchData) scrollState가 없다면 데이터를 6개씩 fetch하도록 수정
+
+#### 구현 완료
+  세션에 scrollState가 없으면 기본적으로 6개의 데이터만 가져오고
+   scrollState가 저장되어있다면 저장되어있는 정보를 기반으로 데이터를 불러옵니다.
+   만약 다른페이지로 이동한다면 세션에서 scrollState를 제거합니다.
+
+### 3. 토글 이벤트 불필요한 HTTP 요청 처리
+
+#### 문제
+좋아요 / 팔로우 등 토글 이벤트의 경우
+반복적인 HTTP 요청은 서버에 불필요한 부담
+
+#### 해결
+1. debounce를 이용해서 서버의 요청을 최소화
+2. useEffect의 의존성으로 debounce값 사용시 불필요한 요청이
+발견되어 분기처리를 따로 설정 
+3. 분기 기준은 렌더링의 영향을 주지 않는 useRef를 사용해서 
+렌더링 최적화
+
+#### 결과
+<table>
+  <tbody>
+     <tr>
+      <td align="center">최적화 이전</td>
+      <td align="center">최적화 이후</td>
+    </tr>
+    <tr>
+      <td>
+         <img src="https://github.com/user-attachments/assets/4ea8e7f8-0c7a-4a1b-ab79-a34884b529d0" />
+      </td>
+      <td>
+         <img src="https://github.com/user-attachments/assets/a82d015c-0123-4e20-a74e-35ab7cbb72cc" />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 ## 🌟 Result
 
