@@ -18,6 +18,7 @@ export default function Aside({ toggleOpen }: AsideProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user = useAuthStore((state) => state.user);
   const trigger = useTriggerStore((state) => state.trigger);
+  const setTrigger = useTriggerStore((state) => state.setTrigger);
   const setOnlineUsers = useUserStore((state) => state.setOnlineUsers);
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<User[]>([]);
@@ -26,9 +27,20 @@ export default function Aside({ toggleOpen }: AsideProps) {
     const handleGetUsers = async () => {
       try {
         setLoading(true);
-        const data = await getUsers({ limit: "10" });
-        setUsers(data);
-        const online = await getOnlineUsers();
+        const [data, online] = await Promise.all([
+          getUsers(),
+          getOnlineUsers(),
+        ]);
+
+        const userIds = new Set<string>();
+        online.forEach((user) => userIds.add(user._id));
+
+        setUsers(
+          [...online, ...data.filter((user) => !userIds.has(user._id))].slice(
+            0,
+            10
+          )
+        );
         setOnlineUsers(online);
       } catch (err) {
         console.error(err);
@@ -38,6 +50,11 @@ export default function Aside({ toggleOpen }: AsideProps) {
     };
     handleGetUsers();
   }, [user, trigger]);
+
+  const handleClick = () => {
+    toggleOpen();
+    setTrigger(!trigger);
+  };
 
   return (
     <aside className="w-[257px] max-h-screen h-screen sticky top-0 right-0 bg-white dark:bg-black border-l border-whiteDark dark:border-gray pt-[22px] pb-[17px] px-[24px] text-black dark:text-white flex flex-col justify-between md:hidden">
@@ -50,7 +67,7 @@ export default function Aside({ toggleOpen }: AsideProps) {
         <div className="flex-1 scroll overflow-y-auto overflow-x-hidden mb-[10px]">
           {loading ? (
             <div className="w-full text-lg font-bold h-[450px] flex flex-col gap-5">
-              {Array(5)
+              {Array(10)
                 .fill(0)
                 .map((_, idx) => (
                   <UserItemSkeleton key={`search-user-${idx}`} />
@@ -71,7 +88,7 @@ export default function Aside({ toggleOpen }: AsideProps) {
           )}
         </div>
         {/* 하단 고정 링크 */}
-        <Button onClick={toggleOpen} text={"더보기"} size={"md"} />
+        <Button onClick={handleClick} text={"더보기"} size={"md"} />
       </div>
     </aside>
   );

@@ -6,6 +6,6 @@ export const getSearchPosts = async (
   return (await axiosInstance.get(`/search/all/${query}`)).data;
 };
 
-export const getSearchUsers = async (query: string) => {
+export const getSearchUsers = async (query: string): Promise<User[]> => {
   return (await axiosInstance.get(`/search/users/${query}`)).data;
 };
