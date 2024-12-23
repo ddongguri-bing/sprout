@@ -4,6 +4,7 @@ import Input from "../components/common/Input";
 import { useNavigate } from "react-router";
 import { postSignUp } from "../api/auth";
 import { validifyPw } from "../utils/validify";
+import { useModal } from "../stores/modalStore";
 
 export default function SignUp() {
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -15,6 +16,8 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const setModalOpen = useModal((state) => state.setModalOpen);
 
   const navigate = useNavigate();
 
@@ -67,13 +70,22 @@ export default function SignUp() {
       });
 
       if (data) {
+        setModalOpen(true, {
+          message: "회원가입에 성공했습니다",
+          isOneBtn: true,
+          btnText: "확인",
+          btnColor: "main",
+        });
         navigate("/auth/SignIn");
-      } else {
-        console.error("회원가입 실패");
       }
     } catch (err) {
       console.error(err);
-      alert(err);
+      setModalOpen(true, {
+        message: "회원가입에 실패했습니다",
+        isOneBtn: true,
+        btnText: "확인",
+        btnColor: "red",
+      });
     } finally {
       setDisabled(false);
     }
