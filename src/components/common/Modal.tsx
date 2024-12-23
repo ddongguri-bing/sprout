@@ -21,11 +21,16 @@ export default function Modal() {
         </div>
         {isOneBtn ? (
           <>
-            <Button
+            <button
+              className={twMerge(
+                "w-[100px] h-[42px] px-4 flex items-center justify-center text-[12px] font-medium rounded-[8px]",
+                btnColor === "main" && "bg-main text-black",
+                btnColor === "red" && "bg-red hover:bg-hoverRed text-white"
+              )}
               onClick={onClick ? () => onClick() : () => setOpen(false)}
-              text={btnText}
-              size={"sm"}
-            />
+            >
+              {btnText}
+            </button>
           </>
         ) : (
           <div className="flex items-center gap-5">
