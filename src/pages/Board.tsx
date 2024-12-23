@@ -81,7 +81,6 @@ export default function Board() {
     try {
       setIsLoading(true);
       if (channelId) {
-        console.log("load");
         const postData = await getPostsByChannelWithPagination(
           channelId,
           offsetRef.current,
