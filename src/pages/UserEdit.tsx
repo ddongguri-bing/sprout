@@ -4,7 +4,7 @@ import images from "../assets";
 import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/authStore";
 import { useModal } from "../stores/modalStore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { postUploadPhoto, putUpdatePw } from "../api/users";
 import Avata from "../components/common/Avata";
 import { useTriggerStore } from "../stores/triggerStore";
@@ -30,6 +30,7 @@ export default function UserEdit() {
   const profileImg = useAuthStore((state) => state.user?.image);
 
   //비밀번호 수정 관련
+  const firstTry = useRef(true);
   const [updatePassword, setUpdatePassword] = useState("");
   const [confirmUpdatePassword, setConfirmUpdatePassword] = useState("");
   const [updatePasswordError, setUpdatePasswordError] = useState("");
@@ -92,6 +93,9 @@ export default function UserEdit() {
     setUpdatePasswordError(isValidPw ? "" : "올바른 비밀번호가 아닙니다");
     return isValidPw;
   };
+  useEffect(() => {
+    if (!firstTry.current) isValidUpdatePassword();
+  }, [updatePassword]);
 
   const isConfirmUpdatePassword = () => {
     const isValid = confirmUpdatePassword === updatePassword;
@@ -105,6 +109,7 @@ export default function UserEdit() {
   }, [confirmUpdatePassword]);
 
   const handleUpdatePassword = async () => {
+    if (firstTry.current) firstTry.current = false;
     try {
       if (!updatePassword && !selectedFile) {
         isValidUpdatePassword();
@@ -191,7 +196,8 @@ export default function UserEdit() {
       </div>
       <form
         className="w-[calc(100%-40px)] max-w-[777px] mb-[125px] flex flex-col items-center mx-auto gap-[30px]"
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}
+      >
         <label className="cursor-pointer relative mb-5 md:mt-[30px] flex flex-col items-center">
           <input
             type="file"
@@ -209,7 +215,8 @@ export default function UserEdit() {
         <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
           <label
             htmlFor=""
-            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]">
+            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
+          >
             이메일
           </label>
           <div className="flex-1  max-w-[500px]">
@@ -226,7 +233,8 @@ export default function UserEdit() {
         <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
           <label
             htmlFor=""
-            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]">
+            className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
+          >
             이름
           </label>
           <div className="flex-1  max-w-[500px]">
@@ -245,7 +253,8 @@ export default function UserEdit() {
             <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
               <label
                 htmlFor=""
-                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]">
+                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
+              >
                 비밀번호
               </label>
               <div className="flex flex-col flex-1 max-w-[500px]">
@@ -268,7 +277,8 @@ export default function UserEdit() {
             <div className="w-full flex items-center justify-between gap-5 md:flex-row md:items-center">
               <label
                 htmlFor=""
-                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]">
+                className="min-w-[100px] font-bold md:text-[16px] md:min-w-[92px]"
+              >
                 비밀번호 확인
               </label>
               <div className="flex flex-col flex-1 max-w-[500px]">
@@ -310,7 +320,8 @@ export default function UserEdit() {
         <button
           aria-label="logout button"
           onClick={handleLogoutOpen}
-          className="text-red text-xs font-medium underline flex items-center gap-[10px]">
+          className="text-red text-xs font-medium underline flex items-center gap-[10px]"
+        >
           로그아웃
           <img src={images.Logout} alt="logout icon" />
         </button>
