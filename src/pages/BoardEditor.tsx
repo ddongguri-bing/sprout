@@ -141,10 +141,18 @@ export default function BoardEditor() {
     target.value = "";
   };
 
-  //이미지 하나 업로드 가능 기준 삭제
+  //이미지 삭제
   const handleDeleteImg = (indexToDelete: number) => {
     setPreview((prev) => prev.filter((_, index) => index !== indexToDelete));
     setImageUrl((prev) => prev.filter((_, index) => index !== indexToDelete));
+    setImage((prev) => {
+      const isAddedImage = indexToDelete >= imageUrl.length;
+      if (isAddedImage) {
+        const addedImageIndex = indexToDelete - imageUrl.length;
+        return prev.filter((_, index) => index !== addedImageIndex);
+      }
+      return prev; // 기존 이미지 삭제 시 image 배열에는 변화 없음
+    });
   };
 
   useEffect(() => {
@@ -161,7 +169,7 @@ export default function BoardEditor() {
     return () => {
       preview.forEach((url) => URL.revokeObjectURL(url));
     };
-  }, [preview]);
+  }, []);
 
   if (uploading) return <Loading />;
 

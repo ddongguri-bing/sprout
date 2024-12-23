@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 import { useNavigate } from "react-router";
@@ -20,6 +20,8 @@ export default function SignUp() {
   const setModalOpen = useModal((state) => state.setModalOpen);
 
   const navigate = useNavigate();
+
+  const firstTry = useRef(true);
 
   // 이메일, 비밀번호, 비밀번호 확인 올바른지 확인하는 로직
   const isValidEmail = () => {
@@ -44,6 +46,9 @@ export default function SignUp() {
 
     return isValidPw;
   };
+  useEffect(() => {
+    if (!firstTry.current) isValidPassword();
+  }, [password]);
 
   const isConfirmPassword = () => {
     if (confirmPassword !== password) {
@@ -60,6 +65,7 @@ export default function SignUp() {
   }, [confirmPassword]);
 
   const handleSignup = async () => {
+    if (firstTry.current) firstTry.current = false;
     if (!isValidEmail() || !isValidPassword() || !isConfirmPassword()) return;
     try {
       setDisabled(true);
