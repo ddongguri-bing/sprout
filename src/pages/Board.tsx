@@ -19,13 +19,16 @@ export default function Board() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMorePosts, setHasMorePosts] = useState(true); // 더 이상 가져올 게시물이 있는지 확인
-  const [offset, setOffset] = useState(0);
+  // const [offset, setOffset] = useState(0);
+  const offsetRef = useRef(0);
   const limit = 6;
 
   const lastItemRef = useRef<HTMLDivElement | null>(null);
 
   const scrollYRef = useRef(0);
   const navigationType = useNavigationType();
+
+  let firstTime = true;
 
   // 채널 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -45,23 +48,32 @@ export default function Board() {
   }, [channelId]);
 
   useEffect(() => {
+    const previousChannelId = sessionStorage.getItem("channelId");
     if (channelId) {
+      if (previousChannelId && previousChannelId !== channelId) {
+        // channelId가 변경되었을 때 scrollState를 삭제
+        sessionStorage.removeItem("scrollState");
+      }
       setPosts([]); // 기존 게시글 초기화
-      setOffset(0); // offset 초기화
+      offsetRef.current = 0; // offset 초기화
+      scrollYRef.current = 0;
       setHasMorePosts(true); // 더 이상 가져올 게시물이 있는지 상태 초기화
+
+      sessionStorage.setItem("channelId", channelId);
     }
   }, [channelId]);
 
   // 더 많은 데이터를 로드하는 함수
-  let firstTime = true;
-  const loadMoreItems = async () => {
+  const loadItems = async () => {
     // 로딩 중이거나 더 이상 게시물이 없으면 추가로 로딩하지 않도록 처리
-    if (isLoading || !hasMorePosts || !channelId) return;
+    if (isLoading || !hasMorePosts || !channelId) {
+      return;
+    }
     if (navigationType === "PUSH") {
       sessionStorage.removeItem("scrollState");
     }
-    const savedState = sessionStorage.getItem("scrollState");
-    if (savedState && firstTime) {
+    const scrollState = sessionStorage.getItem("scrollState");
+    if (scrollState && firstTime) {
       firstTime = false;
       return;
     }
@@ -69,9 +81,10 @@ export default function Board() {
     try {
       setIsLoading(true);
       if (channelId) {
+        console.log("load");
         const postData = await getPostsByChannelWithPagination(
           channelId,
-          offset,
+          offsetRef.current,
           limit
         );
 
@@ -90,7 +103,7 @@ export default function Board() {
         // 중복을 제외한 새 게시글만 상태에 추가
         if (newPosts.length > 0) {
           setPosts((prev) => [...prev, ...newPosts]);
-          setOffset((prev) => prev + newPosts.length);
+          offsetRef.current += newPosts.length;
         }
 
         // 가져온 데이터가 limit보다 적으면 더 이상 가져올 데이터가 없다고 설정
@@ -104,12 +117,13 @@ export default function Board() {
       setIsLoading(false);
     }
   };
+
   // IntersectionObserver 설정
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !isLoading && hasMorePosts) {
-          loadMoreItems(); // 마지막 아이템이 보이면 추가 데이터를 로드
+          loadItems(); // 마지막 아이템이 보이면 추가 데이터를 로드
         }
       },
       {
@@ -127,7 +141,7 @@ export default function Board() {
         observer.unobserve(lastItemRef.current); // 컴포넌트가 unmount되거나 다른 조건이 발생할 때 옵저버를 해제
       }
     };
-  }, [isLoading, hasMorePosts, offset]); // 상태 변화 시 observer를 새로 설정
+  }, [isLoading, hasMorePosts, offsetRef.current, channelId]); // 상태 변화 시 observer를 새로 설정
 
   useEffect(() => {
     // 스크롤 이벤트 핸들러
@@ -142,26 +156,31 @@ export default function Board() {
 
   useEffect(() => {
     const saveScrollState = () => {
-      sessionStorage.setItem(
-        "scrollState",
-        JSON.stringify({ offset, scrollY: scrollYRef.current })
-      );
+      if (scrollYRef.current > 0 || offsetRef.current > 0) {
+        sessionStorage.setItem(
+          "scrollState",
+          JSON.stringify({
+            offset: offsetRef.current,
+            scrollY: scrollYRef.current,
+          })
+        );
+      }
     };
     window.addEventListener("scroll", saveScrollState);
     return () => {
       window.removeEventListener("scroll", saveScrollState);
     };
-  }, [offset]);
+  }, []);
 
   useEffect(() => {
-    if (navigationType && navigationType === "POP") {
+    if (navigationType === "POP") {
       const scrollState = sessionStorage.getItem("scrollState");
       if (scrollState) {
-        setOffset(JSON.parse(scrollState).offset);
+        offsetRef.current = JSON.parse(scrollState).offset;
         scrollYRef.current = JSON.parse(scrollState).scrollY;
       }
     }
-  }, [navigationType]);
+  }, []);
 
   const getDataWithSaved = async (channelId: string, savedOffset: number) => {
     const postData = await getPostsByChannelWithPagination(
@@ -193,10 +212,6 @@ export default function Board() {
     };
     if (scrollState && navigationType === "POP") {
       restoreScrollAndFetchData();
-    } else {
-      setPosts([]);
-      setOffset(0);
-      setHasMorePosts(true);
     }
   }, []);
 
