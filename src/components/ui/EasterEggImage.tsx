@@ -3,14 +3,23 @@ import { useEffect, useState } from "react";
 import Button from "../common/Button";
 import easterEggs from "../../constants/easterEggs";
 import Loading from "../common/Loading";
+import { useModal } from "../../stores/modalStore";
 
 const OPEN_API_CAT = "https://cataas.com";
 const OPEN_API_DOG = "https://dog.ceo/api/breeds/image/random";
 
-export default function EasterEggImage({ easterEgg }: { easterEgg: string }) {
+export default function EasterEggImage({
+  easterEgg,
+  onClose,
+}: {
+  easterEgg: string;
+  onClose: () => void;
+}) {
   const [loading, setLoading] = useState<boolean>(true);
   const [trigger, setTrigger] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(null);
+
+  const setModalOpen = useModal((state) => state.setModalOpen);
 
   useEffect(() => {
     const handlefetchImage = async () => {
@@ -32,6 +41,17 @@ export default function EasterEggImage({ easterEgg }: { easterEgg: string }) {
         );
       } catch (err) {
         console.error(err);
+        setLoading(false);
+        setModalOpen(true, {
+          message: "API 호출 중 에러가 발생했습니다",
+          isOneBtn: true,
+          btnText: "확인",
+          btnColor: "red",
+          onClick: async () => {
+            setModalOpen(false);
+            onClose();
+          },
+        });
       }
     };
     handlefetchImage();
