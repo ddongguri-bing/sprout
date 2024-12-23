@@ -24,7 +24,7 @@ export default function Board() {
 
   const lastItemRef = useRef<HTMLDivElement | null>(null);
 
-  const [scrollY, setScrollY] = useState(0); // 현재 스크롤 위치 상태
+  const scrollYRef = useRef(0);
   const navigationType = useNavigationType();
 
   // 채널 데이터를 가져오는 useEffect
@@ -131,7 +131,7 @@ export default function Board() {
   useEffect(() => {
     // 스크롤 이벤트 핸들러
     const handleScroll = () => {
-      setScrollY(window.scrollY); // 스크롤 상태 업데이트
+      if (window.scrollY) scrollYRef.current = window.scrollY; // 스크롤 상태 업데이트
     };
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -143,21 +143,21 @@ export default function Board() {
     const saveScrollState = () => {
       sessionStorage.setItem(
         "scrollState",
-        JSON.stringify({ offset, scrollY })
+        JSON.stringify({ offset, scrollY: scrollYRef.current })
       );
     };
     window.addEventListener("scroll", saveScrollState);
     return () => {
       window.removeEventListener("scroll", saveScrollState);
     };
-  }, [offset, scrollY]);
+  }, [offset]);
 
   useEffect(() => {
     if (navigationType && navigationType === "POP") {
       const scrollState = sessionStorage.getItem("scrollState");
       if (scrollState) {
         setOffset(JSON.parse(scrollState).offset);
-        setScrollY(JSON.parse(scrollState).scrollY);
+        scrollYRef.current = JSON.parse(scrollState).scrollY;
       }
     }
   }, [navigationType]);
@@ -183,7 +183,7 @@ export default function Board() {
           setPosts(postData);
 
           setTimeout(() => {
-            window.scrollTo(0, savedScrollY || 0);
+            window.scrollTo(0, savedScrollY);
           }, 0);
         } catch (error) {
           console.error("데이터 복원 중 오류 발생:", error);
