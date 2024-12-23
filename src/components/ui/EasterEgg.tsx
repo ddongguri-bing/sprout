@@ -35,7 +35,7 @@ export default function EasterEgg({
       {easterEgg === easterEggs[0] ? (
         <EasterEggSu />
       ) : (
-        <EasterEggImage easterEgg={easterEgg} />
+        <EasterEggImage easterEgg={easterEgg} onClose={onClose} />
       )}
     </div>
   );
