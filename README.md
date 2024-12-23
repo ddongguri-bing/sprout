@@ -86,7 +86,7 @@
 - [x] 다른 사용자를 팔로우/언팔로우 할 수 있습니다.
 - [x] 경고 메세지 출력 시 커스텀 모달이 출력됩니다.
 
-## 🌟 Folder
+## 🗂️ Folder
 
 ```
   📦public
@@ -110,7 +110,77 @@
  ┗ 📂utils
 ```
 
+## 🔥 Trouble Shooting
+
+
 ## 🌟 Result
+
+
+<table>
+  <tbody>
+     <tr>
+      <td align="center">Light Mode</td>
+      <td align="center">Dark Mode</td>
+    </tr>
+    <tr>
+      <td>
+         <img src="https://github.com/user-attachments/assets/5f7168f2-72ce-45b9-8297-1135be980298" alt="ligt mode" />
+      </td>
+      <td>
+         <img src="https://github.com/user-attachments/assets/cbbda959-a41e-462e-babb-d6098827b2d7" alt="dark mode" />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+### Preview
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center">메인페이지</td>
+      <td align="center">로그인</td>
+      <td align="center">회원가입</td>
+      <td align="center">유저프로필</td>
+    </tr>
+    <tr>
+      <td>
+          <img src="https://github.com/user-attachments/assets/5f7168f2-72ce-45b9-8297-1135be980298" style="width:230px"/>
+      </td>
+      <td>
+          <img src="https://github.com/user-attachments/assets/c4fca89d-5fb7-4293-bafd-786cf9008263" style="width:230px"/>
+      </td>
+      <td>
+          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/cb00e119-75fb-44dd-9128-1bed0086752b" style="width:230px"/>
+      </td>
+      <td>
+          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/416a32ff-ca38-4e9d-894e-68ab980ded95" style="width:230px"/>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">마이페이지</td>
+      <td align="center">게시판</td>
+      <td align="center">게시글</td>
+      <td align="center">게시글 작성/수정</td>
+    </tr>
+    <tr>
+      <td>
+          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/ac19163d-cfb1-48bb-b92c-7750a89b3dcd" style="width:230px"/>
+      </td>
+      <td>
+          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/6d49d3ac-4198-4341-97be-d4038bd67ed2" style="width:230px"/>
+      </td>
+      <td>
+          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/1f4919e9-6b5d-4c4a-8013-4678afebfa32" style="width:230px"/>
+      </td>
+      <td>
+          <img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/2ab2b0f5-9f5f-437d-939a-1d718191b2ec" style="width:230px"/>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <div align='center'>
   <a href="https://programmers-sprout.netlify.app/">
@@ -118,10 +188,4 @@
   </a>
 </div>
 
-### Light Mode
 
-![lightMode](https://github.com/user-attachments/assets/5f7168f2-72ce-45b9-8297-1135be980298)
-
-### Dark Mode
-
-![darkMode](https://github.com/user-attachments/assets/cbbda959-a41e-462e-babb-d6098827b2d7)
