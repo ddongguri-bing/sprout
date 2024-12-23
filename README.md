@@ -120,7 +120,7 @@
 
 ### Light Mode
 
-![lightMode](https://github.com/user-attachments/assets/31c79209-5c14-4a52-8651-db4c7ce862a6)
+![lightMode](https://github.com/user-attachments/assets/5f7168f2-72ce-45b9-8297-1135be980298)
 
 ### Dark Mode
 
