@@ -11,9 +11,6 @@ export default function ThemeToggle() {
     const checked = e.target.checked;
     setIsDarkMode(checked);
     document.documentElement.classList.toggle("dark");
-
-    if (checked) localStorage.setItem("theme", "dark");
-    else localStorage.setItem("theme", "light");
   };
 
   return (
